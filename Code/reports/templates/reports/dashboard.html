@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<!-- Welcome Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card bg-glass border-0 text-center">
+            <div class="card-body py-5">
+                <i class="fas fa-chart-pie text-gradient-primary" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                <h2 class="text-gradient-primary mb-3">Welcome to SAP Project System Report Portal</h2>
+                <p class="lead text-muted mb-4">Transform your SAP data into professional Excel reports with advanced analytics and interactive dashboards</p>
+                <div class="row text-center">
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="p-3">
+                            <i class="fas fa-upload text-primary mb-2" style="font-size: 2rem;"></i>
+                            <h6>Easy Upload</h6>
+                            <small class="text-muted">Drag & drop SAP files</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="p-3">
+                            <i class="fas fa-cogs text-success mb-2" style="font-size: 2rem;"></i>
+                            <h6>Auto Processing</h6>
+                            <small class="text-muted">WBS classification & mapping</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="p-3">
+                            <i class="fas fa-file-excel text-warning mb-2" style="font-size: 2rem;"></i>
+                            <h6>Excel Output</h6>
+                            <small class="text-muted">Professional formatting</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="p-3">
+                            <i class="fas fa-chart-line text-info mb-2" style="font-size: 2rem;"></i>
+                            <h6>Analytics</h6>
+                            <small class="text-muted">Interactive dashboards</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reports Section -->
+<div class="row">
+    <div class="col-12 mb-4">
+        <h3 class="text-gradient-primary">
+            <i class="fas fa-file-alt me-2"></i>Available Reports
+        </h3>
+        <p class="text-muted">Select a report type to begin processing your SAP data</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card report-card h-100 fade-in">
+            <div class="card-body text-center">
+                <div class="report-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <h5 class="report-title">Budget Report</h5>
+                <p class="report-description">
+                    Generate comprehensive budget reports with WBS element classification,
+                    currency formatting, and professional Excel styling. Perfect for financial analysis and planning.
+                </p>
+                <a href="{% url 'report_budget' %}" class="report-button">
+                    Generate Budget Report
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card report-card h-100 fade-in">
+            <div class="card-body text-center">
+                <div class="report-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h5 class="report-title">Plan Variance Report</h5>
+                <p class="report-description">
+                    Analyze plan vs actual variance with detailed breakdowns by project and WBS elements.
+                    Includes variance percentage calculations and trend analysis.
+                </p>
+                <a href="{% url 'report_plan_variance' %}" class="report-button" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    Generate Plan Variance
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card report-card h-100 fade-in">
+            <div class="card-body text-center">
+                <div class="report-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <h5 class="report-title">Project Analysis</h5>
+                <p class="report-description">
+                    Multi-file project analysis with merge operations, cross-tabulation,
+                    and statistical insights. Generate comprehensive project performance metrics.
+                </p>
+                <a href="{% url 'report_project_analysis' %}" class="report-button" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    Analyze Projects
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card report-card h-100 fade-in">
+            <div class="card-body text-center">
+                <div class="report-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h5 class="report-title">Budget Updates</h5>
+                <p class="report-description">
+                    Track budget modifications and updates with enhanced WBS processing.
+                    Monitor budget changes over time with detailed audit trails.
+                </p>
+                <a href="{% url 'report_budget_updates' %}" class="report-button" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    Track Updates
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card report-card h-100 fade-in">
+            <div class="card-body text-center">
+                <div class="report-icon" style="background: linear-gradient(135deg, #ff9a56 0%, #ffba56 100%);">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h5 class="report-title">Budget Variance</h5>
+                <p class="report-description">
+                    Analyze budget vs actual variance with orange highlighting for summary WBS.
+                    Processes HTML exports with comprehensive variance tracking.
+                </p>
+                <a href="{% url 'report_budget_variance' %}" class="report-button" style="background: linear-gradient(135deg, #ff9a56 0%, #ffba56 100%);">
+                    Analyze Variance
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card report-card h-100 fade-in">
+            <div class="card-body text-center">
+                <div class="report-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <h5 class="report-title">Project Type Wise</h5>
+                <p class="report-description">
+                    Group projects by company and type with hyperlinked navigation.
+                    Multi-sheet Excel reports with interactive summary dashboard.
+                </p>
+                <a href="{% url 'report_project_type_wise' %}" class="report-button" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    Group Projects
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card report-card h-100 fade-in">
+            <div class="card-body text-center">
+                <div class="report-icon" style="background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h5 class="report-title">Glimps of Projects</h5>
+                <p class="report-description">
+                    Interactive analytics dashboard with cross-tabulation and 3D charts.
+                    Dynamic visualization with company-wise project distribution.
+                </p>
+                <a href="{% url 'report_glimps_of_projects' %}" class="report-button" style="background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);">
+                    View Analytics
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Stats Section -->
+<div class="row mt-5">
+    <div class="col-12 mb-4">
+        <h4 class="text-gradient-primary">
+            <i class="fas fa-chart-pie me-2"></i>System Overview
+        </h4>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card bg-glass text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-building text-primary mb-2" style="font-size: 2rem;"></i>
+                <h6>Company Codes</h6>
+                <h4 class="text-gradient-primary">5</h4>
+                <small class="text-muted">NL, NT, NU, NR, NG</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card bg-glass text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-tags text-success mb-2" style="font-size: 2rem;"></i>
+                <h6>Project Types</h6>
+                <h4 class="text-gradient-primary">9</h4>
+                <small class="text-muted">Capex, Service, R&D, etc.</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card bg-glass text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-file-alt text-warning mb-2" style="font-size: 2rem;"></i>
+                <h6>Report Types</h6>
+                <h4 class="text-gradient-primary">7</h4>
+                <small class="text-muted">Budget, Variance, Analytics</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card bg-glass text-center h-100">
+            <div class="card-body">
+                <i class="fas fa-magic text-info mb-2" style="font-size: 2rem;"></i>
+                <h6>Features</h6>
+                <h4 class="text-gradient-primary">WBS</h4>
+                <small class="text-muted">Auto-classification</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Help Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card bg-glass">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-2">
+                            <i class="fas fa-question-circle text-primary me-2"></i>
+                            Need Help?
+                        </h5>
+                        <p class="mb-0 text-muted">
+                            Check our documentation for detailed instructions on file formats,
+                            WBS element structure, and report customization options.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <a href="#" class="btn btn-outline-primary" onclick="SAPReports.showAlert('Documentation feature coming soon!', 'info');">
+                            <i class="fas fa-book me-2"></i>Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

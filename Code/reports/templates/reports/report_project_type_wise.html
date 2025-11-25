@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Instructions Card -->
+        <div class="card bg-glass mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-2">
+                            <i class="fas fa-info-circle text-primary me-2"></i>
+                            Project Type Wise Report Instructions
+                        </h5>
+                        <p class="mb-0 text-muted">
+                            Upload your CN42N output saved as Excel file to generate a professionally
+                            formatted multi-sheet Excel report with project grouping, hyperlinks, and summary statistics.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="badge bg-success">
+                            <i class="fas fa-file-excel me-1"></i>Excel Files Only
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Card -->
+        <div class="card shadow-hover">
+            <div class="card-header">
+                <h3>
+                    <i class="fas fa-upload me-2"></i>Upload CN42N Excel File
+                </h3>
+                <p class="mb-0 text-muted">Select your CN42N output saved as Excel file for processing</p>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" id="uploadForm">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="{{ form.file.id_for_label }}" class="form-label">
+                            <i class="fas fa-file-upload me-2"></i>{{ form.file.label }}
+                        </label>
+                        {{ form.file }}
+                        <div class="form-text">
+                            <i class="fas fa-check-circle text-success me-1"></i>
+                            Supported format: .XLSX files from CN42N report output
+                            <br>
+                            <i class="fas fa-lightbulb text-warning me-1"></i>
+                            Ensure the file contains "Project definition" column and project data
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-magic me-2"></i>Generate Project Type Wise Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Alert -->
+        {% if report_file_name %}
+            <div class="card bg-glass border-success mt-4 fade-in">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h4 class="text-success mb-2">
+                                <i class="fas fa-check-circle me-2"></i>Report Generated Successfully!
+                            </h4>
+                            <p class="mb-0 text-muted">
+                                Your project type wise report <strong class="text-primary">{{ report_file_name }}</strong> has been created and is ready for download.
+                                A preview is available below.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <a href="{% url 'download_report' filename=report_file_name %}" class="btn btn-success btn-lg">
+                                <i class="fas fa-download me-2"></i>Download Report
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Error Alert -->
+        {% if error %}
+            <div class="card bg-glass border-danger mt-4 fade-in">
+                <div class="card-body">
+                    <h4 class="text-danger mb-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Processing Error
+                    </h4>
+                    <p class="text-muted mb-3">{{ error }}</p>
+                    <div class="border-top pt-3">
+                        <h6 class="text-muted">Troubleshooting Tips:</h6>
+                        <ul class="text-muted mb-0">
+                            <li>Ensure the file is CN42N output saved as Excel (.xlsx)</li>
+                            <li>Check that the file contains "Project definition" column</li>
+                            <li>Verify the file isn't corrupted or empty</li>
+                            <li>Try re-exporting the data from SAP CN42N and saving as Excel</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Report Preview Section -->
+{% if data_html %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card shadow-hover">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 class="mb-0">
+                            <i class="fas fa-table me-2"></i>Report Preview
+                        </h3>
+                        <p class="text-muted mb-0">Sample of your generated project type wise report</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-outline-primary btn-sm" onclick="toggleFullscreen()">
+                            <i class="fas fa-expand me-1"></i>Fullscreen
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0" id="previewCardBody">
+                <div class="preview-container" id="previewTable">
+                    <div class="table-responsive">
+                        {{ data_html|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Processing Steps Info -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card bg-glass">
+            <div class="card-body">
+                <h5 class="mb-3">
+                    <i class="fas fa-cogs me-2"></i>Report Processing Steps
+                </h5>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-file-import text-primary mb-2" style="font-size: 2rem;"></i>
+                            <h6>1. File Import</h6>
+                            <small class="text-muted">Upload & validate Excel file</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-sitemap text-success mb-2" style="font-size: 2rem;"></i>
+                            <h6>2. Project Grouping</h6>
+                            <small class="text-muted">Group by Company & Type</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-link text-warning mb-2" style="font-size: 2rem;"></i>
+                            <h6>3. Hyperlinks</h6>
+                            <small class="text-muted">Multi-sheet navigation</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-file-excel text-info mb-2" style="font-size: 2rem;"></i>
+                            <h6>4. Excel Generation</h6>
+                            <small class="text-muted">Format & create report</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+/* Normal preview container */
+.preview-container {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: auto;
+    position: relative;
+}
+
+/* Fullscreen Overlay - Completely separate from normal content */
+#fullscreenOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    background: white;
+    overflow: auto;
+    padding: 60px 20px 20px 20px;
+    box-sizing: border-box;
+}
+
+#fullscreenOverlay.active {
+    display: block;
+}
+
+.fullscreen-close-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 100000;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.fullscreen-close-btn:hover {
+    background: #c82333;
+    transform: scale(1.1);
+}
+
+.fullscreen-close-btn.show {
+    display: flex;
+}
+
+body.fullscreen-active {
+    overflow: hidden;
+}
+
+/* Ensure sticky headers work in preview */
+.preview-container table thead th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
+    background-color: #FFFF00 !important;
+}
+
+/* Sticky header in fullscreen - must override inline styles */
+#fullscreenOverlay table thead th,
+#fullscreenOverlay .budget-report-table thead th {
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    background-color: #FFFF00 !important;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Ensure the table header group allows sticky positioning */
+#fullscreenOverlay table thead,
+#fullscreenOverlay .budget-report-table thead {
+    position: relative !important;
+    z-index: 999 !important;
+}
+
+/* Scrollbar styling */
+.preview-container::-webkit-scrollbar,
+#fullscreenOverlay::-webkit-scrollbar {
+    width: 8px;
+}
+
+.preview-container::-webkit-scrollbar-track,
+#fullscreenOverlay::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.preview-container::-webkit-scrollbar-thumb,
+#fullscreenOverlay::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.preview-container::-webkit-scrollbar-thumb:hover,
+#fullscreenOverlay::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Create fullscreen overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'fullscreenOverlay';
+    document.body.appendChild(overlay);
+
+    // Create close button for fullscreen
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'fullscreen-close-btn';
+    closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    closeBtn.setAttribute('aria-label', 'Exit Fullscreen');
+    closeBtn.title = 'Exit Fullscreen (Esc)';
+    document.body.appendChild(closeBtn);
+
+    // Close fullscreen on button click
+    closeBtn.addEventListener('click', function() {
+        toggleFullscreen();
+    });
+
+    // Close fullscreen on Esc key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const overlay = document.getElementById('fullscreenOverlay');
+            if (overlay && overlay.classList.contains('active')) {
+                toggleFullscreen();
+            }
+        }
+    });
+});
+
+function toggleFullscreen() {
+    const preview = document.getElementById('previewTable');
+    const overlay = document.getElementById('fullscreenOverlay');
+    const fullscreenBtn = document.querySelector('[onclick="toggleFullscreen()"]');
+    const closeBtn = document.querySelector('.fullscreen-close-btn');
+
+    if (!preview || !overlay) {
+        console.error('Preview container or overlay not found');
+        return;
+    }
+
+    if (overlay.classList.contains('active')) {
+        // Exit fullscreen
+        overlay.classList.remove('active');
+        overlay.innerHTML = '';
+        document.body.classList.remove('fullscreen-active');
+        if (closeBtn) closeBtn.classList.remove('show');
+        document.body.style.overflow = '';
+
+        if (fullscreenBtn) {
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand me-1"></i>Fullscreen';
+        }
+
+        console.log('Exited fullscreen');
+    } else {
+        // Enter fullscreen
+        // Clone the preview content into the overlay
+        const previewContent = preview.innerHTML;
+        overlay.innerHTML = previewContent;
+
+        overlay.classList.add('active');
+        document.body.classList.add('fullscreen-active');
+        if (closeBtn) closeBtn.classList.add('show');
+        document.body.style.overflow = 'hidden';
+
+        if (fullscreenBtn) {
+            fullscreenBtn.innerHTML = '<i class="fas fa-compress me-1"></i>Exit Fullscreen';
+        }
+
+        // Ensure sticky header works by forcing the styles
+        setTimeout(() => {
+            const theadCells = overlay.querySelectorAll('table thead th');
+            theadCells.forEach(th => {
+                th.style.position = 'sticky';
+                th.style.top = '0';
+                th.style.zIndex = '1000';
+                th.style.backgroundColor = '#FFFF00';
+            });
+        }, 100);
+
+        // Scroll to top in fullscreen
+        overlay.scrollTop = 0;
+
+        console.log('Entered fullscreen');
+        console.log('Overlay content length:', overlay.innerHTML.length);
+    }
+}
+</script>
+{% endblock %}

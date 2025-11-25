@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Instructions Card -->
+        <div class="card bg-glass mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-2">
+                            <i class="fas fa-info-circle text-primary me-2"></i>
+                            Budget Variance Report Instructions
+                        </h5>
+                        <p class="mb-0 text-muted">
+                            Upload your SAP DAT file containing budget variance data (HTML format) to generate a professionally
+                            formatted Excel report with WBS classification, enhanced child element detection, and currency formatting.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="badge bg-primary">
+                            <i class="fas fa-file me-1"></i>DAT Files Only
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Card -->
+        <div class="card shadow-hover">
+            <div class="card-header">
+                <h3>
+                    <i class="fas fa-upload me-2"></i>Upload SAP DAT File
+                </h3>
+                <p class="mb-0 text-muted">Select your exported SAP budget variance data file for processing</p>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" id="uploadForm">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="{{ form.file.id_for_label }}" class="form-label">
+                            <i class="fas fa-file-upload me-2"></i>{{ form.file.label }}
+                        </label>
+                        {{ form.file }}
+                        <div class="form-text">
+                            <i class="fas fa-check-circle text-success me-1"></i>
+                            Supported format: .DAT files exported from SAP
+                            <br>
+                            <i class="fas fa-lightbulb text-warning me-1"></i>
+                            Ensure the file contains WBS elements and variance analysis data
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-magic me-2"></i>Generate Budget Variance Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Alert -->
+        {% if report_file_name %}
+            <div class="card bg-glass border-success mt-4 fade-in">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h4 class="text-success mb-2">
+                                <i class="fas fa-check-circle me-2"></i>Report Generated Successfully!
+                            </h4>
+                            <p class="mb-0 text-muted">
+                                Your budget variance report <strong class="text-primary">{{ report_file_name }}</strong> has been created and is ready for download.
+                                A preview is available below.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <a href="{% url 'download_report' filename=report_file_name %}" class="btn btn-success btn-lg">
+                                <i class="fas fa-download me-2"></i>Download Report
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Error Alert -->
+        {% if error %}
+            <div class="card bg-glass border-danger mt-4 fade-in">
+                <div class="card-body">
+                    <h4 class="text-danger mb-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Processing Error
+                    </h4>
+                    <p class="text-muted mb-3">{{ error }}</p>
+                    <div class="border-top pt-3">
+                        <h6 class="text-muted">Troubleshooting Tips:</h6>
+                        <ul class="text-muted mb-0">
+                            <li>Ensure the file is a valid SAP DAT export for budget variance</li>
+                            <li>Check that the file contains WBS elements</li>
+                            <li>Verify the file isn't corrupted or empty</li>
+                            <li>Try re-exporting the data from SAP</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Report Preview Section -->
+{% if data_html %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card shadow-hover">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 class="mb-0">
+                            <i class="fas fa-table me-2"></i>Report Preview
+                        </h3>
+                        <p class="text-muted mb-0">Sample of your generated budget variance report</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-outline-primary btn-sm" onclick="toggleFullscreen()">
+                            <i class="fas fa-expand me-1"></i>Fullscreen
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0" id="previewCardBody">
+                <div class="preview-container" id="previewTable">
+                    <div class="table-responsive">
+                        {{ data_html|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Processing Steps Info -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card bg-glass">
+            <div class="card-body">
+                <h5 class="mb-3">
+                    <i class="fas fa-cogs me-2"></i>Report Processing Steps
+                </h5>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-file-import text-primary mb-2" style="font-size: 2rem;"></i>
+                            <h6>1. File Import</h6>
+                            <small class="text-muted">Upload & validate DAT file</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-filter text-success mb-2" style="font-size: 2rem;"></i>
+                            <h6>2. Data Cleaning</h6>
+                            <small class="text-muted">Remove metadata & asterisks</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-sitemap text-warning mb-2" style="font-size: 2rem;"></i>
+                            <h6>3. WBS Classification</h6>
+                            <small class="text-muted">Orange highlighting for summary WBS</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-file-excel text-info mb-2" style="font-size: 2rem;"></i>
+                            <h6>4. Excel Generation</h6>
+                            <small class="text-muted">Format & create report</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+/* Normal preview container */
+.preview-container {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: auto;
+    position: relative;
+}
+
+/* Fullscreen preview styles - CRITICAL: Override everything */
+.preview-container.fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    min-height: 100vh !important;
+    z-index: 99999 !important;
+    background: white !important;
+    padding: 60px 20px 20px 20px !important;
+    margin: 0 !important;
+    overflow: auto !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+/* Ensure table-responsive is visible and takes space in fullscreen */
+.preview-container.fullscreen .table-responsive {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-width: none !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100px !important;
+    overflow: auto !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Override the generated HTML container */
+.preview-container.fullscreen .budget-updates-table-container {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-width: none !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    position: relative !important;
+}
+
+/* Ensure table is visible and takes full width in fullscreen */
+.preview-container.fullscreen table,
+.preview-container.fullscreen .budget-updates-table {
+    display: table !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: auto !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Ensure table cells are visible */
+.preview-container.fullscreen table td,
+.preview-container.fullscreen table th {
+    display: table-cell !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure table rows are visible */
+.preview-container.fullscreen table tr,
+.preview-container.fullscreen table thead,
+.preview-container.fullscreen table tbody {
+    display: table-row-group !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.preview-container.fullscreen table thead {
+    display: table-header-group !important;
+}
+
+.preview-container.fullscreen table tr {
+    display: table-row !important;
+}
+
+.fullscreen-close-btn {
+    position: fixed !important;
+    top: 10px !important;
+    right: 10px !important;
+    z-index: 100000 !important;
+    background: #dc3545 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+}
+
+.fullscreen-close-btn:hover {
+    background: #c82333 !important;
+    transform: scale(1.1) !important;
+}
+
+.fullscreen-close-btn.show {
+    display: flex !important;
+}
+
+/* Additional fullscreen helpers */
+body.fullscreen-active {
+    overflow: hidden !important;
+}
+
+body.fullscreen-active .navbar,
+body.fullscreen-active main:not(.preview-container),
+body.fullscreen-active footer {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+/* Ensure sticky headers work in both modes */
+.preview-container table thead th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
+    background-color: #FFFF00 !important;
+}
+
+.preview-container.fullscreen table thead th {
+    top: 0 !important;
+}
+
+/* Hide scrollbars in normal mode but show in fullscreen */
+.preview-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.preview-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.preview-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.preview-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Create close button for fullscreen
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'fullscreen-close-btn';
+    closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    closeBtn.setAttribute('aria-label', 'Exit Fullscreen');
+    closeBtn.title = 'Exit Fullscreen (Esc)';
+    document.body.appendChild(closeBtn);
+
+    // Close fullscreen on button click
+    closeBtn.addEventListener('click', function() {
+        const preview = document.getElementById('previewTable');
+        if (preview && preview.classList.contains('fullscreen')) {
+            toggleFullscreen();
+        }
+    });
+
+    // Close fullscreen on Esc key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const preview = document.getElementById('previewTable');
+            if (preview && preview.classList.contains('fullscreen')) {
+                toggleFullscreen();
+            }
+        }
+    });
+});
+
+function toggleFullscreen() {
+    const preview = document.getElementById('previewTable');
+    const fullscreenBtn = document.querySelector('[onclick="toggleFullscreen()"]');
+    const closeBtn = document.querySelector('.fullscreen-close-btn');
+
+    if (!preview) {
+        console.error('Preview container not found');
+        return;
+    }
+
+    console.log('Toggle fullscreen called. Current classes:', preview.className);
+
+    if (preview.classList.contains('fullscreen')) {
+        // Exit fullscreen
+        preview.classList.remove('fullscreen');
+        document.body.classList.remove('fullscreen-active');
+        if (closeBtn) closeBtn.classList.remove('show');
+        document.body.style.overflow = '';
+
+        if (fullscreenBtn) {
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand me-1"></i>Fullscreen';
+        }
+
+        console.log('Exited fullscreen');
+    } else {
+        // Enter fullscreen
+        preview.classList.add('fullscreen');
+        document.body.classList.add('fullscreen-active');
+        if (closeBtn) closeBtn.classList.add('show');
+        document.body.style.overflow = 'hidden';
+
+        if (fullscreenBtn) {
+            fullscreenBtn.innerHTML = '<i class="fas fa-compress me-1"></i>Exit Fullscreen';
+        }
+
+        // Scroll to top in fullscreen
+        preview.scrollTop = 0;
+
+        console.log('Entered fullscreen. Preview height:', preview.offsetHeight, 'px');
+    }
+}
+</script>
+{% endblock %}

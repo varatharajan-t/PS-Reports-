@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            z-index: 1030;
+            overflow: visible !important;
+        }
+
+        .navbar .container {
+            overflow: visible !important;
+        }
+
+        .dropdown-menu {
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            border-radius: 0.5rem !important;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+            margin-top: 0.5rem !important;
+            padding: 0.5rem !important;
+            z-index: 9999 !important;
+            min-width: 250px !important;
+            max-height: none !important;
+            height: auto !important;
+            overflow: visible !important;
+            position: absolute !important;
+            top: 100% !important;
+            left: auto !important;
+            right: 0 !important;
+            min-height: 220px !important;
+        }
+
+        .dropdown-item {
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem !important;
+            margin-bottom: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            transform: translateX(5px);
+        }
+
+        nav, nav * {
+            overflow: visible !important;
+        }
+
+        .test-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="overflow: visible !important;">
+        <div class="container" style="overflow: visible !important;">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line me-2"></i>SAP Report Portal - TEST
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav" style="overflow: visible !important;">
+                <ul class="navbar-nav ms-auto" style="overflow: visible !important;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-home me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown" style="position: relative;">
+                        <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-file-alt me-1"></i>Reports
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="reportsDropdown"
+                            style="position: absolute !important; z-index: 9999 !important;">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-money-bill me-2"></i>Budget Report</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-chart-bar me-2"></i>Plan Variance</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-project-diagram me-2"></i>Project Analysis</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Budget Updates</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="test-info">
+            <h2><i class="fas fa-vial me-2"></i>Dropdown Menu Test</h2>
+            <p class="lead">This is a standalone test to verify the dropdown menu works correctly.</p>
+            <hr>
+            <h5>Test Instructions:</h5>
+            <ol>
+                <li>Click on the "Reports" menu item in the navbar above</li>
+                <li>The dropdown should show all 4 items completely visible:
+                    <ul>
+                        <li>Budget Report</li>
+                        <li>Plan Variance</li>
+                        <li>Project Analysis</li>
+                        <li>Budget Updates</li>
+                    </ul>
+                </li>
+                <li>All 4 items should be fully visible without clipping</li>
+                <li>Hover over items - they should highlight with a gradient background</li>
+            </ol>
+            <div class="alert alert-info mt-3">
+                <strong>Note:</strong> If this test works but your Django app doesn't:
+                <ul class="mb-0">
+                    <li>Clear your browser cache (Ctrl+Shift+Delete)</li>
+                    <li>Hard refresh (Ctrl+Shift+R or Cmd+Shift+R)</li>
+                    <li>Try opening in incognito/private window</li>
+                    <li>Check browser console for errors (F12)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Debug script to log dropdown events
+        document.getElementById('reportsDropdown').addEventListener('shown.bs.dropdown', function () {
+            console.log('Dropdown opened successfully');
+            const dropdown = document.querySelector('.dropdown-menu');
+            const rect = dropdown.getBoundingClientRect();
+            console.log('Dropdown dimensions:', {
+                width: rect.width,
+                height: rect.height,
+                top: rect.top,
+                left: rect.left,
+                right: rect.right,
+                bottom: rect.bottom
+            });
+        });
+    </script>
+</body>
+</html>

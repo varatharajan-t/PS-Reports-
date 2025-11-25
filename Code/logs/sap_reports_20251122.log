@@ -1,0 +1,300 @@
+2025-11-22 15:12:05,081 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 4}
+2025-11-22 15:12:05,081 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 3}
+2025-11-22 15:12:05,081 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 15:12:05,081 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 15:12:05,096 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 15:12:05,096 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 15:12:05,096 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 15:12:05,096 - data_processor_base - ERROR - Unexpected error - {'function': 'classify_wbs_elements'}
+Error: boolean value of NA is ambiguous
+Traceback: Traceback (most recent call last):
+  File "d:\PS-Reports\Code\error_handler.py", line 91, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "d:\PS-Reports\Code\data_processor_base.py", line 176, in classify_wbs_elements
+    has_child = any(
+                ^^^^
+  File "d:\PS-Reports\Code\data_processor_base.py", line 179, in <genexpr>
+    if item != wbs and item and not pd.isna(item)
+       ^^^^^^^^^^^
+  File "missing.pyx", line 392, in pandas._libs.missing.NAType.__bool__
+TypeError: boolean value of NA is ambiguous
+
+2025-11-22 20:31:11,058 - TestModule - INFO - This is an info message. - {'data': 'some_data'}
+2025-11-22 20:31:11,059 - TestModule - WARNING - This is a warning message. - {'value': 123}
+2025-11-22 20:31:11,064 - __main__ - ERROR - Unexpected error - {'function': 'erroneous_function'}
+Error: This is a test error.
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\test_error_handler.py", line 10, in erroneous_function
+    raise ValueError("This is a test error.")
+ValueError: This is a test error.
+
+2025-11-22 20:31:55,699 - TestModule - INFO - This is an info message. - {'data': 'some_data'}
+2025-11-22 20:31:55,700 - TestModule - WARNING - This is a warning message. - {'value': 123}
+2025-11-22 20:31:55,702 - __main__ - ERROR - Unexpected error - {'function': 'erroneous_function'}
+Error: This is a test error.
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\test_error_handler.py", line 10, in erroneous_function
+    raise ValueError("This is a test error.")
+ValueError: This is a test error.
+
+2025-11-22 20:31:55,705 - __main__ - ERROR - File not found - {'function': 'file_not_found_function'}
+Error: test.txt
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\test_error_handler.py", line 19, in file_not_found_function
+    raise FileNotFoundError("test.txt")
+FileNotFoundError: test.txt
+
+2025-11-22 20:31:55,705 - __main__ - ERROR - File not found - {'function': 'file_not_found_function'}
+Error: test.txt
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\test_error_handler.py", line 19, in file_not_found_function
+    raise FileNotFoundError("test.txt")
+FileNotFoundError: test.txt
+
+2025-11-22 20:34:01,672 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 4}
+2025-11-22 20:34:01,678 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 3}
+2025-11-22 20:34:01,679 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 20:34:01,679 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 20:34:01,681 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:34:01,681 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:34:01,681 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:34:01,683 - data_processor_base - ERROR - Unexpected error - {'function': 'classify_wbs_elements'}
+Error: boolean value of NA is ambiguous
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\data_processor_base.py", line 196, in classify_wbs_elements
+    has_child = any(
+        pattern.fullmatch(str(item).strip())
+        for item in unique_wbs
+        if item != wbs and item and not pd.isna(item)
+    )
+  File "D:\PS-Reports\Code\data_processor_base.py", line 199, in <genexpr>
+    if item != wbs and item and not pd.isna(item)
+       ^^^^^^^^^^^
+  File "missing.pyx", line 392, in pandas._libs.missing.NAType.__bool__
+TypeError: boolean value of NA is ambiguous
+
+2025-11-22 20:34:02,242 - MasterDataManager - INFO - Master data loaded successfully - {'file': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmpsem4jzxz.xlsx', 'rows': 2}
+2025-11-22 20:34:02,242 - MasterDataManager - INFO - Using cached master data - {'file': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmpsem4jzxz.xlsx'}
+2025-11-22 20:34:02,255 - MasterDataManager - INFO - WBS descriptions mapped - {'total_rows': 3, 'mapped_rows': np.int64(3)}
+2025-11-22 20:34:02,255 - MasterDataManager - INFO - WBS descriptions mapped - {'total_rows': 3, 'mapped_rows': np.int64(3)}
+2025-11-22 20:34:02,261 - TestModule - INFO - Cleaning DAT file - {'input': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmplvxictmo\\test.dat', 'output': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmplvxictmo\\cleaned.dat', 'pattern': 'budget_report'}
+2025-11-22 20:34:02,262 - TestModule - INFO - DAT file cleaned successfully - {'original_lines': 7, 'cleaned_lines': 3}
+2025-11-22 20:34:02,267 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:34:02,267 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:34:02,267 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:34:02,267 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:34:02,267 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:34:03,204 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:34:03,204 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:34:03,204 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:34:03,204 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:34:03,204 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:34:03,209 - data_processor_base - ERROR - Unexpected error - {'function': 'read_dat_file'}
+Error: DAT file not found: fake_file.dat
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\data_processor_base.py", line 61, in read_dat_file
+    validate_file_exists(file_path, "DAT file")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PS-Reports\Code\error_handler.py", line 172, in validate_file_exists
+    raise FileProcessingError(
+        f"{file_description} not found: {file_path}", "FILE_NOT_FOUND"
+    )
+error_handler.FileProcessingError: DAT file not found: fake_file.dat
+
+2025-11-22 20:34:03,209 - data_processor_base - ERROR - Unexpected error - {'function': 'read_dat_file'}
+Error: DAT file not found: fake_file.dat
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\data_processor_base.py", line 61, in read_dat_file
+    validate_file_exists(file_path, "DAT file")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PS-Reports\Code\error_handler.py", line 172, in validate_file_exists
+    raise FileProcessingError(
+        f"{file_description} not found: {file_path}", "FILE_NOT_FOUND"
+    )
+error_handler.FileProcessingError: DAT file not found: fake_file.dat
+
+2025-11-22 20:35:08,852 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 4}
+2025-11-22 20:35:08,853 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 3}
+2025-11-22 20:35:08,854 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 20:35:08,854 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 20:35:08,856 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:35:08,856 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:35:08,856 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:35:08,859 - data_processor_base - ERROR - Unexpected error - {'function': 'classify_wbs_elements'}
+Error: boolean value of NA is ambiguous
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\data_processor_base.py", line 183, in classify_wbs_elements
+    if not wbs or pd.isna(wbs):
+           ^^^
+  File "missing.pyx", line 392, in pandas._libs.missing.NAType.__bool__
+TypeError: boolean value of NA is ambiguous
+
+2025-11-22 20:35:09,131 - MasterDataManager - INFO - Master data loaded successfully - {'file': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmplv9eglc9.xlsx', 'rows': 2}
+2025-11-22 20:35:09,132 - MasterDataManager - INFO - Using cached master data - {'file': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmplv9eglc9.xlsx'}
+2025-11-22 20:35:09,137 - MasterDataManager - INFO - WBS descriptions mapped - {'total_rows': 3, 'mapped_rows': np.int64(3)}
+2025-11-22 20:35:09,137 - MasterDataManager - INFO - WBS descriptions mapped - {'total_rows': 3, 'mapped_rows': np.int64(3)}
+2025-11-22 20:35:09,141 - TestModule - INFO - Cleaning DAT file - {'input': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmp0gmr171u\\test.dat', 'output': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmp0gmr171u\\cleaned.dat', 'pattern': 'budget_report'}
+2025-11-22 20:35:09,143 - TestModule - INFO - DAT file cleaned successfully - {'original_lines': 7, 'cleaned_lines': 3}
+2025-11-22 20:35:09,146 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:09,146 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:09,146 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:09,146 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:09,146 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:10,068 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:10,068 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:10,068 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:10,068 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:10,068 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:10,074 - data_processor_base - ERROR - Unexpected error - {'function': 'read_dat_file'}
+Error: DAT file not found: fake_file.dat
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\data_processor_base.py", line 61, in read_dat_file
+    validate_file_exists(file_path, "DAT file")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PS-Reports\Code\error_handler.py", line 172, in validate_file_exists
+    raise FileProcessingError(
+        f"{file_description} not found: {file_path}", "FILE_NOT_FOUND"
+    )
+error_handler.FileProcessingError: DAT file not found: fake_file.dat
+
+2025-11-22 20:35:10,074 - data_processor_base - ERROR - Unexpected error - {'function': 'read_dat_file'}
+Error: DAT file not found: fake_file.dat
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\data_processor_base.py", line 61, in read_dat_file
+    validate_file_exists(file_path, "DAT file")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PS-Reports\Code\error_handler.py", line 172, in validate_file_exists
+    raise FileProcessingError(
+        f"{file_description} not found: {file_path}", "FILE_NOT_FOUND"
+    )
+error_handler.FileProcessingError: DAT file not found: fake_file.dat
+
+2025-11-22 20:35:10,095 - ExcelFormatter - INFO - Applying standard report formatting - {}
+2025-11-22 20:35:10,097 - ExcelFormatter - INFO - Excel styles registered successfully - {}
+2025-11-22 20:35:10,097 - ExcelFormatter - INFO - Freeze panes applied - {'cell': 'E3'}
+2025-11-22 20:35:10,098 - ExcelFormatter - INFO - Font styling applied - {'range': 'entire sheet'}
+2025-11-22 20:35:10,100 - ExcelFormatter - INFO - Column widths auto-adjusted - {'min_width': 10, 'max_width': 50}
+2025-11-22 20:35:10,102 - ExcelFormatter - INFO - Header formatting applied - {'rows': [1, 2]}
+2025-11-22 20:35:10,103 - ExcelFormatter - INFO - Currency formatting applied - {'start_col': 4, 'end_col': 10}
+2025-11-22 20:35:10,138 - ExcelFormatter - INFO - Alternating row colors applied - {'start_row': 3}
+2025-11-22 20:35:10,139 - ExcelFormatter - INFO - Standard report formatting completed successfully - {}
+2025-11-22 20:35:37,994 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 4}
+2025-11-22 20:35:37,995 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 3}
+2025-11-22 20:35:37,996 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 20:35:37,996 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 20:35:37,998 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:35:37,998 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:35:37,998 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:35:37,998 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 1}
+2025-11-22 20:35:37,998 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 1}
+2025-11-22 20:35:37,998 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 1}
+2025-11-22 20:35:38,277 - MasterDataManager - INFO - Master data loaded successfully - {'file': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmp4qewz62i.xlsx', 'rows': 2}
+2025-11-22 20:35:38,277 - MasterDataManager - INFO - Using cached master data - {'file': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmp4qewz62i.xlsx'}
+2025-11-22 20:35:38,282 - MasterDataManager - INFO - WBS descriptions mapped - {'total_rows': 3, 'mapped_rows': np.int64(3)}
+2025-11-22 20:35:38,282 - MasterDataManager - INFO - WBS descriptions mapped - {'total_rows': 3, 'mapped_rows': np.int64(3)}
+2025-11-22 20:35:38,286 - TestModule - INFO - Cleaning DAT file - {'input': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmpwtr137rk\\test.dat', 'output': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmpwtr137rk\\cleaned.dat', 'pattern': 'budget_report'}
+2025-11-22 20:35:38,287 - TestModule - INFO - DAT file cleaned successfully - {'original_lines': 7, 'cleaned_lines': 3}
+2025-11-22 20:35:38,290 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:38,290 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:38,290 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:38,290 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:38,290 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:35:39,205 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:39,205 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:39,205 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:39,205 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:39,205 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:35:39,210 - data_processor_base - ERROR - Unexpected error - {'function': 'read_dat_file'}
+Error: DAT file not found: fake_file.dat
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\data_processor_base.py", line 61, in read_dat_file
+    validate_file_exists(file_path, "DAT file")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PS-Reports\Code\error_handler.py", line 172, in validate_file_exists
+    raise FileProcessingError(
+        f"{file_description} not found: {file_path}", "FILE_NOT_FOUND"
+    )
+error_handler.FileProcessingError: DAT file not found: fake_file.dat
+
+2025-11-22 20:35:39,213 - ExcelFormatter - INFO - Applying standard report formatting - {}
+2025-11-22 20:35:39,215 - ExcelFormatter - INFO - Excel styles registered successfully - {}
+2025-11-22 20:35:39,215 - ExcelFormatter - INFO - Freeze panes applied - {'cell': 'E3'}
+2025-11-22 20:35:39,216 - ExcelFormatter - INFO - Font styling applied - {'range': 'entire sheet'}
+2025-11-22 20:35:39,217 - ExcelFormatter - INFO - Column widths auto-adjusted - {'min_width': 10, 'max_width': 50}
+2025-11-22 20:35:39,218 - ExcelFormatter - INFO - Header formatting applied - {'rows': [1, 2]}
+2025-11-22 20:35:39,219 - ExcelFormatter - INFO - Currency formatting applied - {'start_col': 4, 'end_col': 10}
+2025-11-22 20:35:39,256 - ExcelFormatter - INFO - Alternating row colors applied - {'start_row': 3}
+2025-11-22 20:35:39,256 - ExcelFormatter - INFO - Standard report formatting completed successfully - {}
+2025-11-22 20:36:02,978 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 4}
+2025-11-22 20:36:02,979 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 3}
+2025-11-22 20:36:02,980 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 20:36:02,980 - WBSProcessor - WARNING - Empty WBS list provided - {}
+2025-11-22 20:36:02,982 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:36:02,982 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:36:02,982 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 5}
+2025-11-22 20:36:02,983 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 1}
+2025-11-22 20:36:02,983 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 1}
+2025-11-22 20:36:02,983 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 1, 'transaction_count': 1}
+2025-11-22 20:36:03,258 - MasterDataManager - INFO - Master data loaded successfully - {'file': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmpk6wn71_g.xlsx', 'rows': 2}
+2025-11-22 20:36:03,258 - MasterDataManager - INFO - Using cached master data - {'file': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmpk6wn71_g.xlsx'}
+2025-11-22 20:36:03,263 - MasterDataManager - INFO - WBS descriptions mapped - {'total_rows': 3, 'mapped_rows': np.int64(3)}
+2025-11-22 20:36:03,263 - MasterDataManager - INFO - WBS descriptions mapped - {'total_rows': 3, 'mapped_rows': np.int64(3)}
+2025-11-22 20:36:03,267 - TestModule - INFO - Cleaning DAT file - {'input': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmp6n_3bn1x\\test.dat', 'output': 'C:\\Users\\cudda\\AppData\\Local\\Temp\\tmp6n_3bn1x\\cleaned.dat', 'pattern': 'budget_report'}
+2025-11-22 20:36:03,268 - TestModule - INFO - DAT file cleaned successfully - {'original_lines': 7, 'cleaned_lines': 3}
+2025-11-22 20:36:03,271 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:36:03,271 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:36:03,271 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:36:03,271 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:36:03,271 - WBSProcessor - INFO - Classifying WBS elements - {'total_elements': 1500}
+2025-11-22 20:36:04,183 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:36:04,183 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:36:04,183 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:36:04,183 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:36:04,183 - WBSProcessor - INFO - WBS classification completed - {'summary_count': 100, 'transaction_count': 1400}
+2025-11-22 20:36:04,188 - data_processor_base - ERROR - Unexpected error - {'function': 'read_dat_file'}
+Error: DAT file not found: fake_file.dat
+Traceback: Traceback (most recent call last):
+  File "D:\PS-Reports\Code\error_handler.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "D:\PS-Reports\Code\data_processor_base.py", line 61, in read_dat_file
+    validate_file_exists(file_path, "DAT file")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PS-Reports\Code\error_handler.py", line 172, in validate_file_exists
+    raise FileProcessingError(
+        f"{file_description} not found: {file_path}", "FILE_NOT_FOUND"
+    )
+error_handler.FileProcessingError: DAT file not found: fake_file.dat
+
+2025-11-22 20:36:04,191 - ExcelFormatter - INFO - Applying standard report formatting - {}
+2025-11-22 20:36:04,192 - ExcelFormatter - INFO - Excel styles registered successfully - {}
+2025-11-22 20:36:04,193 - ExcelFormatter - INFO - Freeze panes applied - {'cell': 'E3'}
+2025-11-22 20:36:04,193 - ExcelFormatter - INFO - Font styling applied - {'range': 'entire sheet'}
+2025-11-22 20:36:04,195 - ExcelFormatter - INFO - Column widths auto-adjusted - {'min_width': 10, 'max_width': 50}
+2025-11-22 20:36:04,196 - ExcelFormatter - INFO - Header formatting applied - {'rows': [1, 2]}
+2025-11-22 20:36:04,196 - ExcelFormatter - INFO - Currency formatting applied - {'start_col': 4, 'end_col': 10}
+2025-11-22 20:36:04,234 - ExcelFormatter - INFO - Alternating row colors applied - {'start_row': 3}
+2025-11-22 20:36:04,234 - ExcelFormatter - INFO - Standard report formatting completed successfully - {}
+2025-11-22 20:36:04,235 - ExcelFormatter - INFO - Excel file saved successfully - {'file': 'fake_file.xlsx'}

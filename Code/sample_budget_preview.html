@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Report Preview - Sample</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body style="font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5;">
+    <div style="max-width: 1400px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+                <h2 style="margin: 0 0 5px 0;">Budget Report Preview - Sample Output</h2>
+                <p style="margin: 0; color: #666;">Demonstrates Indian currency formatting with sticky headers, proper alignment, and borders.</p>
+            </div>
+            <button onclick="toggleFullscreen()" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+                <i class="fas fa-expand"></i> Fullscreen
+            </button>
+        </div>
+
+    <style>
+        .budget-report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Bookman Old Style', 'Times New Roman', serif;
+            font-size: 12px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .budget-report-table th {
+            background-color: #FFFF00 !important;
+            color: #000000;
+            font-weight: bold;
+            padding: 12px 8px;
+            text-align: left;
+            border: 1px solid #000000;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+        }
+        .budget-report-table td {
+            padding: 8px;
+            border: 1px solid #000000;
+        }
+        .budget-report-table tbody tr:nth-child(even) {
+            background-color: #87CEEB;
+        }
+        .budget-report-table tbody tr:nth-child(odd) {
+            background-color: #FFFFFF;
+        }
+        .budget-report-table tbody tr.summary-wbs {
+            background-color: #90EE90 !important;
+            font-weight: bold;
+        }
+        .budget-report-table .currency-cell {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+        .budget-report-table .text-cell {
+            text-align: left;
+        }
+        .budget-report-table .center-cell {
+            text-align: center;
+        }
+        .budget-report-table .negative {
+            color: #FF0000;
+        }
+        .budget-report-table-container {
+            overflow-x: auto;
+            max-width: 100%;
+            max-height: 600px;
+            overflow-y: auto;
+            position: relative;
+        }
+        .budget-report-table-container.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            max-height: 100vh;
+            z-index: 9999;
+            background: white;
+            padding: 20px;
+            margin: 0;
+        }
+        .fullscreen-close-btn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 10000;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .fullscreen-close-btn:hover {
+            background: #c82333;
+            transform: scale(1.1);
+        }
+        .fullscreen-close-btn.show {
+            display: flex;
+        }
+    </style>
+
+    <div class="budget-report-table-container" id="previewContainer">
+        <table class="budget-report-table">
+            <thead>
+                <tr>
+                    <th>Sl No.</th>
+                    <th>WBS_Elements_Info. - Level</th>
+                    <th>WBS_Elements_Info. - Description</th>
+                    <th>WBS_Elements_Info. - ID_No</th>
+                    <th>Budget - Total</th>
+                    <th>Budget - Released</th>
+                    <th>Budget - Available</th>
+                    <th>Actuals - Committed</th>
+                    <th>Actuals - Total</th>
+                    <th>Variance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="summary-wbs">
+                    <td class="center-cell">1</td>
+                    <td class="text-cell">*</td>
+                    <td class="text-cell">NLCIL CAPEX Project - Phase 1</td>
+                    <td class="text-cell">NL-C-CAP-001</td>
+                    <td class="currency-cell">₹ 12,50,00,000.00</td>
+                    <td class="currency-cell">₹ 10,00,00,000.00</td>
+                    <td class="currency-cell">₹ 2,50,00,000.00</td>
+                    <td class="currency-cell">₹ 5,75,00,000.00</td>
+                    <td class="currency-cell">₹ 8,25,00,000.00</td>
+                    <td class="currency-cell">₹ 1,75,00,000.00</td>
+                </tr>
+                <tr>
+                    <td class="center-cell">2</td>
+                    <td class="text-cell">**</td>
+                    <td class="text-cell">Civil Works - Building Construction</td>
+                    <td class="text-cell">NL-C-CAP-001-01</td>
+                    <td class="currency-cell">₹ 4,25,50,000.00</td>
+                    <td class="currency-cell">₹ 3,50,00,000.00</td>
+                    <td class="currency-cell">₹ 75,50,000.00</td>
+                    <td class="currency-cell">₹ 2,10,00,000.00</td>
+                    <td class="currency-cell">₹ 3,15,00,000.00</td>
+                    <td class="currency-cell">₹ 35,00,000.00</td>
+                </tr>
+                <tr>
+                    <td class="center-cell">3</td>
+                    <td class="text-cell">**</td>
+                    <td class="text-cell">Electrical Installation - Main Grid</td>
+                    <td class="text-cell">NL-C-CAP-001-02</td>
+                    <td class="currency-cell">₹ 3,75,00,000.00</td>
+                    <td class="currency-cell">₹ 3,00,00,000.00</td>
+                    <td class="currency-cell">₹ 75,00,000.00</td>
+                    <td class="currency-cell">₹ 1,85,00,000.00</td>
+                    <td class="currency-cell">₹ 2,50,00,000.00</td>
+                    <td class="currency-cell">₹ 50,00,000.00</td>
+                </tr>
+                <tr>
+                    <td class="center-cell">4</td>
+                    <td class="text-cell">**</td>
+                    <td class="text-cell">Equipment Procurement</td>
+                    <td class="text-cell">NL-C-CAP-001-03</td>
+                    <td class="currency-cell">₹ 4,49,50,000.00</td>
+                    <td class="currency-cell">₹ 3,50,00,000.00</td>
+                    <td class="currency-cell">₹ 99,50,000.00</td>
+                    <td class="currency-cell">₹ 1,80,00,000.00</td>
+                    <td class="currency-cell">₹ 2,60,00,000.00</td>
+                    <td class="currency-cell">₹ 90,00,000.00</td>
+                </tr>
+                <tr class="summary-wbs">
+                    <td class="center-cell">5</td>
+                    <td class="text-cell">*</td>
+                    <td class="text-cell">NTPL Service Project - Maintenance</td>
+                    <td class="text-cell">NT-S-SVC-005</td>
+                    <td class="currency-cell">₹ 1,85,00,000.00</td>
+                    <td class="currency-cell">₹ 1,50,00,000.00</td>
+                    <td class="currency-cell">₹ 35,00,000.00</td>
+                    <td class="currency-cell">₹ 95,00,000.00</td>
+                    <td class="currency-cell">₹ 1,25,00,000.00</td>
+                    <td class="currency-cell">₹ 25,00,000.00</td>
+                </tr>
+                <tr>
+                    <td class="center-cell">6</td>
+                    <td class="text-cell">**</td>
+                    <td class="text-cell">Annual Maintenance Contract</td>
+                    <td class="text-cell">NT-S-SVC-005-01</td>
+                    <td class="currency-cell">₹ 1,85,00,000.00</td>
+                    <td class="currency-cell">₹ 1,50,00,000.00</td>
+                    <td class="currency-cell">₹ 35,00,000.00</td>
+                    <td class="currency-cell">₹ 95,00,000.00</td>
+                    <td class="currency-cell">₹ 1,25,00,000.00</td>
+                    <td class="currency-cell">₹ 25,00,000.00</td>
+                </tr>
+                <tr>
+                    <td class="center-cell">7</td>
+                    <td class="text-cell">**</td>
+                    <td class="text-cell">Cost Overrun - Delayed Payment</td>
+                    <td class="text-cell">NT-S-SVC-005-02</td>
+                    <td class="currency-cell">₹ 15,50,000.00</td>
+                    <td class="currency-cell">₹ 12,00,000.00</td>
+                    <td class="currency-cell negative">-₹ 5,00,000.00</td>
+                    <td class="currency-cell">₹ 8,50,000.00</td>
+                    <td class="currency-cell">₹ 17,00,000.00</td>
+                    <td class="currency-cell negative">-₹ 1,50,000.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+
+    <h3 style="margin-top: 30px;">Key Features:</h3>
+    <ul style="line-height: 1.8;">
+        <li><strong>Indian Currency Format:</strong> Numbers formatted with crore, lakh separators (e.g., ₹ 12,50,00,000.00)</li>
+        <li><strong>Sticky Headers:</strong> Column headers stay visible when scrolling (scroll down in the table above to test!)</li>
+        <li><strong>Fullscreen Mode:</strong> Click the fullscreen button or press Escape to exit</li>
+        <li><strong>Summary WBS Highlighting:</strong> Summary WBS rows highlighted in light green</li>
+        <li><strong>Alternating Row Colors:</strong> Sky blue and white for better readability</li>
+        <li><strong>Right-aligned Currency:</strong> All currency values right-aligned in monospace font</li>
+        <li><strong>Negative Values in Red:</strong> Negative amounts displayed in red color</li>
+        <li><strong>Professional Borders:</strong> Clean black borders for all cells</li>
+    </ul>
+
+    <button id="closeBtn" class="fullscreen-close-btn">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+
+<script>
+const container = document.getElementById('previewContainer');
+const closeBtn = document.getElementById('closeBtn');
+
+function toggleFullscreen() {
+    const btn = event.target.closest('button');
+
+    if (container.classList.contains('fullscreen')) {
+        container.classList.remove('fullscreen');
+        closeBtn.classList.remove('show');
+        document.body.style.overflow = '';
+        if (btn) btn.innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
+    } else {
+        container.classList.add('fullscreen');
+        closeBtn.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        if (btn) btn.innerHTML = '<i class="fas fa-compress"></i> Exit Fullscreen';
+        container.scrollTop = 0;
+    }
+}
+
+closeBtn.addEventListener('click', function() {
+    if (container.classList.contains('fullscreen')) {
+        toggleFullscreen();
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && container.classList.contains('fullscreen')) {
+        toggleFullscreen();
+    }
+});
+</script>
+</body>
+</html>

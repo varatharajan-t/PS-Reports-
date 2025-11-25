@@ -1,0 +1,12 @@
+# ************************************************************************************************************************************
+# Purpose: This module converts S_ALR_87013558 report output from SAP in the 'DAT' file into an Excel file with all formatting options.
+# Author: Varatha Rajan T., DCE / ERP, NLC India Limited, Mobile: 9488997735
+# Date: Created : 2024-11-10  Last Modified: 2025-03-12
+# Version: 1.0
+# Dependencies: re, os, pandas
+# Usage: 1] Import the S_ALR_87013558 report and save it as a 'DAT' file for a single project.
+# 	   2] Select the 'DAT' file using the file dialog. 
+# 	   3] The script will process the file, clean and transform the data, and save it as an Excel file with formatting applied.
+# ************************************************************************************************************************************
+
+

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SAP Project System Reports{% endblock %}</title>
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'reports/vendor/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'reports/css/main.css' %}?v={{ now|date:'U' }}" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="{% static 'reports/vendor/fontawesome/all.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="overflow: visible !important;">
+        <div class="container" style="overflow: visible !important;">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">
+                <i class="fas fa-chart-line me-2"></i>SAP Project System Reports
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav" style="overflow: visible !important;">
+                <ul class="navbar-nav ms-auto" style="overflow: visible !important;">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                            <i class="fas fa-home me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown" style="position: relative;">
+                        <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            <i class="fas fa-file-alt me-1"></i>Reports
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="reportsDropdown" style="position: absolute !important; z-index: 9999 !important; min-width: 320px;">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'report_budget' %}">
+                                    <i class="fas fa-money-bill-wave me-2 text-primary"></i>
+                                    <div class="d-inline-block">
+                                        <strong>Budget Report</strong>
+                                        <br><small class="text-muted">S_ALR_87013558</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'report_budget_updates' %}">
+                                    <i class="fas fa-edit me-2 text-info"></i>
+                                    <div class="d-inline-block">
+                                        <strong>Budget Updates</strong>
+                                        <br><small class="text-muted">S_ALR_87013560</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'report_project_type_wise' %}">
+                                    <i class="fas fa-layer-group me-2 text-purple"></i>
+                                    <div class="d-inline-block">
+                                        <strong>Project Type Wise</strong>
+                                        <br><small class="text-muted">CN41N</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'report_plan_variance' %}">
+                                    <i class="fas fa-chart-bar me-2 text-warning"></i>
+                                    <div class="d-inline-block">
+                                        <strong>Plan Variance (% Achieved)</strong>
+                                        <br><small class="text-muted">S_ALR_87013532</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'report_budget_variance' %}">
+                                    <i class="fas fa-balance-scale me-2 text-danger"></i>
+                                    <div class="d-inline-block">
+                                        <strong>Budget Variance (% Achieved)</strong>
+                                        <br><small class="text-muted">S_ALR_87013557</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'report_glimps_of_projects' %}">
+                                    <i class="fas fa-chart-pie me-2 text-success"></i>
+                                    <div class="d-inline-block">
+                                        <strong>Glimps of Projects</strong>
+                                        <br><small class="text-muted">Analytics Dashboard</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'report_project_analysis' %}">
+                                    <i class="fas fa-project-diagram me-2 text-secondary"></i>
+                                    <div class="d-inline-block">
+                                        <strong>Project Analysis</strong>
+                                        <br><small class="text-muted">Multi-file Processing</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container" style="padding-top: 100px;">
+        <div class="page-header">
+            <h1>{{ page_title|default:"SAP Project System Reports Dashboard" }}</h1>
+            <p>Professional SAP data processing and Excel report generation</p>
+        </div>
+
+        {% if messages %}
+            <div class="alert-container-main">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="container mt-4 text-center text-muted">
+        <p>&copy; {% now "Y" %} SAP Project System Reports Migration Project</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="{% static 'reports/vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <!-- Custom JavaScript -->
+    <script src="{% static 'reports/js/main.js' %}?v={{ now|date:'U' }}"></script>
+
+    {% block extra_js %}
+    {% endblock %}
+</body>
+</html>

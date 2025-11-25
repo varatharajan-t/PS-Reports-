@@ -1,0 +1,856 @@
+{
+  "BudgetReport.py": [
+    {
+      "type": "class",
+      "name": "FileHandler",
+      "lineno": 13,
+      "doc": "Class to handle file selection and directory management.",
+      "methods": [
+        {
+          "name": "get_file_path_and_name",
+          "lineno": 16,
+          "doc": "Opens a file dialog and returns the selected file path and name."
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "DataProcessor",
+      "lineno": 27,
+      "doc": "Class to handle reading, cleaning, and transforming the data.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 29,
+          "doc": null
+        },
+        {
+          "name": "read_data",
+          "lineno": 35,
+          "doc": "Reads the DAT file into a DataFrame."
+        },
+        {
+          "name": "clean_data",
+          "lineno": 41,
+          "doc": null
+        },
+        {
+          "name": "transform_data",
+          "lineno": 57,
+          "doc": null
+        },
+        {
+          "name": "process_wbs",
+          "lineno": 119,
+          "doc": "Classifies WBS elements into summary and transaction WBS dynamically."
+        },
+        {
+          "name": "add_heading",
+          "lineno": 138,
+          "doc": null
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "ExcelFormatter",
+      "lineno": 152,
+      "doc": "Class to handle Excel file formatting.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 155,
+          "doc": null
+        },
+        {
+          "name": "apply_freeze_panes",
+          "lineno": 162,
+          "doc": "Freeze panes for the Excel sheet."
+        },
+        {
+          "name": "apply_font_style",
+          "lineno": 166,
+          "doc": "Apply a font style to all cells in the worksheet."
+        },
+        {
+          "name": "apply_currency_formatting",
+          "lineno": 173,
+          "doc": "Apply currency formatting to specific columns."
+        },
+        {
+          "name": "adjust_column_width",
+          "lineno": 186,
+          "doc": null
+        },
+        {
+          "name": "create_table",
+          "lineno": 192,
+          "doc": "Create a table in the worksheet from data range."
+        },
+        {
+          "name": "apply_header_format",
+          "lineno": 203,
+          "doc": "Apply specific formatting to the header cells."
+        },
+        {
+          "name": "highlight_rows_by_value",
+          "lineno": 250,
+          "doc": "For each cell in column 'D', if the cell's value is in values_list,\nhighlight the entire row with a yellow fill.\n\nParameters:\nself.worksheet          : openpyxl worksheet object\nvalues_list : list of values to check against"
+        },
+        {
+          "name": "save",
+          "lineno": 269,
+          "doc": "Save the final formatted workbook."
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "main",
+      "lineno": 273,
+      "doc": null
+    }
+  ],
+  "BudgetUpdates.py": [
+    {
+      "type": "class",
+      "name": "FileHandler",
+      "lineno": 24,
+      "doc": "Class to handle file selection and directory management.",
+      "methods": [
+        {
+          "name": "get_file_path_and_name",
+          "lineno": 27,
+          "doc": "Opens a file dialog and returns the selected file path and name."
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "DataProcessor",
+      "lineno": 38,
+      "doc": "Class to handle reading, cleaning, and transforming the data.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 40,
+          "doc": null
+        },
+        {
+          "name": "read_data",
+          "lineno": 45,
+          "doc": "Reads the DAT file into a DataFrame."
+        },
+        {
+          "name": "clean_data",
+          "lineno": 51,
+          "doc": null
+        },
+        {
+          "name": "transform_data",
+          "lineno": 69,
+          "doc": null
+        },
+        {
+          "name": "process_wbs",
+          "lineno": 131,
+          "doc": null
+        },
+        {
+          "name": "add_heading",
+          "lineno": 151,
+          "doc": null
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "ExcelFormatter",
+      "lineno": 165,
+      "doc": "Class to handle Excel file formatting.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 168,
+          "doc": null
+        },
+        {
+          "name": "apply_freeze_panes",
+          "lineno": 175,
+          "doc": "Freeze panes for the Excel sheet."
+        },
+        {
+          "name": "apply_font_style",
+          "lineno": 179,
+          "doc": "Apply a font style to all cells in the worksheet."
+        },
+        {
+          "name": "apply_currency_formatting",
+          "lineno": 186,
+          "doc": "Apply currency formatting to specific columns."
+        },
+        {
+          "name": "adjust_column_width",
+          "lineno": 199,
+          "doc": null
+        },
+        {
+          "name": "create_table",
+          "lineno": 205,
+          "doc": "Create a table in the worksheet from data range."
+        },
+        {
+          "name": "apply_header_format",
+          "lineno": 216,
+          "doc": "Apply specific formatting to the header cells."
+        },
+        {
+          "name": "highlight_rows_by_value",
+          "lineno": 263,
+          "doc": "For each cell in column 'D', if the cell's value is in values_list,\nhighlight the entire row with a yellow fill.\n\nParameters:\nself.worksheet          : openpyxl worksheet object\nvalues_list : list of values to check against"
+        },
+        {
+          "name": "save",
+          "lineno": 282,
+          "doc": "Save the final formatted workbook."
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "main",
+      "lineno": 287,
+      "doc": null
+    }
+  ],
+  "BudgetVariance.py": [
+    {
+      "type": "class",
+      "name": "FileHandler",
+      "lineno": 16,
+      "doc": "Handles file selection for processing.",
+      "methods": [
+        {
+          "name": "get_file_path_and_name",
+          "lineno": 20,
+          "doc": "Opens a file dialog and returns the selected file path and name."
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "DataProcessor",
+      "lineno": 25,
+      "doc": "Handles data reading, cleaning, and transformation.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 28,
+          "doc": null
+        },
+        {
+          "name": "clean_data",
+          "lineno": 33,
+          "doc": "Removes the first two lines from the HTML file and saves it as a cleaned version."
+        },
+        {
+          "name": "read_data",
+          "lineno": 47,
+          "doc": "Reads the cleaned HTML into a Pandas DataFrame."
+        },
+        {
+          "name": "transform_data",
+          "lineno": 57,
+          "doc": "Processes WBS elements and updates descriptions."
+        },
+        {
+          "name": "process_wbs",
+          "lineno": 77,
+          "doc": "Classifies WBS elements into summary and transaction WBS."
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "ExcelFormatter",
+      "lineno": 95,
+      "doc": "Handles Excel file formatting.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 98,
+          "doc": null
+        },
+        {
+          "name": "apply_formatting",
+          "lineno": 105,
+          "doc": "Applies all formatting options to the Excel file."
+        },
+        {
+          "name": "apply_font_style",
+          "lineno": 116,
+          "doc": null
+        },
+        {
+          "name": "apply_currency_formatting",
+          "lineno": 122,
+          "doc": null
+        },
+        {
+          "name": "adjust_column_width",
+          "lineno": 131,
+          "doc": null
+        },
+        {
+          "name": "highlight_summary_wbs",
+          "lineno": 137,
+          "doc": "Highlight entire row and column for summary WBS."
+        },
+        {
+          "name": "create_table",
+          "lineno": 151,
+          "doc": null
+        },
+        {
+          "name": "apply_header_format",
+          "lineno": 158,
+          "doc": "Applies header formatting and removes '1' from column headers ending with '1'."
+        },
+        {
+          "name": "save",
+          "lineno": 178,
+          "doc": null
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "main",
+      "lineno": 181,
+      "doc": null
+    }
+  ],
+  "GlimpsOfProjects.py": [
+    {
+      "type": "class",
+      "name": "ProjectDataProcessor",
+      "lineno": 15,
+      "doc": "Handles extraction, processing, and reporting of project data.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 18,
+          "doc": null
+        },
+        {
+          "name": "get_file_path_and_name",
+          "lineno": 25,
+          "doc": "Opens a file dialog and returns the selected file path and name."
+        },
+        {
+          "name": "extract_project_data",
+          "lineno": 30,
+          "doc": "Extracts project data from the given DAT file."
+        },
+        {
+          "name": "generate_cross_tab",
+          "lineno": 46,
+          "doc": "Generates a cross-tab report from project data."
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "ExcelStyler",
+      "lineno": 52,
+      "doc": "Handles styling and chart creation in the Excel report.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 55,
+          "doc": null
+        },
+        {
+          "name": "apply_styling",
+          "lineno": 68,
+          "doc": "Applies formatting and colors to the Excel report."
+        },
+        {
+          "name": "add_data_validation",
+          "lineno": 82,
+          "doc": "Adds data validation dropdown for company selection."
+        },
+        {
+          "name": "add_dynamic_reference_section",
+          "lineno": 91,
+          "doc": "Adds a section below the cross-tab table to dynamically reference the selected company's data."
+        },
+        {
+          "name": "add_chart",
+          "lineno": 106,
+          "doc": "Adds a dynamic 3D Bar Chart to the Excel sheet."
+        },
+        {
+          "name": "save_workbook",
+          "lineno": 155,
+          "doc": "Saves the workbook."
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "main",
+      "lineno": 161,
+      "doc": null
+    }
+  ],
+  "menu.py": [
+    {
+      "type": "class",
+      "name": "MenuApp",
+      "lineno": 18,
+      "doc": null,
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 19,
+          "doc": null
+        },
+        {
+          "name": "center_window",
+          "lineno": 29,
+          "doc": null
+        },
+        {
+          "name": "create_widgets",
+          "lineno": 37,
+          "doc": null
+        },
+        {
+          "name": "run_budget_report",
+          "lineno": 56,
+          "doc": null
+        },
+        {
+          "name": "run_budget_updates",
+          "lineno": 59,
+          "doc": null
+        },
+        {
+          "name": "run_project_type_wise",
+          "lineno": 62,
+          "doc": null
+        },
+        {
+          "name": "run_plan_variance",
+          "lineno": 65,
+          "doc": null
+        },
+        {
+          "name": "run_budget_variance",
+          "lineno": 68,
+          "doc": null
+        },
+        {
+          "name": "run_glimps",
+          "lineno": 71,
+          "doc": null
+        },
+        {
+          "name": "run_analysis",
+          "lineno": 74,
+          "doc": null
+        },
+        {
+          "name": "run_module",
+          "lineno": 77,
+          "doc": null
+        }
+      ]
+    }
+  ],
+  "menuPyside.py": [
+    {
+      "type": "class",
+      "name": "MenuApp",
+      "lineno": 12,
+      "doc": null,
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 13,
+          "doc": null
+        },
+        {
+          "name": "center_window",
+          "lineno": 24,
+          "doc": null
+        },
+        {
+          "name": "create_widgets",
+          "lineno": 30,
+          "doc": null
+        },
+        {
+          "name": "run_module",
+          "lineno": 52,
+          "doc": "Runs the given module's `main()` function safely."
+        }
+      ]
+    }
+  ],
+  "MenuPySide1.py": [
+    {
+      "type": "class",
+      "name": "MenuApp",
+      "lineno": 24,
+      "doc": null,
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 25,
+          "doc": null
+        },
+        {
+          "name": "center_window",
+          "lineno": 37,
+          "doc": "Centers the application window on the screen."
+        },
+        {
+          "name": "init_ui",
+          "lineno": 46,
+          "doc": "Initializes the user interface and creates buttons."
+        },
+        {
+          "name": "run_budget_report",
+          "lineno": 89,
+          "doc": null
+        },
+        {
+          "name": "run_budget_updates",
+          "lineno": 92,
+          "doc": null
+        },
+        {
+          "name": "run_project_type_wise",
+          "lineno": 95,
+          "doc": null
+        },
+        {
+          "name": "run_plan_variance",
+          "lineno": 98,
+          "doc": null
+        },
+        {
+          "name": "run_budget_variance",
+          "lineno": 101,
+          "doc": null
+        },
+        {
+          "name": "run_glimps",
+          "lineno": 104,
+          "doc": null
+        },
+        {
+          "name": "run_analysis",
+          "lineno": 107,
+          "doc": null
+        },
+        {
+          "name": "run_module",
+          "lineno": 110,
+          "doc": "Runs the specified module if it has a 'main' function.\nArgs:\n    module: Python module to be executed."
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "main",
+      "lineno": 128,
+      "doc": "Entry point for the application."
+    }
+  ],
+  "PlanVariance.py": [
+    {
+      "type": "class",
+      "name": "FileHandler",
+      "lineno": 26,
+      "doc": "Class to handle file selection and directory management.",
+      "methods": [
+        {
+          "name": "get_file_path_and_name",
+          "lineno": 29,
+          "doc": "Opens a file dialog and returns the selected file path and name."
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "DataProcessor",
+      "lineno": 40,
+      "doc": "Class to handle reading, cleaning, and transforming the data.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 42,
+          "doc": null
+        },
+        {
+          "name": "read_data",
+          "lineno": 47,
+          "doc": "Reads the DAT file into a DataFrame."
+        },
+        {
+          "name": "clean_data",
+          "lineno": 53,
+          "doc": null
+        },
+        {
+          "name": "transform_data",
+          "lineno": 70,
+          "doc": null
+        },
+        {
+          "name": "process_wbs",
+          "lineno": 132,
+          "doc": null
+        },
+        {
+          "name": "add_heading",
+          "lineno": 147,
+          "doc": null
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "ExcelFormatter",
+      "lineno": 161,
+      "doc": "Class to handle Excel file formatting.",
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 164,
+          "doc": null
+        },
+        {
+          "name": "apply_freeze_panes",
+          "lineno": 171,
+          "doc": "Freeze panes for the Excel sheet."
+        },
+        {
+          "name": "apply_font_style",
+          "lineno": 175,
+          "doc": "Apply a font style to all cells in the worksheet."
+        },
+        {
+          "name": "apply_currency_formatting",
+          "lineno": 182,
+          "doc": "Apply currency formatting to specific columns."
+        },
+        {
+          "name": "adjust_column_width",
+          "lineno": 195,
+          "doc": null
+        },
+        {
+          "name": "create_table",
+          "lineno": 201,
+          "doc": "Create a table in the worksheet from data range."
+        },
+        {
+          "name": "apply_header_format",
+          "lineno": 212,
+          "doc": "Apply specific formatting to the header cells."
+        },
+        {
+          "name": "highlight_rows_by_value",
+          "lineno": 259,
+          "doc": "For each cell in column 'D', if the cell's value is in values_list,\nhighlight the entire row with a yellow fill.\n\nParameters:\nself.worksheet          : openpyxl worksheet object\nvalues_list : list of values to check against"
+        },
+        {
+          "name": "save",
+          "lineno": 278,
+          "doc": "Save the final formatted workbook."
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "main",
+      "lineno": 283,
+      "doc": null
+    }
+  ],
+  "ProjectAnalysis.py": [
+    {
+      "type": "function",
+      "name": "process_file",
+      "lineno": 9,
+      "doc": null
+    },
+    {
+      "type": "function",
+      "name": "write_df_to_sheet",
+      "lineno": 33,
+      "doc": null
+    },
+    {
+      "type": "function",
+      "name": "create_chart",
+      "lineno": 61,
+      "doc": null
+    }
+  ],
+  "ProjectTypeWise.py": [
+    {
+      "type": "class",
+      "name": "WBSProcessor",
+      "lineno": 14,
+      "doc": null,
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 15,
+          "doc": null
+        },
+        {
+          "name": "read_excel",
+          "lineno": 21,
+          "doc": null
+        },
+        {
+          "name": "group_project_definitions",
+          "lineno": 24,
+          "doc": null
+        },
+        {
+          "name": "map_values",
+          "lineno": 28,
+          "doc": null
+        },
+        {
+          "name": "create_summary",
+          "lineno": 38,
+          "doc": null
+        },
+        {
+          "name": "add_hyperlinks",
+          "lineno": 44,
+          "doc": null
+        },
+        {
+          "name": "write_to_excel",
+          "lineno": 55,
+          "doc": null
+        }
+      ]
+    },
+    {
+      "type": "class",
+      "name": "ExcelFormatter",
+      "lineno": 68,
+      "doc": null,
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 69,
+          "doc": null
+        },
+        {
+          "name": "apply_common_style",
+          "lineno": 75,
+          "doc": null
+        },
+        {
+          "name": "auto_adjust_columns",
+          "lineno": 81,
+          "doc": null
+        },
+        {
+          "name": "add_table",
+          "lineno": 87,
+          "doc": null
+        },
+        {
+          "name": "apply_header_style",
+          "lineno": 96,
+          "doc": null
+        },
+        {
+          "name": "freeze_panes",
+          "lineno": 102,
+          "doc": null
+        },
+        {
+          "name": "save_formatted_excel",
+          "lineno": 105,
+          "doc": null
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "get_file_path",
+      "lineno": 108,
+      "doc": null
+    },
+    {
+      "type": "function",
+      "name": "main",
+      "lineno": 119,
+      "doc": null
+    }
+  ],
+  "test.py": [],
+  "YearEnd558.py": [
+    {
+      "type": "class",
+      "name": "ExcelProcessor",
+      "lineno": 8,
+      "doc": null,
+      "methods": [
+        {
+          "name": "__init__",
+          "lineno": 9,
+          "doc": null
+        },
+        {
+          "name": "extract_and_save",
+          "lineno": 15,
+          "doc": null
+        },
+        {
+          "name": "register_styles",
+          "lineno": 30,
+          "doc": "Register currency style once at workbook level."
+        },
+        {
+          "name": "apply_currency_formatting",
+          "lineno": 42,
+          "doc": null
+        },
+        {
+          "name": "adjust_column_width",
+          "lineno": 47,
+          "doc": null
+        },
+        {
+          "name": "apply_font_style",
+          "lineno": 54,
+          "doc": null
+        },
+        {
+          "name": "clean_sheets",
+          "lineno": 60,
+          "doc": null
+        },
+        {
+          "name": "process",
+          "lineno": 78,
+          "doc": null
+        }
+      ]
+    }
+  ]
+}

@@ -262,3 +262,7 @@ LOGGING = {
 
 # Create logs directory if it doesn't exist
 (BASE_DIR / 'logs').mkdir(exist_ok=True)
+
+# Pagination Settings
+DEFAULT_PAGE_SIZE = env_config('DEFAULT_PAGE_SIZE', default=25, cast=int)
+MAX_PAGE_SIZE = env_config('MAX_PAGE_SIZE', default=100, cast=int)

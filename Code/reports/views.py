@@ -4,6 +4,8 @@ from django.conf import settings
 from django.http import FileResponse, Http404
 import os
 from .forms import FileUploadForm, ExcelUploadForm, ProjectAnalysisUploadForm
+from .models import WBSElement, CompanyCode, ProjectType
+from .utils.pagination import paginate_queryset
 from .services.budget_report_service import generate_budget_report
 from .services.budget_updates_service import generate_budget_updates_report
 from .services.budget_variance_service import generate_budget_variance_report
@@ -241,7 +243,8 @@ def glimps_of_projects_report_view(request):
         'form': FileUploadForm(),
         'page_title': 'Generate Glimps of Projects Report',
         'report_file_name': None,
-        'data_html': None
+        'data_html': None,
+        'chart_script': None
     }
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
@@ -254,9 +257,87 @@ def glimps_of_projects_report_view(request):
                 report_data = generate_glimps_of_projects_report(uploaded_file_path)
                 context['report_file_name'] = os.path.basename(report_data["file_path"])
                 context['data_html'] = report_data["data_html"]
+                context['chart_script'] = report_data["chart_script"]
             except Exception as e:
                 context['error'] = str(e)
             finally:
                 fs.delete(filename)
             context['form'] = FileUploadForm()
     return render(request, 'reports/report_glimps_of_projects.html', context)
+
+def browse_wbs_elements(request):
+    """
+    Browse WBS Elements with pagination support.
+    Demonstrates pagination for large datasets.
+    """
+    # Get query parameters
+    page_number = request.GET.get('page', 1)
+    page_size = request.GET.get('page_size', 50)
+    search_query = request.GET.get('search', '')
+    
+    # Build queryset
+    queryset = WBSElement.objects.all()
+    
+    # Apply search filter if provided
+    if search_query:
+        queryset = queryset.filter(
+            wbs_element__icontains=search_query
+        ) | queryset.filter(
+            name__icontains=search_query
+        )
+    
+    # Paginate the queryset
+    try:
+        page_size = int(page_size)
+    except (ValueError, TypeError):
+        page_size = 50
+    
+    pagination_data = paginate_queryset(queryset, page_number, page_size)
+    
+    context = {
+        'page_title': 'Browse WBS Elements',
+        'search_query': search_query,
+        'page_size': page_size,
+        **pagination_data,  # Unpacks page_obj, paginator, is_paginated, etc.
+    }
+    
+    return render(request, 'reports/browse_wbs.html', context)
+
+
+def browse_master_data(request):
+    """
+    Browse all master data (Company Codes, Project Types, WBS Elements) with pagination.
+    """
+    # Determine which data type to show
+    data_type = request.GET.get('type', 'wbs')
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search', '')
+    
+    # Get the appropriate queryset
+    if data_type == 'company_codes':
+        queryset = CompanyCode.objects.all()
+        if search_query:
+            queryset = queryset.filter(code__icontains=search_query) | queryset.filter(name__icontains=search_query)
+        page_size = 25
+    elif data_type == 'project_types':
+        queryset = ProjectType.objects.all()
+        if search_query:
+            queryset = queryset.filter(code__icontains=search_query) | queryset.filter(name__icontains=search_query)
+        page_size = 25
+    else:  # default to WBS elements
+        queryset = WBSElement.objects.all()
+        if search_query:
+            queryset = queryset.filter(wbs_element__icontains=search_query) | queryset.filter(name__icontains=search_query)
+        page_size = 50
+    
+    # Paginate
+    pagination_data = paginate_queryset(queryset, page_number, page_size)
+    
+    context = {
+        'page_title': 'Browse Master Data',
+        'data_type': data_type,
+        'search_query': search_query,
+        **pagination_data,
+    }
+    
+    return render(request, 'reports/browse_master_data.html', context)

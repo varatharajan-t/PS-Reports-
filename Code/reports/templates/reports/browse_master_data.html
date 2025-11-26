@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2><i class="fas fa-database me-2"></i>{{ page_title }}</h2>
+        <p class="text-muted">Browse all master data with advanced pagination and search</p>
+    </div>
+</div>
+
+<!-- Data Type Selector -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="btn-group" role="group" aria-label="Data type selector">
+            <a href="?type=wbs{% if search_query %}&search={{ search_query }}{% endif %}"
+               class="btn {% if data_type == 'wbs' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                <i class="fas fa-project-diagram me-1"></i>WBS Elements
+            </a>
+            <a href="?type=company_codes{% if search_query %}&search={{ search_query }}{% endif %}"
+               class="btn {% if data_type == 'company_codes' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                <i class="fas fa-building me-1"></i>Company Codes
+            </a>
+            <a href="?type=project_types{% if search_query %}&search={{ search_query }}{% endif %}"
+               class="btn {% if data_type == 'project_types' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                <i class="fas fa-tags me-1"></i>Project Types
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Search Form -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" class="d-flex">
+            <input type="hidden" name="type" value="{{ data_type }}">
+            <input type="text" name="search" class="form-control me-2"
+                   placeholder="Search by code or name..." value="{{ search_query }}" aria-label="Search">
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search"></i> Search
+            </button>
+            {% if search_query %}
+                <a href="?type={{ data_type }}" class="btn btn-secondary ms-2">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            {% endif %}
+        </form>
+    </div>
+    <div class="col-md-6 text-end">
+        <a href="/admin/reports/" class="btn btn-outline-secondary">
+            <i class="fas fa-cog me-1"></i>Admin Interface
+        </a>
+    </div>
+</div>
+
+<!-- Results Card -->
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+            <i class="fas {% if data_type == 'wbs' %}fa-project-diagram{% elif data_type == 'company_codes' %}fa-building{% else %}fa-tags{% endif %} me-2"></i>
+            {% if data_type == 'wbs' %}
+                WBS Elements
+            {% elif data_type == 'company_codes' %}
+                Company Codes
+            {% else %}
+                Project Types
+            {% endif %}
+            {% if search_query %}
+                <small class="ms-2">({{ total_count }} result{{ total_count|pluralize }})</small>
+            {% endif %}
+        </h5>
+    </div>
+    <div class="card-body p-0">
+        {% if page_obj %}
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 5%">#</th>
+                            <th style="width: 30%">Code</th>
+                            <th style="width: 65%">Name/Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in page_obj %}
+                        <tr>
+                            <td>{{ forloop.counter|add:page_obj.start_index|add:"-1" }}</td>
+                            <td>
+                                <code class="text-primary">
+                                    {% if data_type == 'wbs' %}
+                                        {{ item.wbs_element }}
+                                    {% else %}
+                                        {{ item.code }}
+                                    {% endif %}
+                                </code>
+                            </td>
+                            <td>{{ item.name }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-5">
+                                <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                                <p>No {% if data_type == 'wbs' %}WBS elements{% elif data_type == 'company_codes' %}company codes{% else %}project types{% endif %} found.</p>
+                                {% if not search_query and data_type == 'wbs' %}
+                                <p><small>Import master data using: <code>python manage.py import_master_data</code></small></p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Component -->
+            {% include 'reports/pagination.html' with page_obj=page_obj paginator=paginator %}
+        {% else %}
+            <div class="text-center text-muted py-5">
+                <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                <p>No data available.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Statistics Panel -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Master Data Statistics</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <h4 class="text-primary mb-1">{{ system_stats.wbs_elements|default:0 }}</h4>
+                            <p class="text-muted mb-0 small">WBS Elements</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <h4 class="text-success mb-1">{{ system_stats.company_codes|default:0 }}</h4>
+                            <p class="text-muted mb-0 small">Company Codes</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <h4 class="text-info mb-1">{{ system_stats.project_types|default:0 }}</h4>
+                            <p class="text-muted mb-0 small">Project Types</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Help Section -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="alert alert-light border">
+            <h6><i class="fas fa-lightbulb me-2"></i>Tips:</h6>
+            <ul class="mb-0 small">
+                <li>Use the search box to filter by code or name</li>
+                <li>Click on the buttons above to switch between different data types</li>
+                <li>Pagination allows you to browse large datasets efficiently ({{ page_size|default:25 }} items per page)</li>
+                <li>Use the Admin Interface button to add, edit, or delete records</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

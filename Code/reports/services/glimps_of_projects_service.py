@@ -30,10 +30,12 @@ def generate_formatted_html_with_charts(crosstab_df):
     """
     Generate a professionally formatted HTML dashboard with interactive charts.
     Uses Chart.js for web-based visualization.
+    Returns a dictionary with separate HTML and JavaScript components.
     """
     html_parts = []
+    script_parts = []
 
-    # Add CSS and Chart.js
+    # Add CSS only (Chart.js will be loaded separately in template)
     html_parts.append('''
     <style>
         .glimps-container {
@@ -82,7 +84,6 @@ def generate_formatted_html_with_charts(crosstab_df):
             background-color: white;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     ''')
 
     html_parts.append('<div class="glimps-container">')
@@ -154,9 +155,6 @@ def generate_formatted_html_with_charts(crosstab_df):
 
     html_parts.append('</div>')
 
-    # JavaScript for interactive chart
-    html_parts.append('<script>')
-
     # Prepare data for JavaScript
     project_types = [str(idx) for idx in crosstab_df.index if idx != 'Total']
     chart_data = {}
@@ -165,7 +163,8 @@ def generate_formatted_html_with_charts(crosstab_df):
         if col != 'Total':
             chart_data[col] = [int(crosstab_df.loc[pt, col]) if pt in crosstab_df.index else 0 for pt in project_types]
 
-    html_parts.append(f'''
+    # JavaScript for interactive chart (to be loaded separately)
+    script_parts.append(f'''
     const projectTypes = {project_types};
     const chartData = {chart_data};
     const colors = ["#00FF00", "#FF0000", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"];
@@ -234,12 +233,15 @@ def generate_formatted_html_with_charts(crosstab_df):
     }}
 
     // Initialize chart with first company
-    updateChart();
+    document.addEventListener('DOMContentLoaded', function() {{
+        updateChart();
+    }});
     ''')
 
-    html_parts.append('</script>')
-
-    return ''.join(html_parts)
+    return {
+        'html': ''.join(html_parts),
+        'script': ''.join(script_parts)
+    }
 
 
 class GlimpsOfProjectsProcessor(BaseDataProcessor):
@@ -467,9 +469,10 @@ def generate_glimps_of_projects_report(uploaded_file_path: str) -> dict:
     formatted_file_path = formatter.format_and_save()
 
     # Generate HTML output with interactive charts
-    html_output = generate_formatted_html_with_charts(crosstab_df)
+    chart_output = generate_formatted_html_with_charts(crosstab_df)
 
     return {
         "file_path": formatted_file_path,
-        "data_html": html_output
+        "data_html": chart_output['html'],
+        "chart_script": chart_output['script']
     }

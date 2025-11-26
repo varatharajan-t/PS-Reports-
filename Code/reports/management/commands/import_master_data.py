@@ -1,4 +1,5 @@
 import pandas as pd
+from pathlib import Path
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.db import transaction
@@ -38,9 +39,9 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f'Successfully created {types_created} new Project Types.'))
 
         # --- 3. Import WBS Elements ---
-        wbs_file_path = settings.MASTER_WBS_FILE
+        wbs_file_path = Path(settings.MASTER_WBS_FILE)
         self.stdout.write(f'\nAttempting to read WBS data from: {wbs_file_path}')
-        
+
         try:
             # Check if file exists before trying to read
             if not wbs_file_path.exists():

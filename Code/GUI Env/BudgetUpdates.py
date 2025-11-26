@@ -64,8 +64,8 @@ from openpyxl.styles import NamedStyle, PatternFill, Font, Border, Side
 from openpyxl.worksheet.table import Table, TableStyleInfo
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
-from config import Config
-from error_handler import SAPReportLogger
+# from config import Config
+# from error_handler import SAPReportLogger
 
 
 class FileHandler:
@@ -363,8 +363,8 @@ class ExcelFormatter:
 
 # Main program execution
 def main():
-    config = Config()
-    logger = SAPReportLogger("BudgetUpdates")
+    # config = Config()
+    # logger = SAPReportLogger("BudgetUpdates")
     # app = QApplication(sys.argv)
     
     # Step 1: File selection

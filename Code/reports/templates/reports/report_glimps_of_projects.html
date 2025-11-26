@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}{{ page_title }}{% endblock %}
 
@@ -189,6 +190,11 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- Load Chart.js from local static files -->
+{% if chart_script %}
+<script src="{% static 'reports/vendor/chartjs/chart.umd.min.js' %}"></script>
+{% endif %}
+
 <style>
 /* Normal preview container */
 .preview-container {
@@ -198,131 +204,61 @@
     position: relative;
 }
 
-/* Fullscreen preview styles - CRITICAL: Override everything */
-.preview-container.fullscreen {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-    min-height: 100vh !important;
-    z-index: 99999 !important;
-    background: white !important;
-    padding: 60px 20px 20px 20px !important;
-    margin: 0 !important;
-    overflow: auto !important;
-    box-sizing: border-box !important;
-    display: block !important;
+/* Fullscreen Overlay - Completely separate from normal content */
+#fullscreenOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    background: white;
+    overflow: auto;
+    padding: 60px 20px 20px 20px;
+    box-sizing: border-box;
 }
 
-/* Ensure table-responsive is visible and takes space in fullscreen */
-.preview-container.fullscreen .table-responsive {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    max-width: none !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 100px !important;
-    overflow: auto !important;
-    position: relative !important;
-    z-index: 1 !important;
-}
-
-/* Override the generated HTML container */
-.preview-container.fullscreen .budget-updates-table-container {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    max-width: none !important;
-    width: 100% !important;
-    height: auto !important;
-    overflow: visible !important;
-    position: relative !important;
-}
-
-/* Ensure table is visible and takes full width in fullscreen */
-.preview-container.fullscreen table,
-.preview-container.fullscreen .budget-updates-table {
-    display: table !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    width: 100% !important;
-    height: auto !important;
-    position: relative !important;
-    z-index: 1 !important;
-}
-
-/* Ensure table cells are visible */
-.preview-container.fullscreen table td,
-.preview-container.fullscreen table th {
-    display: table-cell !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Ensure table rows are visible */
-.preview-container.fullscreen table tr,
-.preview-container.fullscreen table thead,
-.preview-container.fullscreen table tbody {
-    display: table-row-group !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.preview-container.fullscreen table thead {
-    display: table-header-group !important;
-}
-
-.preview-container.fullscreen table tr {
-    display: table-row !important;
+#fullscreenOverlay.active {
+    display: block;
 }
 
 .fullscreen-close-btn {
-    position: fixed !important;
-    top: 10px !important;
-    right: 10px !important;
-    z-index: 100000 !important;
-    background: #dc3545 !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 50% !important;
-    width: 50px !important;
-    height: 50px !important;
-    font-size: 24px !important;
-    cursor: pointer !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-    display: none !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transition: all 0.3s ease !important;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 100000;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
 }
 
 .fullscreen-close-btn:hover {
-    background: #c82333 !important;
-    transform: scale(1.1) !important;
+    background: #c82333;
+    transform: scale(1.1);
 }
 
 .fullscreen-close-btn.show {
-    display: flex !important;
+    display: flex;
 }
 
-/* Additional fullscreen helpers */
 body.fullscreen-active {
-    overflow: hidden !important;
+    overflow: hidden;
 }
 
-body.fullscreen-active .navbar,
-body.fullscreen-active main:not(.preview-container),
-body.fullscreen-active footer {
-    filter: blur(5px);
-    pointer-events: none;
-}
-
-/* Ensure sticky headers work in both modes */
+/* Ensure sticky headers work in preview */
 .preview-container table thead th {
     position: sticky !important;
     top: 0 !important;
@@ -330,31 +266,54 @@ body.fullscreen-active footer {
     background-color: #FFFF00 !important;
 }
 
-.preview-container.fullscreen table thead th {
+/* Sticky header in fullscreen - must override inline styles */
+#fullscreenOverlay table thead th,
+#fullscreenOverlay .crosstab-table thead th {
+    position: sticky !important;
+    position: -webkit-sticky !important;
     top: 0 !important;
+    z-index: 1000 !important;
+    background-color: #FFFF00 !important;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Hide scrollbars in normal mode but show in fullscreen */
-.preview-container::-webkit-scrollbar {
+/* Ensure the table header group allows sticky positioning */
+#fullscreenOverlay table thead,
+#fullscreenOverlay .crosstab-table thead {
+    position: relative !important;
+    z-index: 999 !important;
+}
+
+/* Scrollbar styling */
+.preview-container::-webkit-scrollbar,
+#fullscreenOverlay::-webkit-scrollbar {
     width: 8px;
 }
 
-.preview-container::-webkit-scrollbar-track {
+.preview-container::-webkit-scrollbar-track,
+#fullscreenOverlay::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
-.preview-container::-webkit-scrollbar-thumb {
+.preview-container::-webkit-scrollbar-thumb,
+#fullscreenOverlay::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 4px;
 }
 
-.preview-container::-webkit-scrollbar-thumb:hover {
+.preview-container::-webkit-scrollbar-thumb:hover,
+#fullscreenOverlay::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Create fullscreen overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'fullscreenOverlay';
+    document.body.appendChild(overlay);
+
     // Create close button for fullscreen
     const closeBtn = document.createElement('button');
     closeBtn.className = 'fullscreen-close-btn';
@@ -365,17 +324,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close fullscreen on button click
     closeBtn.addEventListener('click', function() {
-        const preview = document.getElementById('previewTable');
-        if (preview && preview.classList.contains('fullscreen')) {
-            toggleFullscreen();
-        }
+        toggleFullscreen();
     });
 
     // Close fullscreen on Esc key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            const preview = document.getElementById('previewTable');
-            if (preview && preview.classList.contains('fullscreen')) {
+            const overlay = document.getElementById('fullscreenOverlay');
+            if (overlay && overlay.classList.contains('active')) {
                 toggleFullscreen();
             }
         }
@@ -384,19 +340,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function toggleFullscreen() {
     const preview = document.getElementById('previewTable');
+    const overlay = document.getElementById('fullscreenOverlay');
     const fullscreenBtn = document.querySelector('[onclick="toggleFullscreen()"]');
     const closeBtn = document.querySelector('.fullscreen-close-btn');
 
-    if (!preview) {
-        console.error('Preview container not found');
+    if (!preview || !overlay) {
+        console.error('Preview container or overlay not found');
         return;
     }
 
-    console.log('Toggle fullscreen called. Current classes:', preview.className);
-
-    if (preview.classList.contains('fullscreen')) {
+    if (overlay.classList.contains('active')) {
         // Exit fullscreen
-        preview.classList.remove('fullscreen');
+        overlay.classList.remove('active');
+        overlay.innerHTML = '';
         document.body.classList.remove('fullscreen-active');
         if (closeBtn) closeBtn.classList.remove('show');
         document.body.style.overflow = '';
@@ -408,7 +364,11 @@ function toggleFullscreen() {
         console.log('Exited fullscreen');
     } else {
         // Enter fullscreen
-        preview.classList.add('fullscreen');
+        // Clone the preview content into the overlay
+        const previewContent = preview.innerHTML;
+        overlay.innerHTML = previewContent;
+
+        overlay.classList.add('active');
         document.body.classList.add('fullscreen-active');
         if (closeBtn) closeBtn.classList.add('show');
         document.body.style.overflow = 'hidden';
@@ -417,11 +377,93 @@ function toggleFullscreen() {
             fullscreenBtn.innerHTML = '<i class="fas fa-compress me-1"></i>Exit Fullscreen';
         }
 
-        // Scroll to top in fullscreen
-        preview.scrollTop = 0;
+        // Reinitialize Chart.js if chart exists in the cloned content
+        setTimeout(() => {
+            const companySelect = overlay.querySelector('#companySelect');
+            const canvas = overlay.querySelector('#projectChart');
 
-        console.log('Entered fullscreen. Preview height:', preview.offsetHeight, 'px');
+            if (companySelect && canvas && typeof Chart !== 'undefined' && typeof chartData !== 'undefined') {
+                // Create a new chart instance for fullscreen
+                let fullscreenChartInstance = null;
+
+                function updateFullscreenChart() {
+                    const company = companySelect.value;
+                    const data = chartData[company];
+
+                    if (fullscreenChartInstance) {
+                        fullscreenChartInstance.destroy();
+                    }
+
+                    const ctx = canvas.getContext("2d");
+                    fullscreenChartInstance = new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: projectTypes,
+                            datasets: [{
+                                label: company + " Projects",
+                                data: data,
+                                backgroundColor: ["#00FF00", "#FF0000", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"],
+                                borderColor: ["#00FF00", "#FF0000", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Project Type vs Number of Projects - " + company,
+                                    font: {
+                                        size: 18
+                                    }
+                                },
+                                legend: {
+                                    display: false
+                                },
+                                datalabels: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1,
+                                        precision: 0
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: "Number of Projects"
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: "Project Type"
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Initialize chart with current selection
+                updateFullscreenChart();
+
+                // Update chart when company selection changes in fullscreen
+                companySelect.addEventListener('change', updateFullscreenChart);
+            }
+        }, 100);
+
+        console.log('Entered fullscreen');
     }
 }
 </script>
+
+<!-- Chart initialization script -->
+{% if chart_script %}
+<script>
+{{ chart_script|safe }}
+</script>
+{% endif %}
 {% endblock %}

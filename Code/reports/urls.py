@@ -11,4 +11,8 @@ urlpatterns = [
     path('report/plan-variance/', views.plan_variance_report_view, name='report_plan_variance'),
     path('report/project-analysis/', views.project_analysis_report_view, name='report_project_analysis'),
     path('download/<str:filename>/', views.download_report_view, name='download_report'),
+
+    # Master Data Browsing with Pagination
+    path('browse/wbs/', views.browse_wbs_elements, name='browse_wbs'),
+    path('browse/master-data/', views.browse_master_data, name='browse_master_data'),
 ]

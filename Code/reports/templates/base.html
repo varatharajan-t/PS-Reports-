@@ -28,6 +28,11 @@
                             <i class="fas fa-home me-1"></i>Dashboard
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'browse_master_data' or request.resolver_match.url_name == 'browse_wbs' %}active{% endif %}" href="{% url 'browse_master_data' %}">
+                            <i class="fas fa-database me-1"></i>Master Data
+                        </a>
+                    </li>
                     <li class="nav-item dropdown" style="position: relative;">
                         <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                             <i class="fas fa-file-alt me-1"></i>Reports
@@ -56,7 +61,7 @@
                                     <i class="fas fa-layer-group me-2 text-purple"></i>
                                     <div class="d-inline-block">
                                         <strong>Project Type Wise</strong>
-                                        <br><small class="text-muted">CN41N</small>
+                                        <br><small class="text-muted">CN42N</small>
                                     </div>
                                 </a>
                             </li>

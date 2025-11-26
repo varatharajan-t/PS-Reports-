@@ -9,6 +9,7 @@ All tests have been moved to the reports/tests/ directory:
 - test_data_processing.py - Data processing tests
 - test_context_processors.py - Context processor tests
 - test_commands.py - Management command tests
+- test_pagination.py - Pagination utility tests
 
 Run tests with: python manage.py test
 """
@@ -21,3 +22,4 @@ from .tests.test_formatting import *
 from .tests.test_data_processing import *
 from .tests.test_context_processors import *
 from .tests.test_commands import *
+from .tests.test_pagination import *

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2><i class="fas fa-list me-2"></i>{{ page_title }}</h2>
+        <p class="text-muted">Browse and search WBS (Work Breakdown Structure) elements with pagination</p>
+    </div>
+</div>
+
+<!-- Search Form -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Search by WBS code or name..." value="{{ search_query }}" aria-label="Search">
+            {% if page_size %}
+                <input type="hidden" name="page_size" value="{{ page_size }}">
+            {% endif %}
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search"></i> Search
+            </button>
+            {% if search_query %}
+                <a href="{% url 'browse_wbs' %}" class="btn btn-secondary ms-2">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            {% endif %}
+        </form>
+    </div>
+    <div class="col-md-6 text-end">
+        <a href="{% url 'browse_master_data' %}" class="btn btn-outline-primary">
+            <i class="fas fa-database me-1"></i>Browse All Master Data
+        </a>
+        <a href="/admin/reports/wbselement/" class="btn btn-outline-secondary">
+            <i class="fas fa-cog me-1"></i>Admin View
+        </a>
+    </div>
+</div>
+
+<!-- Results Count -->
+{% if search_query %}
+<div class="alert alert-info">
+    <i class="fas fa-info-circle me-2"></i>
+    Found {{ total_count }} result{{ total_count|pluralize }} for "{{ search_query }}"
+</div>
+{% endif %}
+
+<!-- WBS Elements Table -->
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-table me-2"></i>WBS Elements</h5>
+    </div>
+    <div class="card-body p-0">
+        {% if page_obj %}
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 5%">#</th>
+                            <th style="width: 30%">WBS Element</th>
+                            <th style="width: 65%">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for wbs in page_obj %}
+                        <tr>
+                            <td>{{ forloop.counter|add:page_obj.start_index|add:"-1" }}</td>
+                            <td><code class="text-primary">{{ wbs.wbs_element }}</code></td>
+                            <td>{{ wbs.name }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-5">
+                                <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                                <p>No WBS elements found.</p>
+                                {% if not search_query %}
+                                <p><small>Import master data using: <code>python manage.py import_master_data</code></small></p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Component -->
+            {% include 'reports/pagination.html' with page_obj=page_obj paginator=paginator %}
+        {% else %}
+            <div class="text-center text-muted py-5">
+                <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                <p>No WBS elements available.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Quick Statistics -->
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="text-primary">{{ total_count|default:0 }}</h3>
+                <p class="text-muted mb-0">Total WBS Elements</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="text-success">{{ system_stats.company_codes|default:0 }}</h3>
+                <p class="text-muted mb-0">Company Codes</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="text-info">{{ system_stats.project_types|default:0 }}</h3>
+                <p class="text-muted mb-0">Project Types</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

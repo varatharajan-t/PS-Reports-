@@ -4,37 +4,200 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-lg-8 mx-auto">
-        <div class="card shadow-sm">
+    <div class="col-lg-10 mx-auto">
+        <!-- Instructions Card -->
+        <div class="card bg-glass mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-2">
+                            <i class="fas fa-info-circle text-primary me-2"></i>
+                            Project Analysis Report Instructions
+                        </h5>
+                        <p class="mb-0 text-muted">
+                            This report requires TWO DAT files: Budget (All_Projects.DAT) and Plan/Actual (All_Projects_Plan.DAT).
+                            The system will merge both files and create an interactive Excel report with data validation dropdowns and 3D charts.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="badge bg-warning text-dark">
+                            <i class="fas fa-files me-1"></i>2 Files Required
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Card -->
+        <div class="card shadow-hover">
             <div class="card-header">
-                <h3>Upload DAT File</h3>
+                <h3>
+                    <i class="fas fa-upload me-2"></i>Upload SAP DAT Files
+                </h3>
+                <p class="mb-0 text-muted">Select both Budget and Plan/Actual files for processing</p>
             </div>
             <div class="card-body">
-                <form method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" id="uploadForm">
                     {% csrf_token %}
-                    <div class="mb-3">
-                        {{ form.file.label_tag }}
-                        {{ form.file }}
-                        <div class="form-text">Please select the .DAT file exported from SAP.</div>
+
+                    <!-- Budget File Upload -->
+                    <div class="mb-4">
+                        <label for="{{ form.budget_file.id_for_label }}" class="form-label">
+                            <i class="fas fa-file-upload me-2 text-primary"></i>{{ form.budget_file.label }}
+                        </label>
+                        {{ form.budget_file }}
+                        {% if form.budget_file.errors %}
+                            <div class="text-danger mt-2">
+                                {{ form.budget_file.errors }}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Budget file containing all project budget data
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Generate Report</button>
+
+                    <!-- Plan/Actual File Upload -->
+                    <div class="mb-4">
+                        <label for="{{ form.plan_file.id_for_label }}" class="form-label">
+                            <i class="fas fa-file-upload me-2 text-success"></i>{{ form.plan_file.label }}
+                        </label>
+                        {{ form.plan_file }}
+                        {% if form.plan_file.errors %}
+                            <div class="text-danger mt-2">
+                                {{ form.plan_file.errors }}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Plan/Actual file containing project execution data
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-chart-line me-2"></i>Generate Project Analysis Report
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
 
-        {% if processed_file %}
-            <div class="alert alert-info mt-4" role="alert">
-                <h4 class="alert-heading">File Uploaded!</h4>
-                <p>Successfully received file: <strong>{{ processed_file }}</strong>.</p>
-                <hr>
-                <p class="mb-0">Backend processing for this report has not been implemented yet.</p>
-            </div>
+        <!-- Error Display -->
+        {% if error %}
+        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+            <h5 class="alert-heading">
+                <i class="fas fa-exclamation-triangle me-2"></i>Processing Error
+            </h5>
+            <p class="mb-0">{{ error }}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
         {% endif %}
-    </div>
-</div>
-<div class="row mt-4">
-    <div class="col-lg-8 mx-auto">
-        <a href="{% url 'dashboard' %}" class="btn btn-secondary">&larr; Back to Dashboard</a>
+
+        <!-- Success Display with Download -->
+        {% if report_file_name %}
+        <div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+            <h5 class="alert-heading">
+                <i class="fas fa-check-circle me-2"></i>Report Generated Successfully!
+            </h5>
+            <p class="mb-3">Your Project Analysis report has been created with interactive analysis sheets and charts.</p>
+
+            {% if stats %}
+            <div class="row g-2 mb-3">
+                <div class="col-md-4">
+                    <div class="card bg-light border-0">
+                        <div class="card-body text-center py-2">
+                            <small class="text-muted">Total Projects</small>
+                            <h4 class="mb-0 text-primary">{{ stats.rows_processed }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light border-0">
+                        <div class="card-body text-center py-2">
+                            <small class="text-muted">Budget Projects</small>
+                            <h4 class="mb-0 text-info">{{ stats.budget_projects }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light border-0">
+                        <div class="card-body text-center py-2">
+                            <small class="text-muted">Actual Projects</small>
+                            <h4 class="mb-0 text-success">{{ stats.actual_projects }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <a href="{% url 'download_report' report_file_name %}" class="btn btn-success">
+                <i class="fas fa-download me-2"></i>Download {{ report_file_name }}
+            </a>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
+
+        <!-- Data Preview -->
+        {% if data_html %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>
+                    <i class="fas fa-table me-2"></i>Data Preview
+                    <span class="badge bg-info">Combined Data (First 100 rows)</span>
+                </h4>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                    {{ data_html|safe }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Report Features Card -->
+        <div class="card mt-4 bg-glass">
+            <div class="card-body">
+                <h5 class="mb-3">
+                    <i class="fas fa-star text-warning me-2"></i>Report Features
+                </h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Budget Sheet:</strong> Complete budget data
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Actual Sheet:</strong> Plan/Actual execution data
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Data Sheet:</strong> Merged data from both sources
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Analysis Sheet:</strong> Interactive dropdowns for project selection
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Dynamic Formulas:</strong> INDEX-MATCH for real-time data lookup
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>4 3D Charts:</strong> Visual comparison of Plan, Budget, Actual, and Commitment
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

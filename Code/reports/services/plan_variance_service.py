@@ -13,11 +13,11 @@ import openpyxl
 from openpyxl.styles import NamedStyle, PatternFill, Font, Border, Side
 from openpyxl.worksheet.table import Table, TableStyleInfo
 from openpyxl.utils import get_column_letter
+import logging
 
 from django.conf import settings
-from .data_processing import BaseDataProcessor
+from .data_processing import BaseDataProcessor, MasterDataManager
 from .formatting import BaseExcelFormatter
-from .wbs_master_data import MasterDataManager
 from .error_handling import handle_error
 
 
@@ -289,6 +289,14 @@ class PlanVarianceExcelFormatter(BaseExcelFormatter):
         self.summary_wbs_list = summary_wbs_list
         self.workbook = None
         self.worksheet = None
+        self.logger = logging.getLogger(__name__)
+
+    def apply_all_formatting(self):
+        """
+        Implementation of the abstract method from BaseExcelFormatter.
+        Calls format_and_save() to apply all formatting.
+        """
+        return self.format_and_save()
 
     def format_and_save(self):
         """Apply all formatting and save the Excel file."""

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import sys
+import os
+from decouple import config as env_config
 
 # Add the project root to the python path to allow importing config.py
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -26,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-z!84b-dofu9d-!st-7960#ww5&ddxw(^anolg2r22u&5&4r-^d"
+SECRET_KEY = env_config('SECRET_KEY', default='django-insecure-z!84b-dofu9d-!st-7960#ww5&ddxw(^anolg2r22u&5&4r-^d')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env_config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['172.16.108.22', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = env_config('ALLOWED_HOSTS', default='localhost,127.0.0.1,172.16.108.22').split(',')
 
 
 # Application definition
@@ -68,6 +70,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "reports.context_processors.wbs_data_status",
+                "reports.context_processors.system_status",
             ],
         },
     },
@@ -154,3 +158,107 @@ CLEANING_PATTERNS = config.CLEANING_PATTERNS
 REGEX_PATTERNS = config.REGEX_PATTERNS
 FREEZE_PANES = config.FREEZE_PANES
 ERROR_MESSAGES = config.ERROR_MESSAGES
+PROJECT_ANALYSIS_REGEX = config.PROJECT_ANALYSIS_REGEX
+PROJECT_ANALYSIS_FILES = config.PROJECT_ANALYSIS_FILES
+
+# Media files (User uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'data'
+
+# File Upload Settings
+FILE_UPLOAD_MAX_MEMORY_SIZE = env_config('MAX_UPLOAD_SIZE', default=104857600, cast=int)  # 100MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = FILE_UPLOAD_MAX_MEMORY_SIZE
+ALLOWED_UPLOAD_EXTENSIONS = env_config('ALLOWED_UPLOAD_EXTENSIONS', default='.dat,.html,.xlsx,.xls').split(',')
+
+# Security Settings
+if not DEBUG:
+    CSRF_COOKIE_SECURE = env_config('CSRF_COOKIE_SECURE', default=True, cast=bool)
+    SESSION_COOKIE_SECURE = env_config('SESSION_COOKIE_SECURE', default=True, cast=bool)
+    SECURE_SSL_REDIRECT = env_config('SECURE_SSL_REDIRECT', default=True, cast=bool)
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs' / 'django.log',
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs' / 'django_errors.log',
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+        'report_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs' / 'reports.log',
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': env_config('DJANGO_LOG_LEVEL', default='INFO'),
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['error_file', 'console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'reports': {
+            'handlers': ['report_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'reports.services': {
+            'handlers': ['report_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
+    },
+}
+
+# Create logs directory if it doesn't exist
+(BASE_DIR / 'logs').mkdir(exist_ok=True)

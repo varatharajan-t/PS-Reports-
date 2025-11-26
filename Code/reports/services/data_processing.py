@@ -259,6 +259,45 @@ class MasterDataManager:
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
+        self._wbs_data_checked = False
+        self._wbs_data_available = False
+
+    def check_wbs_data_availability(self) -> tuple[bool, str]:
+        """
+        Check if WBS master data is available in the database.
+
+        Returns:
+            tuple: (is_available: bool, message: str)
+        """
+        if not self._wbs_data_checked:
+            wbs_count = WBSElement.objects.count()
+            self._wbs_data_available = wbs_count > 0
+            self._wbs_data_checked = True
+
+            if not self._wbs_data_available:
+                from pathlib import Path
+                wbs_file_path = Path(settings.MASTER_WBS_FILE)
+
+                if wbs_file_path.exists():
+                    message = (
+                        f"WBS master data not loaded in database (0 records). "
+                        f"File exists at {wbs_file_path}. "
+                        f"Run 'python manage.py import_master_data' to import it."
+                    )
+                else:
+                    message = (
+                        f"WBS master data file not found at {wbs_file_path}. "
+                        f"Please place WBS_NAMES.XLSX in the data/ directory and run "
+                        f"'python manage.py import_master_data'."
+                    )
+
+                self.logger.warning(message)
+                return False, message
+            else:
+                self.logger.info(f"WBS master data available: {wbs_count} elements")
+                return True, f"WBS master data loaded: {wbs_count} elements"
+
+        return self._wbs_data_available, ""
 
     @handle_error
     def map_wbs_descriptions(
@@ -274,12 +313,26 @@ class MasterDataManager:
 
         Returns:
             pd.DataFrame: Updated DataFrame with mapped descriptions
+
+        Raises:
+            DataValidationError: If WBS master data is not available
         """
         self.logger.info("Fetching WBS master data from database...")
-        
+
+        # Check if WBS data is available
+        is_available, message = self.check_wbs_data_availability()
+
+        if not is_available:
+            # Log warning but continue processing without WBS mapping
+            self.logger.warning(
+                "Continuing without WBS description mapping. " + message
+            )
+            # Return DataFrame unchanged
+            return transaction_df
+
         # Create mapping dictionary directly from the Django model
         mapping_dict = dict(WBSElement.objects.values_list('wbs_element', 'name'))
-        
+
         if not mapping_dict:
             self.logger.warning("WBS master data is empty. No descriptions will be mapped.")
             return transaction_df
@@ -293,10 +346,17 @@ class MasterDataManager:
             )
 
             mapped_count = transaction_df[description_column].notna().sum()
+            unmapped_count = len(transaction_df) - mapped_count
+
             self.logger.info(
-                "WBS descriptions mapped",
-                total_rows=len(transaction_df),
-                mapped_rows=mapped_count,
+                f"WBS descriptions mapped: {mapped_count} mapped, {unmapped_count} unmapped "
+                f"(total: {len(transaction_df)})"
             )
+
+            if unmapped_count > 0:
+                self.logger.warning(
+                    f"{unmapped_count} WBS elements could not be mapped. "
+                    f"They may not exist in the master data file."
+                )
 
         return transaction_df

@@ -3,13 +3,14 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.http import FileResponse, Http404
 import os
-from .forms import FileUploadForm, ExcelUploadForm
+from .forms import FileUploadForm, ExcelUploadForm, ProjectAnalysisUploadForm
 from .services.budget_report_service import generate_budget_report
 from .services.budget_updates_service import generate_budget_updates_report
 from .services.budget_variance_service import generate_budget_variance_report
 from .services.project_type_wise_service import generate_project_type_wise_report
 from .services.glimps_of_projects_service import generate_glimps_of_projects_report
 from .services.plan_variance_service import generate_plan_variance_report
+from .services.project_analysis_service import generate_project_analysis_report
 
 def dashboard(request):
     """
@@ -103,20 +104,46 @@ def plan_variance_report_view(request):
 def project_analysis_report_view(request):
     """
     Handles the file upload for the Project Analysis Report.
-    NOTE: Backend processing for this report is not yet implemented.
+    Requires TWO DAT files: Budget and Plan/Actual.
     """
     context = {
-        'form': FileUploadForm(),
+        'form': ProjectAnalysisUploadForm(),
         'page_title': 'Generate Project Analysis Report',
-        'processed_file': None
+        'report_file_name': None,
+        'data_html': None
     }
     if request.method == 'POST':
-        form = FileUploadForm(request.POST, request.FILES)
+        form = ProjectAnalysisUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            uploaded_file = request.FILES['file']
-            context['processed_file'] = uploaded_file.name
-            context['not_implemented'] = True
-            context['form'] = FileUploadForm() 
+            budget_file = request.FILES['budget_file']
+            plan_file = request.FILES['plan_file']
+
+            fs = FileSystemStorage(location=settings.BASE_DIR / 'data' / 'uploads')
+
+            # Save both files
+            budget_filename = fs.save(budget_file.name, budget_file)
+            plan_filename = fs.save(plan_file.name, plan_file)
+
+            budget_file_path = fs.path(budget_filename)
+            plan_file_path = fs.path(plan_filename)
+
+            try:
+                report_data = generate_project_analysis_report(budget_file_path, plan_file_path)
+                context['report_file_name'] = os.path.basename(report_data["file_path"])
+                context['data_html'] = report_data["data_html"]
+                context['stats'] = {
+                    'rows_processed': report_data.get('rows_processed', 0),
+                    'budget_projects': report_data.get('budget_projects', 0),
+                    'actual_projects': report_data.get('actual_projects', 0),
+                }
+            except Exception as e:
+                context['error'] = str(e)
+            finally:
+                # Clean up uploaded files
+                fs.delete(budget_filename)
+                fs.delete(plan_filename)
+
+            context['form'] = ProjectAnalysisUploadForm()
     return render(request, 'reports/report_project_analysis.html', context)
 
 def budget_updates_report_view(request):

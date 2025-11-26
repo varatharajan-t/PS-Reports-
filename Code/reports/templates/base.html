@@ -122,6 +122,23 @@
             </div>
         {% endif %}
 
+        {% if wbs_warning %}
+            <div class="alert alert-{{ wbs_warning.type }} alert-dismissible fade show" role="alert">
+                <h5 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i>WBS Master Data Missing
+                </h5>
+                <p class="mb-2">{{ wbs_warning.message|safe }}</p>
+                <hr>
+                <p class="mb-0">
+                    <small>
+                        <strong>Impact:</strong> Reports will be generated without WBS element descriptions.
+                        WBS codes will be shown but not their full names.
+                    </small>
+                </p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </main>

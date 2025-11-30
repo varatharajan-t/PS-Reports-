@@ -266,3 +266,7 @@ LOGGING = {
 # Pagination Settings
 DEFAULT_PAGE_SIZE = env_config('DEFAULT_PAGE_SIZE', default=25, cast=int)
 MAX_PAGE_SIZE = env_config('MAX_PAGE_SIZE', default=100, cast=int)
+# Authentication Settings
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'

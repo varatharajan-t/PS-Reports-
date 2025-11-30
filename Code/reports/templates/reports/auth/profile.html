@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - SAP Project System Reports{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-hover">
+            <div class="card-header">
+                <h3 class="mb-0">
+                    <i class="fas fa-user-circle me-2"></i>My Profile
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 text-md-end">
+                        <strong><i class="fas fa-user me-2"></i>Username:</strong>
+                    </div>
+                    <div class="col-md-8">
+                        {{ user.username }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4 text-md-end">
+                        <strong><i class="fas fa-envelope me-2"></i>Email:</strong>
+                    </div>
+                    <div class="col-md-8">
+                        {{ user.email|default:"Not provided" }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4 text-md-end">
+                        <strong><i class="fas fa-id-card me-2"></i>Full Name:</strong>
+                    </div>
+                    <div class="col-md-8">
+                        {% if user.first_name or user.last_name %}
+                            {{ user.get_full_name }}
+                        {% else %}
+                            Not provided
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4 text-md-end">
+                        <strong><i class="fas fa-calendar-alt me-2"></i>Joined:</strong>
+                    </div>
+                    <div class="col-md-8">
+                        {{ user.date_joined|date:"F d, Y" }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4 text-md-end">
+                        <strong><i class="fas fa-clock me-2"></i>Last Login:</strong>
+                    </div>
+                    <div class="col-md-8">
+                        {{ user.last_login|date:"F d, Y g:i A"|default:"Never" }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4 text-md-end">
+                        <strong><i class="fas fa-shield-alt me-2"></i>Account Status:</strong>
+                    </div>
+                    <div class="col-md-8">
+                        {% if user.is_staff %}
+                            <span class="badge bg-danger">Staff</span>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                            <span class="badge bg-warning text-dark">Superuser</span>
+                        {% endif %}
+                        {% if user.is_active %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Inactive</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                    <a href="{% url 'change_password' %}" class="btn btn-warning">
+                        <i class="fas fa-key me-2"></i>Change Password
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

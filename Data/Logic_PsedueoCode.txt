@@ -1,0 +1,186 @@
+● Perfect! Now I have a complete understanding of the logic. Here's the pseudocode
+   explanation for the Project Analysis report endpoint:
+
+  PSEUDOCODE FOR /report/project-analysis
+
+  MAIN FLOW:
+  ==========
+  1. USER ACCESSES http://127.0.0.1:8000/report/project-analysis
+     → Django routes to project_analysis_report_view() at views.py:106
+
+  2. IF GET REQUEST:
+     → Display upload form with two file inputs:
+       - budget_file (Budget DAT file)
+       - plan_file (Plan/Actual DAT file)
+
+  3. IF POST REQUEST:
+     a. VALIDATE form has both files
+     b. SAVE both uploaded files to temporary upload directory
+     c. CALL generate_project_analysis_report(budget_path, plan_path)
+     d. DELETE temporary uploaded files
+     e. DISPLAY result page with:
+        - Download link for Excel report
+        - HTML preview of merged data
+        - Statistics (rows processed, project counts)
+
+
+  CORE PROCESSING LOGIC (generate_project_analysis_report):
+  =========================================================
+
+  STEP 1: PROCESS BUDGET FILE
+  ----------------------------
+  INPUT: Budget DAT file (tab-delimited, multi-level headers)
+  REGEX: r"6\*\s*(.*?)\s*PRJ(.*)"  → extracts (ProjectName, ProjectID)
+
+  PROCESS:
+    1. READ file with delimiter=TAB, headers=[0,1], encoding=iso-8859-1
+    2. REMOVE rows where first column starts with "Result"
+    3. EXTRACT from column ("Unnamed: 0_level_0", "Object"):
+       - Apply regex to extract ProjectName and ProjectID
+       - Order: [ProjectName, ProjectID] (NOTE: reversed from plan file!)
+    4. STRIP whitespace from both fields
+    5. RETURN DataFrame with multi-level columns + ProjectID + ProjectName
+
+
+  STEP 2: PROCESS PLAN/ACTUAL FILE
+  ---------------------------------
+  INPUT: Plan DAT file (tab-delimited, multi-level headers)
+  REGEX: r"5\*\s*PRJ\s*([A-Za-z0-9\-]{12})\s*(.*)"  → extracts (ProjectID, 
+  ProjectName)
+
+  PROCESS:
+    1. READ file with delimiter=TAB, headers=[0,1], encoding=iso-8859-1
+    2. REMOVE rows where first column starts with "Result"
+    3. EXTRACT from column ("Unnamed: 0_level_0", "Object"):
+       - Apply regex to extract ProjectID and ProjectName
+       - Order: [ProjectID, ProjectName] (NOTE: different from budget!)
+    4. STRIP whitespace from both fields
+    5. RETURN DataFrame with multi-level columns + ProjectID + ProjectName
+
+
+  STEP 3: MERGE DATA
+  ------------------
+  MERGE df_budget + df_actual:
+    - ON: ("ProjectID", "") column
+    - HOW: outer join (keep all projects from both files)
+    - SUFFIXES: ("_Budget", "_Actual") for duplicate column names
+  RESULT: df_combined with all budget and actual columns side-by-side
+
+
+  STEP 4: CREATE EXCEL WORKBOOK
+  ------------------------------
+  CREATE workbook with 4 sheets:
+
+  SHEET 1: "Budget"
+    - Write df_budget as-is
+    - Format header row (yellow background, bold)
+
+  SHEET 2: "Actual"
+    - Write df_actual as-is
+    - Format header row (yellow background, bold)
+
+  SHEET 3: "Data"
+    - Write df_combined (merged data)
+    - Format header row
+
+  SHEET 4: "Analysis" (INTERACTIVE SHEET)
+    - CREATE dropdown in B1:
+      * Label A1: "Select ProjectID:"
+      * Dropdown source: Budget sheet, column AL, rows 3 to last_row
+      * Validation type: list
+
+    - CREATE dropdown in B2:
+      * Label A2: "Select Year range:"
+      * Dropdown source: Budget sheet, row 1, columns D to last_column
+      * Validation type: list
+    
+    - CREATE analysis table starting at row 3:
+      * Column C-H headers: ["Plan", "Budget", "Actual", "Commitment", "Assigned",
+   "Available"]
+      * Header formatting: green background, bold, centered
+    
+    - CREATE formulas in row 4 (columns C-H):
+      * Formula for each metric:
+        =IFERROR(
+          INDEX(
+            Budget!$D$2:${last_col}${last_row},        ← Data range
+            MATCH($B$1, Budget!$C$2:$C${last_row}, 0), ← Find ProjectID row
+            MATCH($B$2, Budget!$D$1:${last_col}$1, 0)  ← Find Year column
+          ),
+          ""
+        )
+      * This formula dynamically looks up values based on user selections
+
+    - CREATE 4 x 3D BAR CHARTS:
+      1. Chart at D10: "Plan Vs Budget" (data from column 3, rows 4-9)
+      2. Chart at D25: "Budget Vs Actual" (data from column 4, rows 4-9)
+      3. Chart at M10: "Budget Vs Commitment" (data from column 5, rows 4-9)
+      4. Chart at M25: "Budget Vs Available" (data from column 6, rows 4-9)
+
+
+  STEP 5: SAVE AND RETURN
+  ------------------------
+  SAVE workbook to: {BASE_DIR}/data/reports/ProjectAnalysis.xlsx
+
+  GENERATE HTML preview:
+    - Take first 100 rows of df_combined
+    - Flatten multi-level column names to "Level0 - Level1"
+    - Convert to HTML table with Bootstrap classes
+
+  RETURN dictionary:
+    {
+      "file_path": path to saved Excel file,
+      "data_html": HTML preview table,
+      "rows_processed": total merged rows,
+      "budget_projects": count from budget file,
+      "actual_projects": count from actual file
+    }
+
+
+  CRITICAL ERROR POINTS (Lines 41-42 debug prints):
+  ==================================================
+  The highlighted lines print df_actual and df_budget columns to debug:
+    - POTENTIAL ISSUE: Multi-level column structure may not match expectations
+    - POTENTIAL ISSUE: Regex extraction might fail silently (fillna("") hides
+  errors)
+    - POTENTIAL ISSUE: Column name assumptions (e.g., column AL for ProjectID)
+    - POTENTIAL ISSUE: Merge key ("ProjectID", "") tuple structure
+
+
+  COMMON ERRORS TO FIX:
+  =====================
+  1. REGEX MISMATCH:
+     - Budget pattern expects "6*" prefix, Plan expects "5*" prefix
+     - If data format changes, extraction returns empty strings
+     - FIX: Validate extracted values are non-empty before proceeding
+
+  2. COLUMN INDEXING:
+     - Hardcoded "AL" column for ProjectID dropdown
+     - May fail if Budget sheet structure changes
+     - FIX: Dynamically find ProjectID column by name
+
+  3. MERGE KEY STRUCTURE:
+     - Using ("ProjectID", "") tuple for multi-index columns
+     - May fail if column structure is different
+     - FIX: Flatten columns before merge or validate structure
+
+  4. ENCODING ISSUES:
+     - Uses "iso-8859-1" encoding
+     - May fail with different character sets
+     - FIX: Try multiple encodings or detect automatically
+
+  5. EMPTY DATA:
+     - No validation that files contain actual project data
+     - Could create empty reports
+     - FIX: Check row count after filtering "Result" rows
+
+  Key Issues from Debug Lines 41-42:
+
+  The print statements at lines 41-42 (ProjectAnalysis.py:41-42) suggest debugging
+   of:
+  1. Column structure - multi-level headers causing indexing issues
+  2. Merge compatibility - ensuring both DataFrames have matching column types
+  3. Regex extraction - verifying ProjectID/ProjectName are correctly parsed
+
+  Would you like me to help identify and fix specific errors in this
+  implementation?

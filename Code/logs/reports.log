@@ -1,0 +1,917 @@
+INFO 2025-11-26 04:48:35,503 data_processing 8172 134806575638208 Fetching WBS master data from database...
+WARNING 2025-11-26 04:48:35,504 data_processing 8172 134806575638208 WBS master data is empty. No descriptions will be mapped.
+ERROR 2025-11-26 04:48:35,504 error_handling 8172 134806575638208 An unexpected error occurred in generate_plan_variance_report: Can't instantiate abstract class PlanVarianceExcelFormatter without an implementation for abstract method 'apply_all_formatting'
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/plan_variance_service.py", line 379, in generate_plan_variance_report
+    formatter = PlanVarianceExcelFormatter(df.copy(), output_path, summary_wbs)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Can't instantiate abstract class PlanVarianceExcelFormatter without an implementation for abstract method 'apply_all_formatting'
+INFO 2025-11-26 04:54:04,077 data_processing 8020 124339630118592 Classifying WBS elements: 619 total elements
+INFO 2025-11-26 04:54:04,174 data_processing 8020 124339630118592 WBS classification completed: 36 summary, 583 transaction
+INFO 2025-11-26 04:54:04,175 data_processing 8020 124339630118592 Fetching WBS master data from database...
+WARNING 2025-11-26 04:54:04,176 data_processing 8020 124339630118592 WBS master data is empty. No descriptions will be mapped.
+INFO 2025-11-26 04:54:55,728 data_processing 8020 124339630118592 Fetching WBS master data from database...
+WARNING 2025-11-26 04:54:55,730 data_processing 8020 124339630118592 WBS master data is empty. No descriptions will be mapped.
+INFO 2025-11-26 04:56:01,479 data_processing 8020 124339630118592 Fetching WBS master data from database...
+WARNING 2025-11-26 04:56:01,480 data_processing 8020 124339630118592 WBS master data is empty. No descriptions will be mapped.
+ERROR 2025-11-26 04:56:01,480 error_handling 8020 124339630118592 An unexpected error occurred in generate_plan_variance_report: Can't instantiate abstract class PlanVarianceExcelFormatter without an implementation for abstract method 'apply_all_formatting'
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/plan_variance_service.py", line 379, in generate_plan_variance_report
+    )
+      
+TypeError: Can't instantiate abstract class PlanVarianceExcelFormatter without an implementation for abstract method 'apply_all_formatting'
+INFO 2025-11-26 05:12:42,184 data_processing 11355 133460953274176 WBS master data available: 3 elements
+WARNING 2025-11-26 05:12:42,185 data_processing 11355 133460953274176 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:12:42,186 data_processing 11355 133460953274176 WBS master data available: 3 elements
+INFO 2025-11-26 05:12:42,187 data_processing 11355 133460953274176 Fetching WBS master data from database...
+WARNING 2025-11-26 05:12:42,187 data_processing 11355 133460953274176 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-26 05:12:42,187 data_processing 11355 133460953274176 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:12:42,188 data_processing 11355 133460953274176 Fetching WBS master data from database...
+INFO 2025-11-26 05:12:42,188 data_processing 11355 133460953274176 WBS master data available: 3 elements
+INFO 2025-11-26 05:12:42,189 data_processing 11355 133460953274176 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+ERROR 2025-11-26 05:12:42,196 error_handling 11355 133460953274176 An unexpected error occurred in apply_freeze_panes: expected str, bytes or os.PathLike object, not DataFrame
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 165, in apply_freeze_panes
+    self.worksheet.freeze_panes = freeze_cell
+    ^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 98, in worksheet
+    self._worksheet = self.workbook.active
+                      ^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 90, in workbook
+    self._workbook = openpyxl.load_workbook(self.output_file)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 346, in load_workbook
+    reader = ExcelReader(filename, read_only, keep_vba,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 123, in __init__
+    self.archive = _validate_archive(fn)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 77, in _validate_archive
+    file_format = os.path.splitext(filename)[-1].lower()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 118, in splitext
+TypeError: expected str, bytes or os.PathLike object, not DataFrame
+ERROR 2025-11-26 05:12:42,198 error_handling 11355 133460953274176 An unexpected error occurred in apply_freeze_panes: expected str, bytes or os.PathLike object, not DataFrame
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 165, in apply_freeze_panes
+    self.worksheet.freeze_panes = freeze_cell
+    ^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 98, in worksheet
+    self._worksheet = self.workbook.active
+                      ^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 90, in workbook
+    self._workbook = openpyxl.load_workbook(self.output_file)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 346, in load_workbook
+    reader = ExcelReader(filename, read_only, keep_vba,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 123, in __init__
+    self.archive = _validate_archive(fn)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 77, in _validate_archive
+    file_format = os.path.splitext(filename)[-1].lower()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 118, in splitext
+TypeError: expected str, bytes or os.PathLike object, not DataFrame
+ERROR 2025-11-26 05:12:42,199 error_handling 11355 133460953274176 An unexpected error occurred in apply_freeze_panes: expected str, bytes or os.PathLike object, not DataFrame
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 165, in apply_freeze_panes
+    self.worksheet.freeze_panes = freeze_cell
+    ^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 98, in worksheet
+    self._worksheet = self.workbook.active
+                      ^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 90, in workbook
+    self._workbook = openpyxl.load_workbook(self.output_file)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 346, in load_workbook
+    reader = ExcelReader(filename, read_only, keep_vba,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 123, in __init__
+    self.archive = _validate_archive(fn)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 77, in _validate_archive
+    file_format = os.path.splitext(filename)[-1].lower()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 118, in splitext
+TypeError: expected str, bytes or os.PathLike object, not DataFrame
+INFO 2025-11-26 05:15:02,223 data_processing 11612 131375995750208 WBS master data available: 3 elements
+WARNING 2025-11-26 05:15:02,224 data_processing 11612 131375995750208 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:15:02,224 data_processing 11612 131375995750208 WBS master data available: 3 elements
+INFO 2025-11-26 05:15:02,226 data_processing 11612 131375995750208 Fetching WBS master data from database...
+WARNING 2025-11-26 05:15:02,226 data_processing 11612 131375995750208 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-26 05:15:02,226 data_processing 11612 131375995750208 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:15:02,227 data_processing 11612 131375995750208 Fetching WBS master data from database...
+INFO 2025-11-26 05:15:02,227 data_processing 11612 131375995750208 WBS master data available: 3 elements
+INFO 2025-11-26 05:15:02,228 data_processing 11612 131375995750208 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+WARNING 2025-11-26 05:15:02,229 data_processing 11612 131375995750208 Empty WBS list provided
+INFO 2025-11-26 05:15:02,229 data_processing 11612 131375995750208 Classifying WBS elements: 4 total elements
+INFO 2025-11-26 05:15:02,229 data_processing 11612 131375995750208 WBS classification completed: 1 summary, 3 transaction
+ERROR 2025-11-26 05:15:02,233 error_handling 11612 131375995750208 An unexpected error occurred in apply_freeze_panes: expected str, bytes or os.PathLike object, not DataFrame
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 165, in apply_freeze_panes
+    self.worksheet.freeze_panes = freeze_cell
+    ^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 98, in worksheet
+    self._worksheet = self.workbook.active
+                      ^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 90, in workbook
+    self._workbook = openpyxl.load_workbook(self.output_file)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 346, in load_workbook
+    reader = ExcelReader(filename, read_only, keep_vba,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 123, in __init__
+    self.archive = _validate_archive(fn)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 77, in _validate_archive
+    file_format = os.path.splitext(filename)[-1].lower()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 118, in splitext
+TypeError: expected str, bytes or os.PathLike object, not DataFrame
+ERROR 2025-11-26 05:15:02,234 error_handling 11612 131375995750208 An unexpected error occurred in apply_freeze_panes: expected str, bytes or os.PathLike object, not DataFrame
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 165, in apply_freeze_panes
+    self.worksheet.freeze_panes = freeze_cell
+    ^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 98, in worksheet
+    self._worksheet = self.workbook.active
+                      ^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 90, in workbook
+    self._workbook = openpyxl.load_workbook(self.output_file)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 346, in load_workbook
+    reader = ExcelReader(filename, read_only, keep_vba,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 123, in __init__
+    self.archive = _validate_archive(fn)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 77, in _validate_archive
+    file_format = os.path.splitext(filename)[-1].lower()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 118, in splitext
+TypeError: expected str, bytes or os.PathLike object, not DataFrame
+ERROR 2025-11-26 05:15:02,235 error_handling 11612 131375995750208 An unexpected error occurred in apply_freeze_panes: expected str, bytes or os.PathLike object, not DataFrame
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 165, in apply_freeze_panes
+    self.worksheet.freeze_panes = freeze_cell
+    ^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 98, in worksheet
+    self._worksheet = self.workbook.active
+                      ^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 90, in workbook
+    self._workbook = openpyxl.load_workbook(self.output_file)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 346, in load_workbook
+    reader = ExcelReader(filename, read_only, keep_vba,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 123, in __init__
+    self.archive = _validate_archive(fn)
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/openpyxl/reader/excel.py", line 77, in _validate_archive
+    file_format = os.path.splitext(filename)[-1].lower()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 118, in splitext
+TypeError: expected str, bytes or os.PathLike object, not DataFrame
+INFO 2025-11-26 05:16:56,827 data_processing 11835 130534699734848 WBS master data available: 3 elements
+WARNING 2025-11-26 05:16:56,827 data_processing 11835 130534699734848 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:16:56,828 data_processing 11835 130534699734848 WBS master data available: 3 elements
+INFO 2025-11-26 05:16:56,829 data_processing 11835 130534699734848 Fetching WBS master data from database...
+WARNING 2025-11-26 05:16:56,829 data_processing 11835 130534699734848 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-26 05:16:56,829 data_processing 11835 130534699734848 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:16:56,830 data_processing 11835 130534699734848 Fetching WBS master data from database...
+INFO 2025-11-26 05:16:56,830 data_processing 11835 130534699734848 WBS master data available: 3 elements
+INFO 2025-11-26 05:16:56,831 data_processing 11835 130534699734848 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+WARNING 2025-11-26 05:16:56,832 data_processing 11835 130534699734848 Empty WBS list provided
+INFO 2025-11-26 05:16:56,833 data_processing 11835 130534699734848 Classifying WBS elements: 4 total elements
+INFO 2025-11-26 05:16:56,833 data_processing 11835 130534699734848 WBS classification completed: 1 summary, 3 transaction
+ERROR 2025-11-26 05:16:56,863 error_handling 11835 130534699734848 An unexpected error occurred in apply_header_formatting: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 249, in apply_header_formatting
+    header_style = self.workbook.named_styles["header_style"]
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+ERROR 2025-11-26 05:16:56,869 error_handling 11835 130534699734848 An unexpected error occurred in apply_header_formatting: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 249, in apply_header_formatting
+    header_style = self.workbook.named_styles["header_style"]
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+ERROR 2025-11-26 05:16:56,877 error_handling 11835 130534699734848 An unexpected error occurred in apply_header_formatting: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 249, in apply_header_formatting
+    header_style = self.workbook.named_styles["header_style"]
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+INFO 2025-11-26 05:17:45,268 data_processing 11951 136524426086208 WBS master data available: 3 elements
+WARNING 2025-11-26 05:17:45,269 data_processing 11951 136524426086208 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:17:45,270 data_processing 11951 136524426086208 WBS master data available: 3 elements
+INFO 2025-11-26 05:17:45,271 data_processing 11951 136524426086208 Fetching WBS master data from database...
+WARNING 2025-11-26 05:17:45,271 data_processing 11951 136524426086208 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-26 05:17:45,271 data_processing 11951 136524426086208 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:17:45,272 data_processing 11951 136524426086208 Fetching WBS master data from database...
+INFO 2025-11-26 05:17:45,272 data_processing 11951 136524426086208 WBS master data available: 3 elements
+INFO 2025-11-26 05:17:45,273 data_processing 11951 136524426086208 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+WARNING 2025-11-26 05:17:45,274 data_processing 11951 136524426086208 Empty WBS list provided
+INFO 2025-11-26 05:17:45,274 data_processing 11951 136524426086208 Classifying WBS elements: 4 total elements
+INFO 2025-11-26 05:17:45,274 data_processing 11951 136524426086208 WBS classification completed: 1 summary, 3 transaction
+ERROR 2025-11-26 05:17:45,298 error_handling 11951 136524426086208 An unexpected error occurred in apply_header_formatting: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 249, in apply_header_formatting
+    header_style = self.workbook.named_styles["header_style"]
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+ERROR 2025-11-26 05:17:45,309 error_handling 11951 136524426086208 An unexpected error occurred in apply_header_formatting: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 249, in apply_header_formatting
+    header_style = self.workbook.named_styles["header_style"]
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+ERROR 2025-11-26 05:17:45,314 error_handling 11951 136524426086208 An unexpected error occurred in apply_header_formatting: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 249, in apply_header_formatting
+    header_style = self.workbook.named_styles["header_style"]
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+ERROR 2025-11-26 05:17:45,321 error_handling 11951 136524426086208 An unexpected error occurred in apply_header_formatting: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/formatting.py", line 249, in apply_header_formatting
+    header_style = self.workbook.named_styles["header_style"]
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: list indices must be integers or slices, not str
+INFO 2025-11-26 05:18:24,414 data_processing 12031 128155682670400 WBS master data available: 3 elements
+WARNING 2025-11-26 05:18:24,414 data_processing 12031 128155682670400 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:18:24,415 data_processing 12031 128155682670400 WBS master data available: 3 elements
+INFO 2025-11-26 05:18:24,416 data_processing 12031 128155682670400 Fetching WBS master data from database...
+WARNING 2025-11-26 05:18:24,416 data_processing 12031 128155682670400 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-26 05:18:24,416 data_processing 12031 128155682670400 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:18:24,417 data_processing 12031 128155682670400 Fetching WBS master data from database...
+INFO 2025-11-26 05:18:24,417 data_processing 12031 128155682670400 WBS master data available: 3 elements
+INFO 2025-11-26 05:18:24,418 data_processing 12031 128155682670400 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+WARNING 2025-11-26 05:18:24,419 data_processing 12031 128155682670400 Empty WBS list provided
+INFO 2025-11-26 05:18:24,419 data_processing 12031 128155682670400 Classifying WBS elements: 4 total elements
+INFO 2025-11-26 05:18:24,420 data_processing 12031 128155682670400 WBS classification completed: 1 summary, 3 transaction
+INFO 2025-11-26 05:18:31,967 data_processing 12111 127323677652800 WBS master data available: 3 elements
+WARNING 2025-11-26 05:18:31,968 data_processing 12111 127323677652800 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:18:31,968 data_processing 12111 127323677652800 WBS master data available: 3 elements
+INFO 2025-11-26 05:18:31,969 data_processing 12111 127323677652800 Fetching WBS master data from database...
+WARNING 2025-11-26 05:18:31,969 data_processing 12111 127323677652800 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-26 05:18:31,969 data_processing 12111 127323677652800 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:18:31,970 data_processing 12111 127323677652800 Fetching WBS master data from database...
+INFO 2025-11-26 05:18:31,970 data_processing 12111 127323677652800 WBS master data available: 3 elements
+INFO 2025-11-26 05:18:31,972 data_processing 12111 127323677652800 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+WARNING 2025-11-26 05:18:31,972 data_processing 12111 127323677652800 Empty WBS list provided
+INFO 2025-11-26 05:18:31,973 data_processing 12111 127323677652800 Classifying WBS elements: 4 total elements
+INFO 2025-11-26 05:18:31,973 data_processing 12111 127323677652800 WBS classification completed: 1 summary, 3 transaction
+INFO 2025-11-26 05:19:02,560 data_processing 12166 126122135029568 WBS master data available: 3 elements
+WARNING 2025-11-26 05:19:02,561 data_processing 12166 126122135029568 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:19:02,562 data_processing 12166 126122135029568 WBS master data available: 3 elements
+INFO 2025-11-26 05:19:02,563 data_processing 12166 126122135029568 Fetching WBS master data from database...
+WARNING 2025-11-26 05:19:02,563 data_processing 12166 126122135029568 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-26 05:19:02,563 data_processing 12166 126122135029568 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:19:02,564 data_processing 12166 126122135029568 Fetching WBS master data from database...
+INFO 2025-11-26 05:19:02,564 data_processing 12166 126122135029568 WBS master data available: 3 elements
+INFO 2025-11-26 05:19:02,565 data_processing 12166 126122135029568 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+WARNING 2025-11-26 05:19:02,566 data_processing 12166 126122135029568 Empty WBS list provided
+INFO 2025-11-26 05:19:02,567 data_processing 12166 126122135029568 Classifying WBS elements: 4 total elements
+INFO 2025-11-26 05:19:02,567 data_processing 12166 126122135029568 WBS classification completed: 1 summary, 3 transaction
+INFO 2025-11-26 05:39:38,882 data_processing 13092 130095716570944 WBS master data available: 3 elements
+WARNING 2025-11-26 05:39:38,883 data_processing 13092 130095716570944 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:39:38,884 data_processing 13092 130095716570944 WBS master data available: 3 elements
+INFO 2025-11-26 05:39:38,885 data_processing 13092 130095716570944 Fetching WBS master data from database...
+WARNING 2025-11-26 05:39:38,885 data_processing 13092 130095716570944 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-26 05:39:38,885 data_processing 13092 130095716570944 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-26 05:39:38,886 data_processing 13092 130095716570944 Fetching WBS master data from database...
+INFO 2025-11-26 05:39:38,886 data_processing 13092 130095716570944 WBS master data available: 3 elements
+INFO 2025-11-26 05:39:38,887 data_processing 13092 130095716570944 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+WARNING 2025-11-26 05:39:38,888 data_processing 13092 130095716570944 Empty WBS list provided
+INFO 2025-11-26 05:39:38,888 data_processing 13092 130095716570944 Classifying WBS elements: 4 total elements
+INFO 2025-11-26 05:39:38,889 data_processing 13092 130095716570944 WBS classification completed: 1 summary, 3 transaction
+INFO 2025-11-26 06:31:49,584 data_processing 17315 130135917151936 Classifying WBS elements: 619 total elements
+INFO 2025-11-26 06:31:49,679 data_processing 17315 130135917151936 WBS classification completed: 36 summary, 583 transaction
+INFO 2025-11-26 06:31:49,679 data_processing 17315 130135917151936 Fetching WBS master data from database...
+INFO 2025-11-26 06:31:49,680 data_processing 17315 130135917151936 WBS master data available: 8989 elements
+INFO 2025-11-26 06:31:49,687 data_processing 17315 130135917151936 WBS descriptions mapped: 620 mapped, 0 unmapped (total: 620)
+INFO 2025-11-26 08:51:39,398 data_processing 6320 133638838544064 Classifying WBS elements: 661 total elements
+INFO 2025-11-26 08:51:39,648 data_processing 6320 133638838544064 WBS classification completed: 36 summary, 625 transaction
+INFO 2025-11-26 08:51:39,648 data_processing 6320 133638838544064 Fetching WBS master data from database...
+INFO 2025-11-26 08:51:39,649 data_processing 6320 133638838544064 WBS master data available: 8987 elements
+INFO 2025-11-26 08:51:39,663 data_processing 6320 133638838544064 WBS descriptions mapped: 662 mapped, 0 unmapped (total: 662)
+INFO 2025-11-26 08:54:27,287 data_processing 6320 133638838544064 Fetching WBS master data from database...
+INFO 2025-11-26 08:54:27,289 data_processing 6320 133638838544064 WBS master data available: 8987 elements
+INFO 2025-11-26 08:54:27,303 data_processing 6320 133638838544064 WBS descriptions mapped: 422 mapped, 0 unmapped (total: 422)
+INFO 2025-11-26 08:57:16,621 data_processing 6320 133638838544064 Fetching WBS master data from database...
+INFO 2025-11-26 08:57:16,622 data_processing 6320 133638838544064 WBS master data available: 8987 elements
+INFO 2025-11-26 08:57:16,639 data_processing 6320 133638838544064 WBS descriptions mapped: 476 mapped, 0 unmapped (total: 476)
+ERROR 2025-11-26 08:57:16,640 error_handling 6320 133638838544064 An unexpected error occurred in generate_plan_variance_report: property 'workbook' of 'PlanVarianceExcelFormatter' object has no setter
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/plan_variance_service.py", line 388, in generate_plan_variance_report
+    formatter = PlanVarianceExcelFormatter(df.copy(), output_path, summary_wbs)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/plan_variance_service.py", line 290, in __init__
+    self.workbook = None
+    ^^^^^^^^^^^^^
+AttributeError: property 'workbook' of 'PlanVarianceExcelFormatter' object has no setter
+ERROR 2025-11-26 08:57:58,919 error_handling 6320 133638838544064 An unexpected error occurred in generate_budget_variance_report: Missing optional dependency 'html5lib'.  Use pip or conda to install html5lib.
+Traceback (most recent call last):
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/compat/_optional.py", line 135, in import_optional_dependency
+    module = importlib.import_module(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'html5lib'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/budget_variance_service.py", line 461, in generate_budget_variance_report
+    df, (summary_wbs, transaction_wbs) = processor.process_data(cleaned_path)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/budget_variance_service.py", line 255, in process_data
+    df = self.read_html_data(file_path)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/budget_variance_service.py", line 242, in read_html_data
+    df = pd.read_html(cleaned_html, header=[0, 1], encoding="utf-8")[0]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/html.py", line 1240, in read_html
+    return _parse(
+           ^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/html.py", line 971, in _parse
+    parser = _parser_dispatch(flav)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/html.py", line 915, in _parser_dispatch
+    import_optional_dependency("html5lib")
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/compat/_optional.py", line 138, in import_optional_dependency
+    raise ImportError(msg)
+ImportError: Missing optional dependency 'html5lib'.  Use pip or conda to install html5lib.
+INFO 2025-11-26 09:00:18,633 project_analysis_service 6320 133638838544064 Processing budget file...
+ERROR 2025-11-26 09:00:18,640 error_handling 6320 133638838544064 A known error occurred in read_dat_file: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+         ^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+ERROR 2025-11-26 09:00:18,653 error_handling 6320 133638838544064 A known error occurred in generate_project_analysis_report: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+         ^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/project_analysis_service.py", line 240, in generate_project_analysis_report
+    df_budget = processor.process_data(budget_file_path, "budget")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/project_analysis_service.py", line 60, in process_data
+    df = self.read_dat_file(
+         ^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+INFO 2025-11-30 14:23:36,111 data_processing 8859 130598728787776 WBS master data available: 3 elements
+WARNING 2025-11-30 14:23:36,113 data_processing 8859 130598728787776 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-30 14:23:36,114 data_processing 8859 130598728787776 WBS master data available: 3 elements
+INFO 2025-11-30 14:23:36,116 data_processing 8859 130598728787776 Fetching WBS master data from database...
+WARNING 2025-11-30 14:23:36,117 data_processing 8859 130598728787776 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-30 14:23:36,117 data_processing 8859 130598728787776 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-30 14:23:36,118 data_processing 8859 130598728787776 Fetching WBS master data from database...
+INFO 2025-11-30 14:23:36,119 data_processing 8859 130598728787776 WBS master data available: 3 elements
+INFO 2025-11-30 14:23:36,122 data_processing 8859 130598728787776 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+WARNING 2025-11-30 14:23:36,123 data_processing 8859 130598728787776 Empty WBS list provided
+INFO 2025-11-30 14:23:36,124 data_processing 8859 130598728787776 Classifying WBS elements: 4 total elements
+INFO 2025-11-30 14:23:36,125 data_processing 8859 130598728787776 WBS classification completed: 1 summary, 3 transaction
+INFO 2025-11-30 14:24:50,675 data_processing 9003 124819192915776 WBS master data available: 3 elements
+WARNING 2025-11-30 14:24:50,677 data_processing 9003 124819192915776 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-30 14:24:50,679 data_processing 9003 124819192915776 WBS master data available: 3 elements
+INFO 2025-11-30 14:24:50,683 data_processing 9003 124819192915776 Fetching WBS master data from database...
+WARNING 2025-11-30 14:24:50,683 data_processing 9003 124819192915776 WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+WARNING 2025-11-30 14:24:50,684 data_processing 9003 124819192915776 Continuing without WBS description mapping. WBS master data not loaded in database (0 records). File exists at data/WBS_NAMES.XLSX. Run 'python manage.py import_master_data' to import it.
+INFO 2025-11-30 14:24:50,686 data_processing 9003 124819192915776 Fetching WBS master data from database...
+INFO 2025-11-30 14:24:50,687 data_processing 9003 124819192915776 WBS master data available: 3 elements
+INFO 2025-11-30 14:24:50,691 data_processing 9003 124819192915776 WBS descriptions mapped: 3 mapped, 0 unmapped (total: 3)
+WARNING 2025-11-30 14:24:50,693 data_processing 9003 124819192915776 Empty WBS list provided
+INFO 2025-11-30 14:24:50,695 data_processing 9003 124819192915776 Classifying WBS elements: 4 total elements
+INFO 2025-11-30 14:24:50,697 data_processing 9003 124819192915776 WBS classification completed: 1 summary, 3 transaction
+INFO 2025-12-01 05:01:20,387 project_analysis_service 7652 137963761309376 Processing budget file...
+ERROR 2025-12-01 05:01:20,403 error_handling 7652 137963761309376 A known error occurred in read_dat_file: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+         ^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+ERROR 2025-12-01 05:01:20,406 error_handling 7652 137963761309376 A known error occurred in generate_project_analysis_report: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+         ^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/project_analysis_service.py", line 240, in generate_project_analysis_report
+    df_budget = processor.process_data(budget_file_path, "budget")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/project_analysis_service.py", line 60, in process_data
+    df = self.read_dat_file(
+         ^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+INFO 2025-12-01 06:04:02,836 project_analysis_service 15193 140243656591040 Processing budget file...
+ERROR 2025-12-01 06:04:02,839 error_handling 15193 140243656591040 A known error occurred in read_dat_file: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+         ^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+ERROR 2025-12-01 06:04:02,840 error_handling 15193 140243656591040 A known error occurred in generate_project_analysis_report: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+         ^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/project_analysis_service.py", line 240, in generate_project_analysis_report
+    df_budget = processor.process_data(budget_file_path, "budget")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/project_analysis_service.py", line 60, in process_data
+    df = self.read_dat_file(
+         ^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+INFO 2025-12-01 06:04:16,693 project_analysis_service 15193 140243656591040 Processing budget file...
+ERROR 2025-12-01 06:04:16,695 error_handling 15193 140243656591040 A known error occurred in read_dat_file: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+         ^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+ERROR 2025-12-01 06:04:16,696 error_handling 15193 140243656591040 A known error occurred in generate_project_analysis_report: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+         ^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/anaconda3/lib/python3.12/site-packages/pandas/io/parsers/base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/project_analysis_service.py", line 240, in generate_project_analysis_report
+    df_budget = processor.process_data(budget_file_path, "budget")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/project_analysis_service.py", line 60, in process_data
+    df = self.read_dat_file(
+         ^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tvr/PS-Reports/Code/reports/services/data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+INFO 2025-12-01 17:02:58,334 project_analysis_service 13688 12260 Processing budget file...
+ERROR 2025-12-01 17:02:58,364 error_handling 13688 12260 A known error occurred in read_dat_file: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+        file_path,
+    ...<3 lines>...
+        low_memory=False,
+    )
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._reader.header,
+        ^^^^^^^^^^^^^^^^^^^^
+        self.index_names,  # type: ignore[has-type]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        passed_names,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+        f"Error parsing DAT file: {str(e)}", "PARSE_ERROR", e
+    )
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+ERROR 2025-12-01 17:02:58,380 error_handling 13688 12260 A known error occurred in generate_project_analysis_report: Error parsing DAT file: Header rows must have an equal number of columns.
+Traceback (most recent call last):
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\data_processing.py", line 65, in read_dat_file
+    df = pd.read_csv(
+        file_path,
+    ...<3 lines>...
+        low_memory=False,
+    )
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\c_parser_wrapper.py", line 110, in __init__
+    ) = self._extract_multi_indexer_columns(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._reader.header,
+        ^^^^^^^^^^^^^^^^^^^^
+        self.index_names,  # type: ignore[has-type]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        passed_names,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\cudda\anaconda3\Lib\site-packages\pandas\io\parsers\base_parser.py", line 325, in _extract_multi_indexer_columns
+    raise ParserError("Header rows must have an equal number of columns.")
+pandas.errors.ParserError: Header rows must have an equal number of columns.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\project_analysis_service.py", line 240, in generate_project_analysis_report
+    df_budget = processor.process_data(budget_file_path, "budget")
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\project_analysis_service.py", line 60, in process_data
+    df = self.read_dat_file(
+        file_path,
+    ...<2 lines>...
+        encoding="iso-8859-1"
+    )
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\data_processing.py", line 87, in read_dat_file
+    raise FileProcessingError(
+        f"Error parsing DAT file: {str(e)}", "PARSE_ERROR", e
+    )
+reports.services.error_handling.FileProcessingError: Error parsing DAT file: Header rows must have an equal number of columns.
+INFO 2025-12-01 17:13:05,181 project_analysis_service 12120 20940 Processing 558 (Budget) file...
+INFO 2025-12-01 17:13:05,182 project_analysis_service 12120 20940 Processing 558 Report: D:\New-PS-Reports\PS-Reports\Code\data\uploads\ALL_PROJECT_558.DAT
+INFO 2025-12-01 17:13:05,185 project_analysis_service 12120 20940 Total lines read from D:\New-PS-Reports\PS-Reports\Code\data\uploads\ALL_PROJECT_558.DAT: 434
+INFO 2025-12-01 17:13:05,186 project_analysis_service 12120 20940 Remaining lines after cleanup: 430
+INFO 2025-12-01 17:13:05,194 project_analysis_service 12120 20940 Data rows extracted: 428
+INFO 2025-12-01 17:13:05,240 project_analysis_service 12120 20940 DataFrame shape: (428, 37)
+INFO 2025-12-01 17:13:05,242 project_analysis_service 12120 20940 Processing 532 (Plan) file...
+INFO 2025-12-01 17:13:05,244 project_analysis_service 12120 20940 Processing 532 Report: D:\New-PS-Reports\PS-Reports\Code\data\uploads\ALL_PROJECT_532.DAT
+INFO 2025-12-01 17:13:05,247 project_analysis_service 12120 20940 Total lines read from D:\New-PS-Reports\PS-Reports\Code\data\uploads\ALL_PROJECT_532.DAT: 307
+INFO 2025-12-01 17:13:05,248 project_analysis_service 12120 20940 Remaining lines after cleanup: 304
+INFO 2025-12-01 17:13:05,250 project_analysis_service 12120 20940 Data rows extracted: 301
+INFO 2025-12-01 17:13:05,292 project_analysis_service 12120 20940 DataFrame shape: (301, 30)
+INFO 2025-12-01 17:13:05,294 project_analysis_service 12120 20940 Merging reports by time periods...
+INFO 2025-12-01 17:13:05,295 project_analysis_service 12120 20940 Merging 558 (Budget) and 532 (Plan) Reports by Time Periods
+INFO 2025-12-01 17:13:05,296 project_analysis_service 12120 20940 Common time periods: ['', '2025', '2026', '2027', '2028 and Following', 'Overall values', 'Previous years', 'Total of years']
+INFO 2025-12-01 17:13:05,303 project_analysis_service 12120 20940 After join: 301 rows, 66 columns
+INFO 2025-12-01 17:13:05,308 project_analysis_service 12120 20940 Final merged DataFrame shape: (301, 56)
+INFO 2025-12-01 17:13:05,310 project_analysis_service 12120 20940 Creating year-on-year analysis
+INFO 2025-12-01 17:13:05,899 project_analysis_service 12120 20940 Project Analysis report saved: D:\New-PS-Reports\PS-Reports\Code\data\reports\project_analysis_20251201_171305.xlsx
+INFO 2026-04-09 12:07:53,225 data_processing 2264 16324 Classifying WBS elements: 661 total elements
+INFO 2026-04-09 12:07:53,795 data_processing 2264 16324 WBS classification completed: 36 summary, 625 transaction
+INFO 2026-04-09 12:07:53,796 data_processing 2264 16324 Fetching WBS master data from database...
+INFO 2026-04-09 12:07:53,797 data_processing 2264 16324 WBS master data available: 8987 elements
+INFO 2026-04-09 12:07:53,838 data_processing 2264 16324 WBS descriptions mapped: 662 mapped, 0 unmapped (total: 662)
+INFO 2026-04-09 12:43:05,534 data_processing 21264 16056 Classifying WBS elements: 679 total elements
+INFO 2026-04-09 12:43:06,073 data_processing 21264 16056 WBS classification completed: 35 summary, 644 transaction
+INFO 2026-04-09 12:43:06,075 data_processing 21264 16056 Fetching WBS master data from database...
+INFO 2026-04-09 12:43:06,080 data_processing 21264 16056 WBS master data available: 8987 elements
+INFO 2026-04-09 12:43:06,184 data_processing 21264 16056 WBS descriptions mapped: 680 mapped, 0 unmapped (total: 680)
+INFO 2026-04-09 15:18:12,160 data_processing 14828 15736 Classifying WBS elements: 679 total elements
+INFO 2026-04-09 15:18:12,646 data_processing 14828 15736 WBS classification completed: 35 summary, 644 transaction
+INFO 2026-04-09 15:18:12,647 data_processing 14828 15736 Fetching WBS master data from database...
+INFO 2026-04-09 15:18:12,650 data_processing 14828 15736 WBS master data available: 8987 elements
+INFO 2026-04-09 15:18:12,758 data_processing 14828 15736 WBS descriptions mapped: 680 mapped, 0 unmapped (total: 680)
+INFO 2026-04-18 17:21:58,228 data_processing 8888 40580 Classifying WBS elements: 661 total elements
+INFO 2026-04-18 17:21:58,554 data_processing 8888 40580 WBS classification completed: 36 summary, 625 transaction
+INFO 2026-04-18 17:21:58,556 data_processing 8888 40580 Fetching WBS master data from database...
+INFO 2026-04-18 17:21:58,559 data_processing 8888 40580 WBS master data available: 8989 elements
+INFO 2026-04-18 17:21:58,602 data_processing 8888 40580 WBS descriptions mapped: 662 mapped, 0 unmapped (total: 662)
+ERROR 2026-05-12 12:15:40,957 error_handling 7928 18752 An unexpected error occurred in generate_budget_report: ('WBS_Elements_Info.', 'Object')
+Traceback (most recent call last):
+  File "C:\Python314\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'WBS_Elements_Info.'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "pandas/_libs/index.pyx", line 848, in pandas._libs.index.BaseMultiIndexCodesEngine.get_loc
+  File "C:\Python314\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+    raise KeyError(key) from err
+KeyError: 'WBS_Elements_Info.'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Python314\Lib\site-packages\pandas\core\indexes\multi.py", line 3536, in get_loc
+    return self._engine.get_loc(key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "pandas/_libs/index.pyx", line 851, in pandas._libs.index.BaseMultiIndexCodesEngine.get_loc
+KeyError: ('WBS_Elements_Info.', 'Object')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\error_handling.py", line 55, in wrapper
+    return func(*args, **kwargs)
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\budget_report_service.py", line 374, in generate_budget_report
+    df, (summary_wbs, transaction_wbs) = processor.process_data(cleaned_path)
+                                         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\New-PS-Reports\PS-Reports\Code\reports\services\budget_report_service.py", line 272, in process_data
+    df[("WBS_Elements_Info.", "ID_No")] = df[("WBS_Elements_Info.", "Object")].str.split().str[-1]
+                                          ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\site-packages\pandas\core\frame.py", line 4377, in __getitem__
+    return self._getitem_multilevel(key)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Python314\Lib\site-packages\pandas\core\frame.py", line 4435, in _getitem_multilevel
+    loc = self.columns.get_loc(key)
+  File "C:\Python314\Lib\site-packages\pandas\core\indexes\multi.py", line 3538, in get_loc
+    raise KeyError(key) from err
+KeyError: ('WBS_Elements_Info.', 'Object')
+INFO 2026-05-12 12:15:57,129 data_processing 7928 18752 Classifying WBS elements: 661 total elements
+INFO 2026-05-12 12:15:57,278 data_processing 7928 18752 WBS classification completed: 36 summary, 625 transaction
+INFO 2026-05-12 12:15:57,279 data_processing 7928 18752 Fetching WBS master data from database...
+INFO 2026-05-12 12:15:57,282 data_processing 7928 18752 WBS master data available: 8989 elements
+INFO 2026-05-12 12:15:57,310 data_processing 7928 18752 WBS descriptions mapped: 662 mapped, 0 unmapped (total: 662)

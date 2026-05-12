@@ -24,6 +24,14 @@
                class="btn {% if data_type == 'project_types' %}btn-primary{% else %}btn-outline-primary{% endif %}">
                 <i class="fas fa-tags me-1"></i>Project Types
             </a>
+            <a href="?type=document_types{% if search_query %}&search={{ search_query }}{% endif %}"
+               class="btn {% if data_type == 'document_types' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                <i class="fas fa-file-alt me-1"></i>Document Types
+            </a>
+            <a href="?type=project_names{% if search_query %}&search={{ search_query }}{% endif %}"
+               class="btn {% if data_type == 'project_names' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                <i class="fas fa-folder-open me-1"></i>Project Names
+            </a>
         </div>
     </div>
 </div>
@@ -56,11 +64,15 @@
 <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
         <h5 class="mb-0">
-            <i class="fas {% if data_type == 'wbs' %}fa-project-diagram{% elif data_type == 'company_codes' %}fa-building{% else %}fa-tags{% endif %} me-2"></i>
+            <i class="fas {% if data_type == 'wbs' %}fa-project-diagram{% elif data_type == 'company_codes' %}fa-building{% elif data_type == 'document_types' %}fa-file-alt{% elif data_type == 'project_names' %}fa-folder-open{% else %}fa-tags{% endif %} me-2"></i>
             {% if data_type == 'wbs' %}
                 WBS Elements
             {% elif data_type == 'company_codes' %}
                 Company Codes
+            {% elif data_type == 'document_types' %}
+                CJI3 Document Types
+            {% elif data_type == 'project_names' %}
+                Project Names
             {% else %}
                 Project Types
             {% endif %}
@@ -76,14 +88,25 @@
                     <thead class="table-light">
                         <tr>
                             <th style="width: 5%">#</th>
+                            {% if data_type == 'project_names' %}
+                            <th style="width: 25%">Project Definition</th>
+                            <th style="width: 10%">Unit</th>
+                            <th style="width: 60%">Project Name</th>
+                            {% else %}
                             <th style="width: 30%">Code</th>
                             <th style="width: 65%">Name/Description</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in page_obj %}
                         <tr>
                             <td>{{ forloop.counter|add:page_obj.start_index|add:"-1" }}</td>
+                            {% if data_type == 'project_names' %}
+                            <td><code class="text-primary">{{ item.project_definition }}</code></td>
+                            <td><span class="badge bg-secondary">{{ item.unit }}</span></td>
+                            <td>{{ item.name }}</td>
+                            {% else %}
                             <td>
                                 <code class="text-primary">
                                     {% if data_type == 'wbs' %}
@@ -93,14 +116,18 @@
                                     {% endif %}
                                 </code>
                             </td>
-                            <td>{{ item.name }}</td>
+                            <td>{% if data_type == 'document_types' %}{{ item.description }}{% else %}{{ item.name }}{% endif %}</td>
+                            {% endif %}
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="3" class="text-center text-muted py-5">
+                            <td colspan="{% if data_type == 'project_names' %}4{% else %}3{% endif %}" class="text-center text-muted py-5">
                                 <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
-                                <p>No {% if data_type == 'wbs' %}WBS elements{% elif data_type == 'company_codes' %}company codes{% else %}project types{% endif %} found.</p>
+                                <p>No {% if data_type == 'wbs' %}WBS elements{% elif data_type == 'company_codes' %}company codes{% elif data_type == 'document_types' %}document types{% elif data_type == 'project_names' %}project names{% else %}project types{% endif %} found.</p>
                                 {% if not search_query and data_type == 'wbs' %}
+                                <p><small>Import master data using: <code>python manage.py import_master_data</code></small></p>
+                                {% endif %}
+                                {% if not search_query and data_type == 'project_names' %}
                                 <p><small>Import master data using: <code>python manage.py import_master_data</code></small></p>
                                 {% endif %}
                             </td>
@@ -130,22 +157,34 @@
             </div>
             <div class="card-body">
                 <div class="row text-center">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="border rounded p-3">
                             <h4 class="text-primary mb-1">{{ system_stats.wbs_elements|default:0 }}</h4>
                             <p class="text-muted mb-0 small">WBS Elements</p>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="border rounded p-3">
                             <h4 class="text-success mb-1">{{ system_stats.company_codes|default:0 }}</h4>
                             <p class="text-muted mb-0 small">Company Codes</p>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="border rounded p-3">
                             <h4 class="text-info mb-1">{{ system_stats.project_types|default:0 }}</h4>
                             <p class="text-muted mb-0 small">Project Types</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="border rounded p-3">
+                            <h4 class="text-warning mb-1">{{ system_stats.document_types|default:0 }}</h4>
+                            <p class="text-muted mb-0 small">Document Types</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <h4 class="text-danger mb-1">{{ system_stats.project_names|default:0 }}</h4>
+                            <p class="text-muted mb-0 small">Project Names</p>
                         </div>
                     </div>
                 </div>

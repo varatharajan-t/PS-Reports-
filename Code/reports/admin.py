@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CompanyCode, ProjectType, WBSElement, ReportHistory
+from .models import CompanyCode, ProjectType, WBSElement, ReportHistory, DocumentType, ProjectName
 
 
 @admin.register(CompanyCode)
@@ -45,6 +45,29 @@ class WBSElementAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         # Add only() to limit fields if needed for performance
         return qs
+
+
+@admin.register(DocumentType)
+class DocumentTypeAdmin(admin.ModelAdmin):
+    """Admin interface for DocumentType model."""
+    list_display = ('code', 'description')
+    search_fields = ('code', 'description')
+    ordering = ('code',)
+    list_per_page = 50
+    show_full_result_count = True
+    list_max_show_all = 200
+
+
+@admin.register(ProjectName)
+class ProjectNameAdmin(admin.ModelAdmin):
+    """Admin interface for ProjectName model."""
+    list_display = ('project_definition', 'name', 'unit')
+    search_fields = ('project_definition', 'name', 'unit')
+    list_filter = ('unit',)
+    ordering = ('project_definition',)
+    list_per_page = 50
+    show_full_result_count = True
+    list_max_show_all = 300
 
 
 @admin.register(ReportHistory)

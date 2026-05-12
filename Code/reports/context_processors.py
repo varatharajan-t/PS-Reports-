@@ -49,12 +49,14 @@ def system_status(request):
     """
     Add overall system status information to all template contexts.
     """
-    from .models import CompanyCode, ProjectType
+    from .models import CompanyCode, ProjectType, DocumentType, ProjectName
 
     return {
         'system_stats': {
             'company_codes': CompanyCode.objects.count(),
             'project_types': ProjectType.objects.count(),
             'wbs_elements': WBSElement.objects.count(),
+            'document_types': DocumentType.objects.count(),
+            'project_names': ProjectName.objects.count(),
         }
     }

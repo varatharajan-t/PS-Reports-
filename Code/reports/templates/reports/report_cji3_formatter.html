@@ -5,6 +5,7 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-10 mx-auto">
+
         <!-- Instructions Card -->
         <div class="card bg-glass mb-4">
             <div class="card-body">
@@ -12,16 +13,24 @@
                     <div class="col-md-8">
                         <h5 class="mb-2">
                             <i class="fas fa-info-circle text-primary me-2"></i>
-                            Project Type Wise Report Instructions
+                            CJI3 Formatter Instructions
                         </h5>
-                        <p class="mb-0 text-muted">
-                            Upload your CN42N output saved as Excel file to generate a professionally
-                            formatted multi-sheet Excel report with project grouping, hyperlinks, and summary statistics.
+                        <p class="mb-1 text-muted">
+                            Upload your SAP CJI3 Excel export to generate a formatted workbook with a
+                            Summary sheet and individual per-plant detail sheets.
                         </p>
+                        <ul class="text-muted mb-0" style="font-size: 0.875rem;">
+                            <li>The file must contain a sheet named <strong>Sheet1</strong> (default CJI3 export)</li>
+                            <li>WBS element in column B, Document Type in column E, Amount in column I</li>
+                            <li>Document types <strong>WE</strong> and <strong>ZA</strong> are treated as positive (&#10004;); all others as negative (&#10008;)</li>
+                        </ul>
                     </div>
                     <div class="col-md-4 text-end">
-                        <div class="badge bg-success">
-                            <i class="fas fa-file-excel me-1"></i>Excel Files Only
+                        <div class="badge bg-primary mb-1 d-block">
+                            <i class="fas fa-file-excel me-1"></i>.XLSX Files Only
+                        </div>
+                        <div class="badge bg-info d-block">
+                            <i class="fas fa-layer-group me-1"></i>Summary + Per-Plant Sheets
                         </div>
                     </div>
                 </div>
@@ -32,9 +41,9 @@
         <div class="card shadow-hover">
             <div class="card-header">
                 <h3>
-                    <i class="fas fa-upload me-2"></i>Upload CN42N Excel File
+                    <i class="fas fa-upload me-2"></i>Upload CJI3 Excel File
                 </h3>
-                <p class="mb-0 text-muted">Select your CN42N output saved as Excel file for processing</p>
+                <p class="mb-0 text-muted">Select your exported SAP CJI3 data file for processing</p>
             </div>
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data" id="uploadForm">
@@ -46,10 +55,10 @@
                         {{ form.file }}
                         <div class="form-text">
                             <i class="fas fa-check-circle text-success me-1"></i>
-                            Supported format: .XLSX files from CN42N report output
+                            Supported format: .xlsx exported from SAP CJI3
                             <br>
                             <i class="fas fa-lightbulb text-warning me-1"></i>
-                            Ensure the file contains "Project definition" column and project data
+                            Ensure the file retains the default sheet name <strong>Sheet1</strong>
                         </div>
                     </div>
 
@@ -58,7 +67,7 @@
                             <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                         </a>
                         <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="fas fa-magic me-2"></i>Generate Project Type Wise Report
+                            <i class="fas fa-magic me-2"></i>Format CJI3 Report
                         </button>
                     </div>
                 </form>
@@ -74,10 +83,19 @@
                             <h4 class="text-success mb-2">
                                 <i class="fas fa-check-circle me-2"></i>Report Generated Successfully!
                             </h4>
-                            <p class="mb-0 text-muted">
-                                Your project type wise report <strong class="text-primary">{{ report_file_name }}</strong> has been created and is ready for download.
-                                A preview is available below.
+                            <p class="mb-1 text-muted">
+                                Your formatted CJI3 workbook <strong class="text-primary">{{ report_file_name }}</strong>
+                                is ready for download.
                             </p>
+                            {% if row_count %}
+                                <small class="text-muted">
+                                    <i class="fas fa-table me-1"></i>Rows processed: <strong>{{ row_count }}</strong>
+                                    &nbsp;|&nbsp;
+                                    <i class="fas fa-calendar me-1"></i>Fiscal year: <strong>{{ fiscal_year }}–{{ fiscal_year_end }}</strong>
+                                    &nbsp;|&nbsp;
+                                    <i class="fas fa-building me-1"></i>Plants: <strong>{{ plant_count }}</strong>
+                                </small>
+                            {% endif %}
                         </div>
                         <div class="col-md-4 text-end">
                             <a href="{% url 'download_report' filename=report_file_name %}" class="btn btn-success btn-lg">
@@ -100,15 +118,16 @@
                     <div class="border-top pt-3">
                         <h6 class="text-muted">Troubleshooting Tips:</h6>
                         <ul class="text-muted mb-0">
-                            <li>Ensure the file is CN42N output saved as Excel (.xlsx)</li>
-                            <li>Check that the file contains "Project definition" column</li>
-                            <li>Verify the file isn't corrupted or empty</li>
-                            <li>Try re-exporting the data from SAP CN42N and saving as Excel</li>
+                            <li>Ensure the file is a valid SAP CJI3 export in .xlsx format</li>
+                            <li>Check that the sheet is named <strong>Sheet1</strong> (do not rename it)</li>
+                            <li>Verify the file contains WBS elements in column B and amounts in column I</li>
+                            <li>Try re-exporting the data from SAP CJI3</li>
                         </ul>
                     </div>
                 </div>
             </div>
         {% endif %}
+
     </div>
 </div>
 
@@ -121,9 +140,9 @@
                 <div class="row align-items-center">
                     <div class="col-md-8">
                         <h3 class="mb-0">
-                            <i class="fas fa-table me-2"></i>Report Preview
+                            <i class="fas fa-table me-2"></i>Summary Preview
                         </h3>
-                        <p class="text-muted mb-0">Sample of your generated project type wise report</p>
+                        <p class="text-muted mb-0">WBS-wise aggregated actuals by document type status</p>
                     </div>
                     <div class="col-md-4 text-end">
                         <button class="btn btn-outline-primary btn-sm" onclick="toggleFullscreen()">
@@ -157,28 +176,28 @@
                         <div class="p-3">
                             <i class="fas fa-file-import text-primary mb-2" style="font-size: 2rem;"></i>
                             <h6>1. File Import</h6>
-                            <small class="text-muted">Upload & validate Excel file</small>
+                            <small class="text-muted">Load CJI3 .xlsx &amp; validate Sheet1</small>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-3 text-center">
                         <div class="p-3">
                             <i class="fas fa-sitemap text-success mb-2" style="font-size: 2rem;"></i>
-                            <h6>2. Project Grouping</h6>
-                            <small class="text-muted">Group by Company & Type</small>
+                            <h6>2. WBS Grouping</h6>
+                            <small class="text-muted">Group by plant &amp; WBS (first 12 chars)</small>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-3 text-center">
                         <div class="p-3">
-                            <i class="fas fa-link text-warning mb-2" style="font-size: 2rem;"></i>
-                            <h6>3. Hyperlinks</h6>
-                            <small class="text-muted">Multi-sheet navigation</small>
+                            <i class="fas fa-receipt text-warning mb-2" style="font-size: 2rem;"></i>
+                            <h6>3. Doc Type Classification</h6>
+                            <small class="text-muted">WE &amp; ZA = positive; others = negative</small>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-3 text-center">
                         <div class="p-3">
                             <i class="fas fa-file-excel text-info mb-2" style="font-size: 2rem;"></i>
                             <h6>4. Excel Generation</h6>
-                            <small class="text-muted">Format & create report</small>
+                            <small class="text-muted">Summary + per-plant formatted sheets</small>
                         </div>
                     </div>
                 </div>
@@ -190,7 +209,6 @@
 
 {% block extra_js %}
 <style>
-/* Normal preview container */
 .preview-container {
     max-height: 600px;
     overflow-y: auto;
@@ -198,16 +216,11 @@
     position: relative;
 }
 
-/* Fullscreen Overlay - Completely separate from normal content */
 #fullscreenOverlay {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
     z-index: 99999;
     background: white;
     overflow: auto;
@@ -215,21 +228,17 @@
     box-sizing: border-box;
 }
 
-#fullscreenOverlay.active {
-    display: block;
-}
+#fullscreenOverlay.active { display: block; }
 
 .fullscreen-close-btn {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 10px; right: 10px;
     z-index: 100000;
     background: #dc3545;
     color: white;
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 50px; height: 50px;
     font-size: 24px;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -239,76 +248,30 @@
     transition: all 0.3s ease;
 }
 
-.fullscreen-close-btn:hover {
-    background: #c82333;
-    transform: scale(1.1);
-}
+.fullscreen-close-btn:hover { background: #c82333; transform: scale(1.1); }
+.fullscreen-close-btn.show  { display: flex; }
 
-.fullscreen-close-btn.show {
-    display: flex;
-}
+body.fullscreen-active { overflow: hidden; }
 
-body.fullscreen-active {
-    overflow: hidden;
-}
-
-/* Ensure sticky headers work in preview */
-.preview-container table thead th {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 100 !important;
-    background-color: #FFFF00 !important;
-}
-
-/* Sticky header in fullscreen - must override inline styles */
-#fullscreenOverlay table thead th,
-#fullscreenOverlay .budget-report-table thead th {
-    position: sticky !important;
-    position: -webkit-sticky !important;
-    top: 0 !important;
-    z-index: 1000 !important;
-    background-color: #FFFF00 !important;
-    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4) !important;
-}
-
-/* Ensure the table header group allows sticky positioning */
-#fullscreenOverlay table thead,
-#fullscreenOverlay .budget-report-table thead {
-    position: relative !important;
-    z-index: 999 !important;
-}
-
-/* Scrollbar styling */
 .preview-container::-webkit-scrollbar,
-#fullscreenOverlay::-webkit-scrollbar {
-    width: 8px;
-}
+#fullscreenOverlay::-webkit-scrollbar { width: 8px; }
 
 .preview-container::-webkit-scrollbar-track,
-#fullscreenOverlay::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
+#fullscreenOverlay::-webkit-scrollbar-track { background: #f1f1f1; }
 
 .preview-container::-webkit-scrollbar-thumb,
-#fullscreenOverlay::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
+#fullscreenOverlay::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
 
 .preview-container::-webkit-scrollbar-thumb:hover,
-#fullscreenOverlay::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
+#fullscreenOverlay::-webkit-scrollbar-thumb:hover { background: #555; }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Create fullscreen overlay
+document.addEventListener('DOMContentLoaded', function () {
     const overlay = document.createElement('div');
     overlay.id = 'fullscreenOverlay';
     document.body.appendChild(overlay);
 
-    // Create close button for fullscreen
     const closeBtn = document.createElement('button');
     closeBtn.className = 'fullscreen-close-btn';
     closeBtn.innerHTML = '<i class="fas fa-times"></i>';
@@ -316,13 +279,9 @@ document.addEventListener('DOMContentLoaded', function() {
     closeBtn.title = 'Exit Fullscreen (Esc)';
     document.body.appendChild(closeBtn);
 
-    // Close fullscreen on button click
-    closeBtn.addEventListener('click', function() {
-        toggleFullscreen();
-    });
+    closeBtn.addEventListener('click', toggleFullscreen);
 
-    // Close fullscreen on Esc key
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             const overlay = document.getElementById('fullscreenOverlay');
             if (overlay && overlay.classList.contains('active')) {
@@ -333,60 +292,28 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function toggleFullscreen() {
-    const preview = document.getElementById('previewTable');
-    const overlay = document.getElementById('fullscreenOverlay');
-    const fullscreenBtn = document.querySelector('[onclick="toggleFullscreen()"]');
-    const closeBtn = document.querySelector('.fullscreen-close-btn');
+    const preview   = document.getElementById('previewTable');
+    const overlay   = document.getElementById('fullscreenOverlay');
+    const closeBtn  = document.querySelector('.fullscreen-close-btn');
+    const fsBtn     = document.querySelector('[onclick="toggleFullscreen()"]');
 
-    if (!preview || !overlay) {
-        console.error('Preview container or overlay not found');
-        return;
-    }
+    if (!preview || !overlay) return;
 
     if (overlay.classList.contains('active')) {
-        // Exit fullscreen
         overlay.classList.remove('active');
         overlay.innerHTML = '';
         document.body.classList.remove('fullscreen-active');
         if (closeBtn) closeBtn.classList.remove('show');
         document.body.style.overflow = '';
-
-        if (fullscreenBtn) {
-            fullscreenBtn.innerHTML = '<i class="fas fa-expand me-1"></i>Fullscreen';
-        }
-
-        console.log('Exited fullscreen');
+        if (fsBtn) fsBtn.innerHTML = '<i class="fas fa-expand me-1"></i>Fullscreen';
     } else {
-        // Enter fullscreen
-        // Clone the preview content into the overlay
-        const previewContent = preview.innerHTML;
-        overlay.innerHTML = previewContent;
-
+        overlay.innerHTML = preview.innerHTML;
         overlay.classList.add('active');
         document.body.classList.add('fullscreen-active');
         if (closeBtn) closeBtn.classList.add('show');
         document.body.style.overflow = 'hidden';
-
-        if (fullscreenBtn) {
-            fullscreenBtn.innerHTML = '<i class="fas fa-compress me-1"></i>Exit Fullscreen';
-        }
-
-        // Ensure sticky header works by forcing the styles
-        setTimeout(() => {
-            const theadCells = overlay.querySelectorAll('table thead th');
-            theadCells.forEach(th => {
-                th.style.position = 'sticky';
-                th.style.top = '0';
-                th.style.zIndex = '1000';
-                th.style.backgroundColor = '#FFFF00';
-            });
-        }, 100);
-
-        // Scroll to top in fullscreen
+        if (fsBtn) fsBtn.innerHTML = '<i class="fas fa-compress me-1"></i>Exit Fullscreen';
         overlay.scrollTop = 0;
-
-        console.log('Entered fullscreen');
-        console.log('Overlay content length:', overlay.innerHTML.length);
     }
 }
 </script>

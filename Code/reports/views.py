@@ -3,8 +3,9 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.http import FileResponse, Http404
 import os
+import json
 from .forms import FileUploadForm, ExcelUploadForm, ProjectAnalysisUploadForm
-from .models import WBSElement, CompanyCode, ProjectType
+from .models import WBSElement, CompanyCode, ProjectType, DocumentType, ProjectName
 from .utils.pagination import paginate_queryset
 from .services.budget_report_service import generate_budget_report
 from .services.budget_updates_service import generate_budget_updates_report
@@ -13,6 +14,7 @@ from .services.project_type_wise_service import generate_project_type_wise_repor
 from .services.glimps_of_projects_service import generate_glimps_of_projects_report
 from .services.plan_variance_service import generate_plan_variance_report
 from .services.project_analysis_service import generate_project_analysis_report
+from .services.cji3_formatter_service import generate_cji3_report
 
 def dashboard(request):
     """
@@ -27,6 +29,7 @@ def dashboard(request):
         {'name': 'Glimps of Projects', 'url_name': 'report_glimps_of_projects'},
         {'name': 'Plan Variance', 'url_name': 'report_plan_variance'},
         {'name': 'Project Analysis', 'url_name': 'report_project_analysis'},
+        {'name': 'CJI3 Formatter', 'url_name': 'report_cji3_formatter'},
     ]
     context = {
         'reports': report_list,
@@ -138,6 +141,10 @@ def project_analysis_report_view(request):
                     'budget_projects': report_data.get('budget_projects', 0),
                     'actual_projects': report_data.get('actual_projects', 0),
                 }
+                # Serialize chart_data to JSON for JavaScript
+                chart_data = report_data.get('chart_data', {})
+                context['chart_data'] = chart_data
+                context['chart_data_json'] = json.dumps(chart_data)
             except Exception as e:
                 context['error'] = str(e)
             finally:
@@ -265,6 +272,40 @@ def glimps_of_projects_report_view(request):
             context['form'] = FileUploadForm()
     return render(request, 'reports/report_glimps_of_projects.html', context)
 
+def cji3_formatter_view(request):
+    """
+    Handles the file upload and processing for the CJI3 Formatter Report.
+    Accepts a SAP CJI3 Excel export and produces a formatted multi-sheet workbook.
+    """
+    context = {
+        'form': ExcelUploadForm(),
+        'page_title': 'CJI3 Report Formatter',
+        'report_file_name': None,
+        'data_html': None,
+    }
+    if request.method == 'POST':
+        form = ExcelUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = request.FILES['file']
+            fs = FileSystemStorage(location=settings.BASE_DIR / 'data' / 'uploads')
+            filename = fs.save(uploaded_file.name, uploaded_file)
+            uploaded_file_path = fs.path(filename)
+            try:
+                report_data = generate_cji3_report(uploaded_file_path)
+                context['report_file_name'] = os.path.basename(report_data['file_path'])
+                context['data_html']        = report_data['data_html']
+                context['row_count']        = report_data['row_count']
+                context['fiscal_year']      = report_data['fiscal_year']
+                context['fiscal_year_end']  = report_data['fiscal_year'] + 1
+                context['plant_count']      = len(report_data['plants'])
+            except Exception as e:
+                context['error'] = str(e)
+            finally:
+                fs.delete(filename)
+            context['form'] = ExcelUploadForm()
+    return render(request, 'reports/report_cji3_formatter.html', context)
+
+
 def browse_wbs_elements(request):
     """
     Browse WBS Elements with pagination support.
@@ -323,6 +364,16 @@ def browse_master_data(request):
         queryset = ProjectType.objects.all()
         if search_query:
             queryset = queryset.filter(code__icontains=search_query) | queryset.filter(name__icontains=search_query)
+        page_size = 25
+    elif data_type == 'document_types':
+        queryset = DocumentType.objects.all()
+        if search_query:
+            queryset = queryset.filter(code__icontains=search_query) | queryset.filter(description__icontains=search_query)
+        page_size = 25
+    elif data_type == 'project_names':
+        queryset = ProjectName.objects.all()
+        if search_query:
+            queryset = queryset.filter(project_definition__icontains=search_query) | queryset.filter(name__icontains=search_query) | queryset.filter(unit__icontains=search_query)
         page_size = 25
     else:  # default to WBS elements
         queryset = WBSElement.objects.all()

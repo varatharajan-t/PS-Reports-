@@ -20,6 +20,7 @@ urlpatterns = [
     path('report/glimps-of-projects/', views.glimps_of_projects_report_view, name='report_glimps_of_projects'),
     path('report/plan-variance/', views.plan_variance_report_view, name='report_plan_variance'),
     path('report/project-analysis/', views.project_analysis_report_view, name='report_project_analysis'),
+    path('report/cji3-formatter/', views.cji3_formatter_view, name='report_cji3_formatter'),
     path('download/<str:filename>/', views.download_report_view, name='download_report'),
 
     # Master Data Browsing with Pagination

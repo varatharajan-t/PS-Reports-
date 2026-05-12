@@ -88,11 +88,11 @@ class ProjectAnalysisUploadForm(forms.Form):
     """Form for uploading two DAT files for Project Analysis report."""
     budget_file = forms.FileField(
         validators=[validate_file_extension, validate_file_size],
-        label="Budget File (All_Projects.DAT)"
+        label="558 Report - Budget File (Budget/Actual/Commitment data)"
     )
     plan_file = forms.FileField(
         validators=[validate_file_extension, validate_file_size],
-        label="Plan/Actual File (All_Projects_Plan.DAT)"
+        label="532 Report - Plan File (Plan/Variance data)"
     )
 
     def __init__(self, *args, **kwargs):

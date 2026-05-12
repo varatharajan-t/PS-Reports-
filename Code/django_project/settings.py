@@ -33,7 +33,7 @@ SECRET_KEY = env_config('SECRET_KEY', default='django-insecure-z!84b-dofu9d-!st-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = env_config('ALLOWED_HOSTS', default='localhost,127.0.0.1,172.16.108.22').split(',')
+ALLOWED_HOSTS = env_config('ALLOWED_HOSTS', default='localhost,127.0.0.1,172.16.108.22,172.16.108.222').split(',')
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
     "reports",
 ]
 
@@ -149,11 +150,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 config = Config()
 
 MASTER_WBS_FILE = config.MASTER_WBS_FILE
+MASTER_PROJECTS_FILE = config.MASTER_PROJECTS_FILE
 EXCEL_FONT = config.EXCEL_FONT
 CURRENCY_FORMAT = config.CURRENCY_FORMAT
 COLORS = config.COLORS
 COMPANY_CODES = config.COMPANY_CODES
 PROJECT_TYPES = config.PROJECT_TYPES
+DOCUMENT_TYPES = config.DOCUMENT_TYPES
 CLEANING_PATTERNS = config.CLEANING_PATTERNS
 REGEX_PATTERNS = config.REGEX_PATTERNS
 FREEZE_PANES = config.FREEZE_PANES

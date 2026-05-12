@@ -49,6 +49,44 @@ class WBSElement(models.Model):
         ordering = ['wbs_element']
 
 
+class DocumentType(models.Model):
+    """Represents a CJI3 document type, e.g., AA for Asset Posting."""
+    code = models.CharField(max_length=10, unique=True, db_index=True, help_text="The short code for the document type (e.g., 'AA').")
+    description = models.CharField(max_length=255, help_text="The description of the document type (e.g., 'Asset Posting').")
+
+    def __str__(self):
+        return f"{self.code} - {self.description}"
+
+    class Meta:
+        verbose_name = "Document Type"
+        verbose_name_plural = "Document Types"
+        ordering = ['code']
+
+
+class ProjectName(models.Model):
+    """
+    Represents a SAP Project Definition with its full name and unit.
+    Master data imported from All_Projects.XLSX.
+    """
+    project_definition = models.CharField(
+        max_length=50, unique=True, db_index=True,
+        help_text="The unique project definition code (e.g., 'NL-C-MN1-001')."
+    )
+    name = models.CharField(max_length=255, help_text="The full name of the project.")
+    unit = models.CharField(
+        max_length=10, blank=True,
+        help_text="The unit code derived from the project definition (positions 6-8)."
+    )
+
+    def __str__(self):
+        return f"{self.project_definition} - {self.name}"
+
+    class Meta:
+        verbose_name = "Project Name"
+        verbose_name_plural = "Project Names"
+        ordering = ['project_definition']
+
+
 class ReportHistory(models.Model):
     """
     Tracks generated reports for audit trail and re-download capability.

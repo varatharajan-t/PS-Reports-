@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block title %}{{ page_title }}{% endblock %}
 
@@ -15,8 +16,8 @@
                             Project Analysis Report Instructions
                         </h5>
                         <p class="mb-0 text-muted">
-                            This report requires TWO DAT files: Budget (All_Projects.DAT) and Plan/Actual (All_Projects_Plan.DAT).
-                            The system will merge both files and create an interactive Excel report with data validation dropdowns and 3D charts.
+                            This report requires TWO DAT files: <strong>558 Report (Budget data)</strong> and <strong>532 Report (Plan data)</strong>.
+                            The system will merge both files by time periods and create a comprehensive Year-on-Year analysis with detailed project breakdowns.
                         </p>
                     </div>
                     <div class="col-md-4 text-end">
@@ -139,19 +140,159 @@
         </div>
         {% endif %}
 
-        <!-- Data Preview -->
+        <!-- KPI Cards -->
+        {% if chart_data.kpis %}
+        <div class="row mt-4">
+            <div class="col-12 mb-3">
+                <h4><i class="fas fa-chart-bar me-2"></i>Key Performance Indicators</h4>
+            </div>
+            {% if chart_data.kpis.Plan %}
+            <div class="col-md-3 mb-3">
+                <div class="card bg-primary text-white h-100">
+                    <div class="card-body text-center">
+                        <h6 class="card-title">Total Plan</h6>
+                        <h3 class="mb-0">₹{{ chart_data.kpis.Plan.total|floatformat:0|intcomma }}</h3>
+                        <small>Avg: ₹{{ chart_data.kpis.Plan.average|floatformat:0|intcomma }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if chart_data.kpis.Budget %}
+            <div class="col-md-3 mb-3">
+                <div class="card bg-info text-white h-100">
+                    <div class="card-body text-center">
+                        <h6 class="card-title">Total Budget</h6>
+                        <h3 class="mb-0">₹{{ chart_data.kpis.Budget.total|floatformat:0|intcomma }}</h3>
+                        <small>Avg: ₹{{ chart_data.kpis.Budget.average|floatformat:0|intcomma }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if chart_data.kpis.Actual %}
+            <div class="col-md-3 mb-3">
+                <div class="card bg-success text-white h-100">
+                    <div class="card-body text-center">
+                        <h6 class="card-title">Total Actual</h6>
+                        <h3 class="mb-0">₹{{ chart_data.kpis.Actual.total|floatformat:0|intcomma }}</h3>
+                        <small>Avg: ₹{{ chart_data.kpis.Actual.average|floatformat:0|intcomma }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if chart_data.kpis.Commitment %}
+            <div class="col-md-3 mb-3">
+                <div class="card bg-warning text-dark h-100">
+                    <div class="card-body text-center">
+                        <h6 class="card-title">Total Commitment</h6>
+                        <h3 class="mb-0">₹{{ chart_data.kpis.Commitment.total|floatformat:0|intcomma }}</h3>
+                        <small>Avg: ₹{{ chart_data.kpis.Commitment.average|floatformat:0|intcomma }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Variance KPIs -->
+        {% if chart_data.kpis.plan_vs_budget_variance %}
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card {% if chart_data.kpis.plan_vs_budget_variance < 0 %}border-danger{% else %}border-success{% endif %}">
+                    <div class="card-body">
+                        <h6 class="card-title">Plan vs Budget Variance</h6>
+                        <h4 class="{% if chart_data.kpis.plan_vs_budget_variance < 0 %}text-danger{% else %}text-success{% endif %}">
+                            ₹{{ chart_data.kpis.plan_vs_budget_variance|floatformat:0|intcomma }}
+                            <small>({{ chart_data.kpis.plan_vs_budget_variance_pct|floatformat:2 }}%)</small>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card {% if chart_data.kpis.budget_vs_actual_variance < 0 %}border-danger{% else %}border-success{% endif %}">
+                    <div class="card-body">
+                        <h6 class="card-title">Budget vs Actual Variance</h6>
+                        <h4 class="{% if chart_data.kpis.budget_vs_actual_variance < 0 %}text-danger{% else %}text-success{% endif %}">
+                            ₹{{ chart_data.kpis.budget_vs_actual_variance|floatformat:0|intcomma }}
+                            <small>({{ chart_data.kpis.budget_vs_actual_variance_pct|floatformat:2 }}%)</small>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+
+        <!-- Charts Dashboard -->
+        {% if chart_data %}
+        <div class="row mt-4">
+            <!-- Year-on-Year Comparison Bar Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Year-on-Year Comparison</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="yoyComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trend Analysis Line Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Trend Analysis</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Variance Analysis Bar Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Variance Analysis</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="varianceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Utilization Donut Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Budget Utilization</h5>
+                    </div>
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <canvas id="utilizationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Year-on-Year Analysis Table -->
         {% if data_html %}
         <div class="card mt-4">
-            <div class="card-header">
+            <div class="card-header bg-primary text-white">
                 <h4>
-                    <i class="fas fa-table me-2"></i>Data Preview
-                    <span class="badge bg-info">Combined Data (First 100 rows)</span>
+                    <i class="fas fa-table me-2"></i>Year-on-Year Analysis Details
+                    <span class="badge bg-light text-dark">Overall Performance by Period</span>
                 </h4>
             </div>
             <div class="card-body p-0">
-                <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                <div class="table-responsive">
                     {{ data_html|safe }}
                 </div>
+            </div>
+            <div class="card-footer bg-light">
+                <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>
+                    This analysis shows totals for each time period. Download the Excel file for detailed project-level data.
+                </small>
             </div>
         </div>
         {% endif %}
@@ -167,15 +308,15 @@
                         <ul class="list-unstyled">
                             <li class="mb-2">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Budget Sheet:</strong> Complete budget data
+                                <strong>Project Details:</strong> Complete merged data by time periods
                             </li>
                             <li class="mb-2">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Actual Sheet:</strong> Plan/Actual execution data
+                                <strong>Year-on-Year Analysis:</strong> Annual totals with variance calculations
                             </li>
                             <li class="mb-2">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Data Sheet:</strong> Merged data from both sources
+                                <strong>Overall Summary:</strong> Grand totals across all periods
                             </li>
                         </ul>
                     </div>
@@ -183,15 +324,15 @@
                         <ul class="list-unstyled">
                             <li class="mb-2">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Analysis Sheet:</strong> Interactive dropdowns for project selection
+                                <strong>Plan vs Budget:</strong> Variance analysis by year
                             </li>
                             <li class="mb-2">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>Dynamic Formulas:</strong> INDEX-MATCH for real-time data lookup
+                                <strong>Budget vs Actual:</strong> Execution tracking by year
                             </li>
                             <li class="mb-2">
                                 <i class="fas fa-check text-success me-2"></i>
-                                <strong>4 3D Charts:</strong> Visual comparison of Plan, Budget, Actual, and Commitment
+                                <strong>Multi-Level Headers:</strong> Time periods with metric breakdowns
                             </li>
                         </ul>
                     </div>
@@ -200,4 +341,153 @@
         </div>
     </div>
 </div>
+
+{% if chart_data %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// Format currency in Indian Rupee style
+function formatINR(value) {
+    return '₹' + value.toLocaleString('en-IN', {
+        maximumFractionDigits: 0
+    });
+}
+
+// Chart.js configuration
+const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        tooltip: {
+            callbacks: {
+                label: function(context) {
+                    let label = context.dataset.label || '';
+                    if (label) {
+                        label += ': ';
+                    }
+                    label += formatINR(context.parsed.y || context.parsed);
+                    return label;
+                }
+            }
+        }
+    },
+    scales: {
+        y: {
+            beginAtZero: true,
+            ticks: {
+                callback: function(value) {
+                    return formatINR(value);
+                }
+            }
+        }
+    }
+};
+
+// 1. Year-on-Year Comparison Chart (Bar)
+{% if chart_data.yoy_comparison %}
+const yoyCtx = document.getElementById('yoyComparisonChart');
+if (yoyCtx) {
+    new Chart(yoyCtx, {
+        type: 'bar',
+        data: {{ chart_data.yoy_comparison|safe }},
+        options: chartOptions
+    });
+}
+{% endif %}
+
+// 2. Trend Analysis Chart (Line)
+{% if chart_data.trend_analysis %}
+const trendCtx = document.getElementById('trendChart');
+if (trendCtx) {
+    new Chart(trendCtx, {
+        type: 'line',
+        data: {{ chart_data.trend_analysis|safe }},
+        options: {
+            ...chartOptions,
+            elements: {
+                line: {
+                    tension: 0.4
+                }
+            }
+        }
+    });
+}
+{% endif %}
+
+// 3. Variance Analysis Chart (Bar)
+{% if chart_data.variance_analysis %}
+const varianceCtx = document.getElementById('varianceChart');
+if (varianceCtx) {
+    new Chart(varianceCtx, {
+        type: 'bar',
+        data: {{ chart_data.variance_analysis|safe }},
+        options: {
+            ...chartOptions,
+            plugins: {
+                ...chartOptions.plugins,
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            const value = context.parsed.y;
+                            label += formatINR(Math.abs(value));
+                            if (value < 0) {
+                                label += ' (Under)';
+                            } else if (value > 0) {
+                                label += ' (Over)';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+{% endif %}
+
+// 4. Budget Utilization Chart (Donut)
+{% if chart_data.budget_utilization %}
+const utilizationCtx = document.getElementById('utilizationChart');
+if (utilizationCtx) {
+    new Chart(utilizationCtx, {
+        type: 'doughnut',
+        data: {{ chart_data.budget_utilization|safe }},
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            const value = context.parsed;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            label += formatINR(value) + ' (' + percentage + '%)';
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+{% endif %}
+</script>
+{% endif %}
+
 {% endblock %}

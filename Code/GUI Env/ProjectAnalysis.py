@@ -7,9 +7,6 @@ from config import Config
 
 config = Config()
 
-
-
-
 # Function to process files
 def process_file(file_path, encoding, extract_pattern, last_row_prefix):
     df = pd.read_csv(file_path, delimiter="\t", header=[0, 1], encoding=encoding)
@@ -42,8 +39,8 @@ df_actual = process_file(
     config.PROJECT_ANALYSIS_REGEX["plan"],
     "Result",
 )
-# print(df_actual,df_actual.columns)
-# print(df_budget,df_budget.columns)
+print(df_actual,df_actual.columns)
+print(df_budget,df_budget.columns)
 
 # Merge data on 'ProjectID'
 df_combined = pd.merge(

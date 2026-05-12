@@ -24,6 +24,7 @@ import PlanVariance as PV
 import BudgetVariance as BV
 import ProjectAnalysis as PA
 import GlimpsOfProjects as GA
+import CJI3Formatter as CJI3
 
 
 class MenuApp(QMainWindow):
@@ -31,7 +32,7 @@ class MenuApp(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("SAP Project System")
-        self.setFixedSize(400, 400)  # Fixed window size
+        self.setFixedSize(400, 450)  # Fixed window size
         self.center_window()
 
         # Set window icon
@@ -64,6 +65,7 @@ class MenuApp(QMainWindow):
             ("Budget Variance (% Achieved) - S_ALR_87013557", self.run_budget_variance),
             ("Glimps of Projects", self.run_glimps),
             ("Project Analysis", self.run_analysis),
+            ("CJI3 Formatter - CJI3", self.run_cji3_formatter),
             ("EXIT", self.close),
         ]
 
@@ -111,6 +113,9 @@ class MenuApp(QMainWindow):
 
     def run_analysis(self):
         self.run_module(PA)
+
+    def run_cji3_formatter(self):
+        self.run_module(CJI3)
 
     def run_module(self, module):
         """

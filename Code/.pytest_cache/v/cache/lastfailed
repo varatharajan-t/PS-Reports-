@@ -1,7 +1,0 @@
-{
-  "reports/tests/test_commands.py": true,
-  "reports/tests/test_context_processors.py": true,
-  "reports/tests/test_data_processing.py": true,
-  "reports/tests/test_models.py": true,
-  "reports/tests/test_pagination.py": true
-}

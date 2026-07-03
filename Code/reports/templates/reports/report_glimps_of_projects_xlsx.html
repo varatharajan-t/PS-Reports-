@@ -1,0 +1,425 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Instructions Card -->
+        <div class="card bg-glass mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-2">
+                            <i class="fas fa-info-circle text-primary me-2"></i>
+                            Glimps of Projects Report Instructions (Excel Input)
+                        </h5>
+                        <p class="mb-0 text-muted">
+                            Upload your <strong>All-ProjectIDs.xlsx</strong> file (must contain a
+                            <em>"Project definition"</em> column) to generate a cross-tabulation
+                            dashboard showing projects by company and type.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="badge bg-success">
+                            <i class="fas fa-file-excel me-1"></i>Excel Files Only
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Card -->
+        <div class="card shadow-hover">
+            <div class="card-header">
+                <h3>
+                    <i class="fas fa-upload me-2"></i>Upload Project IDs Excel File
+                </h3>
+                <p class="mb-0 text-muted">Select your All-ProjectIDs.xlsx file for processing</p>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" id="uploadForm">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="{{ form.file.id_for_label }}" class="form-label">
+                            <i class="fas fa-file-upload me-2"></i>{{ form.file.label }}
+                        </label>
+                        {{ form.file }}
+                        <div class="form-text">
+                            <i class="fas fa-check-circle text-success me-1"></i>
+                            Supported formats: .xlsx, .xls, .xlsm
+                            <br>
+                            <i class="fas fa-lightbulb text-warning me-1"></i>
+                            The file must contain a <strong>"Project definition"</strong> column with project IDs
+                            (e.g.&nbsp;<code>NL-C-BSP-001</code>)
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-magic me-2"></i>Generate Glimps of Projects Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Alert -->
+        {% if report_file_name %}
+            <div class="card bg-glass border-success mt-4 fade-in">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h4 class="text-success mb-2">
+                                <i class="fas fa-check-circle me-2"></i>Report Generated Successfully!
+                            </h4>
+                            <p class="mb-0 text-muted">
+                                Your glimps of projects report <strong class="text-primary">{{ report_file_name }}</strong>
+                                has been created and is ready for download. A preview is available below.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <a href="{% url 'download_report' filename=report_file_name %}" class="btn btn-success btn-lg">
+                                <i class="fas fa-download me-2"></i>Download Report
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Error Alert -->
+        {% if error %}
+            <div class="card bg-glass border-danger mt-4 fade-in">
+                <div class="card-body">
+                    <h4 class="text-danger mb-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Processing Error
+                    </h4>
+                    <p class="text-muted mb-3">{{ error }}</p>
+                    <div class="border-top pt-3">
+                        <h6 class="text-muted">Troubleshooting Tips:</h6>
+                        <ul class="text-muted mb-0">
+                            <li>Ensure the file is a valid Excel workbook (.xlsx / .xls)</li>
+                            <li>Check that the file contains a column named <strong>"Project definition"</strong></li>
+                            <li>Verify project IDs follow the format <code>XX-T-...</code> (e.g. <code>NL-C-BSP-001</code>)</li>
+                            <li>Make sure the file is not corrupted or empty</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Report Preview Section -->
+{% if data_html %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card shadow-hover">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 class="mb-0">
+                            <i class="fas fa-table me-2"></i>Report Preview
+                        </h3>
+                        <p class="text-muted mb-0">Cross-tabulation of projects by type and company</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-outline-primary btn-sm" onclick="toggleFullscreen()">
+                            <i class="fas fa-expand me-1"></i>Fullscreen
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0" id="previewCardBody">
+                <div class="preview-container" id="previewTable">
+                    <div class="table-responsive">
+                        {{ data_html|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Processing Steps Info -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card bg-glass">
+            <div class="card-body">
+                <h5 class="mb-3">
+                    <i class="fas fa-cogs me-2"></i>Report Processing Steps
+                </h5>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-file-excel text-success mb-2" style="font-size: 2rem;"></i>
+                            <h6>1. File Import</h6>
+                            <small class="text-muted">Upload &amp; validate Excel file</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-filter text-primary mb-2" style="font-size: 2rem;"></i>
+                            <h6>2. Data Extraction</h6>
+                            <small class="text-muted">Read Project IDs from "Project definition" column</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-sitemap text-warning mb-2" style="font-size: 2rem;"></i>
+                            <h6>3. Classification</h6>
+                            <small class="text-muted">Interactive charts and cross-tabulation</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-file-download text-info mb-2" style="font-size: 2rem;"></i>
+                            <h6>4. Excel Generation</h6>
+                            <small class="text-muted">Format &amp; create downloadable report</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if chart_script %}
+<script src="{% static 'reports/vendor/chartjs/chart.umd.min.js' %}"></script>
+{% endif %}
+
+<style>
+.preview-container {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: auto;
+    position: relative;
+}
+
+#fullscreenOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    background: white;
+    overflow: auto;
+    padding: 60px 20px 20px 20px;
+    box-sizing: border-box;
+}
+
+#fullscreenOverlay.active {
+    display: block;
+}
+
+.fullscreen-close-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 100000;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.fullscreen-close-btn:hover {
+    background: #c82333;
+    transform: scale(1.1);
+}
+
+.fullscreen-close-btn.show {
+    display: flex;
+}
+
+body.fullscreen-active {
+    overflow: hidden;
+}
+
+.preview-container table thead th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
+    background-color: #FFFF00 !important;
+}
+
+#fullscreenOverlay table thead th,
+#fullscreenOverlay .crosstab-table thead th {
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    background-color: #FFFF00 !important;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4) !important;
+}
+
+#fullscreenOverlay table thead,
+#fullscreenOverlay .crosstab-table thead {
+    position: relative !important;
+    z-index: 999 !important;
+}
+
+.preview-container::-webkit-scrollbar,
+#fullscreenOverlay::-webkit-scrollbar {
+    width: 8px;
+}
+
+.preview-container::-webkit-scrollbar-track,
+#fullscreenOverlay::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.preview-container::-webkit-scrollbar-thumb,
+#fullscreenOverlay::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.preview-container::-webkit-scrollbar-thumb:hover,
+#fullscreenOverlay::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const overlay = document.createElement('div');
+    overlay.id = 'fullscreenOverlay';
+    document.body.appendChild(overlay);
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'fullscreen-close-btn';
+    closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    closeBtn.setAttribute('aria-label', 'Exit Fullscreen');
+    closeBtn.title = 'Exit Fullscreen (Esc)';
+    document.body.appendChild(closeBtn);
+
+    closeBtn.addEventListener('click', function() {
+        toggleFullscreen();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const overlay = document.getElementById('fullscreenOverlay');
+            if (overlay && overlay.classList.contains('active')) {
+                toggleFullscreen();
+            }
+        }
+    });
+});
+
+function toggleFullscreen() {
+    const preview = document.getElementById('previewTable');
+    const overlay = document.getElementById('fullscreenOverlay');
+    const fullscreenBtn = document.querySelector('[onclick="toggleFullscreen()"]');
+    const closeBtn = document.querySelector('.fullscreen-close-btn');
+
+    if (!preview || !overlay) return;
+
+    if (overlay.classList.contains('active')) {
+        overlay.classList.remove('active');
+        overlay.innerHTML = '';
+        document.body.classList.remove('fullscreen-active');
+        if (closeBtn) closeBtn.classList.remove('show');
+        document.body.style.overflow = '';
+        if (fullscreenBtn) {
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand me-1"></i>Fullscreen';
+        }
+    } else {
+        overlay.innerHTML = preview.innerHTML;
+        overlay.classList.add('active');
+        document.body.classList.add('fullscreen-active');
+        if (closeBtn) closeBtn.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        if (fullscreenBtn) {
+            fullscreenBtn.innerHTML = '<i class="fas fa-compress me-1"></i>Exit Fullscreen';
+        }
+
+        setTimeout(() => {
+            const companySelect = overlay.querySelector('#companySelect');
+            const canvas = overlay.querySelector('#projectChart');
+
+            if (companySelect && canvas && typeof Chart !== 'undefined' && typeof chartData !== 'undefined') {
+                let fullscreenChartInstance = null;
+
+                function updateFullscreenChart() {
+                    const company = companySelect.value;
+                    const data = chartData[company];
+
+                    if (fullscreenChartInstance) {
+                        fullscreenChartInstance.destroy();
+                    }
+
+                    const ctx = canvas.getContext("2d");
+                    fullscreenChartInstance = new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: projectTypes,
+                            datasets: [{
+                                label: company + " Projects",
+                                data: data,
+                                backgroundColor: ["#00FF00", "#FF0000", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"],
+                                borderColor: ["#00FF00", "#FF0000", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Project Type vs Number of Projects - " + company,
+                                    font: { size: 18 }
+                                },
+                                legend: { display: false },
+                                datalabels: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: { stepSize: 1, precision: 0 },
+                                    title: { display: true, text: "Number of Projects" }
+                                },
+                                x: {
+                                    title: { display: true, text: "Project Type" }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                updateFullscreenChart();
+                companySelect.addEventListener('change', updateFullscreenChart);
+            }
+        }, 100);
+    }
+}
+</script>
+
+{% if chart_script %}
+<script>
+{{ chart_script|safe }}
+</script>
+{% endif %}
+{% endblock %}

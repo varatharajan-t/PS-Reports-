@@ -183,7 +183,26 @@
                     Dynamic visualization with company-wise project distribution.
                 </p>
                 <a href="{% url 'report_glimps_of_projects' %}" class="report-button" style="background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);">
-                    View Analytics
+                    View Analytics (DAT)
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 mb-4">
+        <div class="card report-card h-100 fade-in">
+            <div class="card-body text-center">
+                <div class="report-icon" style="background: linear-gradient(135deg, #21d4fd 0%, #b721ff 100%);">
+                    <i class="fas fa-file-excel"></i>
+                </div>
+                <h5 class="report-title">Glimps of Projects (Excel)</h5>
+                <p class="report-description">
+                    Same cross-tabulation analytics powered by an All-ProjectIDs Excel file
+                    instead of a DAT export. Accepts .xlsx / .xls input.
+                </p>
+                <a href="{% url 'report_glimps_of_projects_xlsx' %}" class="report-button" style="background: linear-gradient(135deg, #21d4fd 0%, #b721ff 100%);">
+                    View Analytics (Excel)
                     <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>

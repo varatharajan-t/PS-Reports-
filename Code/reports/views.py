@@ -12,6 +12,7 @@ from .services.budget_updates_service import generate_budget_updates_report
 from .services.budget_variance_service import generate_budget_variance_report
 from .services.project_type_wise_service import generate_project_type_wise_report
 from .services.glimps_of_projects_service import generate_glimps_of_projects_report
+from .services.glimps_of_projects_xlsx_service import generate_glimps_of_projects_xlsx_report
 from .services.plan_variance_service import generate_plan_variance_report
 from .services.project_analysis_service import generate_project_analysis_report
 from .services.cji3_formatter_service import generate_cji3_report
@@ -27,6 +28,7 @@ def dashboard(request):
         {'name': 'Budget Variance', 'url_name': 'report_budget_variance'},
         {'name': 'Project Type Wise', 'url_name': 'report_project_type_wise'},
         {'name': 'Glimps of Projects', 'url_name': 'report_glimps_of_projects'},
+        {'name': 'Glimps of Projects (Excel)', 'url_name': 'report_glimps_of_projects_xlsx'},
         {'name': 'Plan Variance', 'url_name': 'report_plan_variance'},
         {'name': 'Project Analysis', 'url_name': 'report_project_analysis'},
         {'name': 'CJI3 Formatter', 'url_name': 'report_cji3_formatter'},
@@ -271,6 +273,39 @@ def glimps_of_projects_report_view(request):
                 fs.delete(filename)
             context['form'] = FileUploadForm()
     return render(request, 'reports/report_glimps_of_projects.html', context)
+
+
+def glimps_of_projects_xlsx_report_view(request):
+    """
+    Handles file upload and processing for the Glimps of Projects Report (Excel input).
+    Accepts an All-ProjectIDs.XLSX file instead of a DAT file; analysis logic is identical.
+    """
+    context = {
+        'form': ExcelUploadForm(),
+        'page_title': 'Generate Glimps of Projects Report (Excel)',
+        'report_file_name': None,
+        'data_html': None,
+        'chart_script': None,
+    }
+    if request.method == 'POST':
+        form = ExcelUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = request.FILES['file']
+            fs = FileSystemStorage(location=settings.BASE_DIR / 'data' / 'uploads')
+            filename = fs.save(uploaded_file.name, uploaded_file)
+            uploaded_file_path = fs.path(filename)
+            try:
+                report_data = generate_glimps_of_projects_xlsx_report(uploaded_file_path)
+                context['report_file_name'] = os.path.basename(report_data["file_path"])
+                context['data_html'] = report_data["data_html"]
+                context['chart_script'] = report_data["chart_script"]
+            except Exception as e:
+                context['error'] = str(e)
+            finally:
+                fs.delete(filename)
+            context['form'] = ExcelUploadForm()
+    return render(request, 'reports/report_glimps_of_projects_xlsx.html', context)
+
 
 def cji3_formatter_view(request):
     """

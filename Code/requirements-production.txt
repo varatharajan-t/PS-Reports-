@@ -1,33 +1,38 @@
 # Production Requirements for PS Reports
 # Install with: pip install -r requirements-production.txt
+#
+# Pins target Python 3.14. numpy 1.x, pandas 2.1, Pillow 10 and psycopg2-binary
+# 2.9.9 publish no cp314 wheels and fall back to a source build, so they are not
+# usable here. pandas is held below 3.0: that release turns on copy-on-write and
+# the new string dtype by default, which changes report output.
 
 # Django Core
 Django==5.2.8
 
 # Database - PostgreSQL for Production
-psycopg2-binary==2.9.9
+psycopg2-binary==2.9.12
 
 # Excel Processing
-openpyxl==3.1.2
-pandas==2.1.4
+openpyxl==3.1.5
+pandas==2.3.3
 
 # Data Processing
-numpy==1.26.2
+numpy==2.5.1
 
 # Environment Variables & Security
 python-decouple==3.8
-python-dotenv==1.0.0
+python-dotenv==1.2.2
 
 # File Handling
-Pillow==10.1.0
+Pillow==12.3.0
 
 # Web Server - Production WSGI Server
-gunicorn==21.2.0
-whitenoise==6.6.0
+gunicorn==26.0.0
+whitenoise==6.12.0
 
 # Django Packages
-django-crispy-forms==2.1
-crispy-bootstrap5==2.0.0
+django-crispy-forms==2.6
+crispy-bootstrap5==2026.3
 
 # Security & Monitoring (Optional but Recommended)
 # Uncomment these for enhanced production security and monitoring:

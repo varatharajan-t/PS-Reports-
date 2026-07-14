@@ -1,32 +1,42 @@
+# Development requirements. Targets Python 3.14.
+#
+# Everything shared with requirements-production.txt is pinned to the SAME
+# version there, so reports generated in dev match what production produces.
+# Change a shared pin here and you must change it there too.
+#
+# These were previously unpinned, which meant a fresh install resolved pandas to
+# 3.0.x -- copy-on-write and the new string dtype are on by default in that
+# release and they alter report output. Hence the explicit pin below.
+
 # Django Core
 Django==5.2.8
 
 # Database
 # Using SQLite (default) - no additional driver needed for development
-# For production with PostgreSQL, add: psycopg2-binary==2.9.9
+# For production with PostgreSQL, add: psycopg2-binary==2.9.12
 
 # Excel Processing
-openpyxl
-pandas
+openpyxl==3.1.5
+pandas==2.3.3
 
 # Data Processing
-numpy
+numpy==2.5.1
 
 # Environment Variables
-python-decouple
+python-decouple==3.8
 
 # Security
-python-dotenv
+python-dotenv==1.2.2
 
 # File Handling
-Pillow
+Pillow==12.3.0
 
 # Web Server (Production)
-gunicorn
-whitenoise
+gunicorn==26.0.0
+whitenoise==6.12.0
 
 # Development Tools
-ipython
+ipython==9.15.0
 
 # Async Task Processing (Optional - for future implementation)
 # celery==5.3.4
@@ -34,21 +44,21 @@ ipython
 # django-celery-beat==2.5.0
 
 # Testing
-pytest
-pytest-django
-coverage
+pytest==9.1.1
+pytest-django==4.12.0
+coverage==7.15.1
 
 # Code Quality
-flake8
-black
+flake8==7.3.0
+black==26.5.1
 
 # API Development (Optional - for future API)
 # djangorestframework==3.14.0
 # django-cors-headers==4.3.1
 
 # Additional Django Packages
-django-crispy-forms
-crispy-bootstrap5
+django-crispy-forms==2.6
+crispy-bootstrap5==2026.3
 
 # Monitoring and Logging
 # sentry-sdk==1.39.1  # Uncomment for error tracking in production
